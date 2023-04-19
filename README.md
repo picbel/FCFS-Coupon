@@ -38,5 +38,5 @@
 
 
 ### 출처
-![GptRequirementsSpecification.png](GptRequirementsSpecification.png)
+![GptRequirementsSpecification.png](GptRequirementsSpecification.png) \
 GPT가 만들어준 기획내용을 약간의 수정하였습니다.

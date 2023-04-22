@@ -7,4 +7,5 @@ enum class ErrorCode(
     val message: String
 ) {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "user not found"),
+    COUPON_NOT_FOUND(HttpStatus.NOT_FOUND, "coupon not found"),
 }

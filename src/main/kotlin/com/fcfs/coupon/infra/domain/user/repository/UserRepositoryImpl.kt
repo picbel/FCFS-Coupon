@@ -30,12 +30,10 @@ internal class UserRepositoryImpl(
     }
 
     private fun User.toEntity(): UserEntity {
-        return UserEntity(
-            id, name, email, phone, birthday, gender, address
-        )
+        return UserEntity(id, name, email, phone, birthday, gender, address)
     }
 
     private fun UserEntity.toUser(): User {
-        return User(id, name, email, phone, birthday, gender, address)
+        return User(userId, name, email, phone, birthday, gender, address)
     }
 }

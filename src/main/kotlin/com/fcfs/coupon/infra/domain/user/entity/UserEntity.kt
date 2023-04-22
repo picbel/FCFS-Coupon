@@ -13,12 +13,12 @@ import java.time.LocalDate
 
 @Table(name = "users")
 @Entity
-class UserEntity(
+internal class UserEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long?,
+    val userId: Long?,
     @Column(name = "name", columnDefinition = "VARCHAR2(15)")
     val name: String,
-    @Column(name = "email", columnDefinition = "VARCHAR2(30)")
+    @Column(name = "email", columnDefinition = "VARCHAR2(50)")
     val email: String,
     @Column(name = "phone", columnDefinition = "VARCHAR2(15)")
     val phone: String,

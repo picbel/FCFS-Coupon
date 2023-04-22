@@ -7,7 +7,7 @@ import java.util.UUID
 /**
  * root aggregate
  */
-data class FirstComeCouponEvent(
+class FirstComeCouponEvent(
     val id: UUID,
     val name: String,
     val description: String,
@@ -20,49 +20,105 @@ data class FirstComeCouponEvent(
     * 현재 제한 수량 100개기준 생각하니 예상되는 데이터수는 36500이다.
     * 이 정도 갯수는 문제가 되지 않을것이라 생각하지만 주의 관리 포인트 중에 하나이다.
     */
-    val history: MutableList<FirstComeCouponEventHistory>,
+    history: List<FirstComeCouponEventHistory>,
     val startDate: LocalDate,
     val endDate: LocalDate,
 ) {
+    /**
+     * 외부에서 mutableList에 add를 방지하기 위해 private으로 선언하였습니다.
+     */
+    private val _history: MutableList<FirstComeCouponEventHistory> = history.toMutableList()
+
+    val history: List<FirstComeCouponEventHistory>
+        get() = _history.toList()
+
+
+    /**
+     * 특정 날짜에 쿠폰이 발급되었는지 확인합니다.
+     */
+    fun isAppliedByDate(userId: Long, date: LocalDate): Boolean {
+        return _history.find { it.date == date }?.isApplied(userId) ?: false
+    }
+
+    fun isTodayApplied(userId: Long): Boolean {
+        return isAppliedByDate(userId, LocalDate.now())
+    }
+
     /**
      * 쿠폰 발급 이력을 기록합니다.
      */
     fun recordSupplyCouponHistory(
         userId: Long,
         couponId: Long,
+        date: LocalDate,
     ): Boolean {
-        TODO()
+        _history.first { it.date == date }.run {
+            if (isApplied(userId)) {
+                return false
+            }
+            supplyCoupon(userId, couponId, checkNextContinuousReset(userId))
+        }
+
+        return true
     }
 
     /**
      * 유저가 몇일 연속 쿠폰을 발급하였는지 확인합니다.
      */
-    fun countConsecutiveCouponDays(userId: Long): Long {
-        history.sortedByDescending { it.date }.run {
-            var count = 0L
-            this.forEach {
-                if (it.isApplied(userId)) {
-                    ++count
-                    if (it.isUserContinuousReset(userId)) {
-                        return count
-                    }
-                } else {
+    fun countNowConsecutiveCouponDays(userId: Long): Long {
+        _history.sortedByDescending { it.date }.run {
+            return countConsecutiveCouponDays(userId, LocalDate.now())
+        }
+    }
+
+    private fun List<FirstComeCouponEventHistory>.countConsecutiveCouponDays(userId: Long, baseDate: LocalDate): Long {
+        var count = 0L
+        this.forEach {
+            if (it.date.isAfter(baseDate)) {
+                return@forEach
+            }
+            if (it.isApplied(userId)) {
+                ++count
+                if (it.isUserContinuousReset(userId)) {
                     return count
                 }
+            } else {
+                return count
             }
-            return count
         }
+        return count
     }
 
     /**
      * 연속 쿠폰 발급이 가능한지 확인합니다.
      */
     fun isConsecutiveCouponEligible(userId: Long): Boolean {
-        return when (countConsecutiveCouponDays(userId)) {
+        return when (countNowConsecutiveCouponDays(userId)) {
             3L -> true
             5L -> true
             7L -> true
             else -> false
         }
     }
+
+    private fun checkNextContinuousReset(userId: Long): Boolean {
+        return _history.sortedByDescending { it.date }
+            .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
+    }
+
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as FirstComeCouponEvent
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+
+
 }

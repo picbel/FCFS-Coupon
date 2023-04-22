@@ -1,5 +1,6 @@
 package com.fcfs.coupon.core.domain.coupon
 
+import com.fcfs.coupon.core.domain.coupon.model.SuppliedCoupon
 import java.math.BigDecimal
 
 /**
@@ -7,9 +8,7 @@ import java.math.BigDecimal
  */
 data class Coupon(
     val id: Long?,
-    val userId: Long,
     val name: String,
-    val isUsed: Boolean,
-    val discountAmount: BigDecimal
-    // todo : 추가 보완 필요 쿠폰을 user의 모델로 두어야할까? 독립을 시켜야할까?
+    val discountAmount: BigDecimal,
+    val suppliedHistory: List<SuppliedCoupon>,
 )

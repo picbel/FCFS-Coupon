@@ -17,9 +17,9 @@ spring:
     password:
   data:
     redis:
-      host: localhost
-      port: 9900
       timeout: 200
+      port: 9900
+      host: localhost
 server:
   port: 9999
 logging:

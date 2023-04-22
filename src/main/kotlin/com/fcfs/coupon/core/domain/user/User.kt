@@ -27,4 +27,10 @@ class User(
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
     }
+
+    override fun toString(): String {
+        return "User(id=$id, name='$name', email='$email', phone='$phone', birthday=$birthday, gender=$gender, address=$address)"
+    }
+
+
 }

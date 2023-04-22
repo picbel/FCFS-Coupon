@@ -24,14 +24,29 @@ class FirstComeCouponEventSpec {
             val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 1, excludedCouponDates = listOf(1))
 
             //when
-            sut.recordSupplyCouponHistory(userId, couponId, date)
+            val result = sut.recordSupplyCouponHistory(userId, couponId, date)
 
             //then
             val resetExpect =
                 sut.history.first { it.date == date }.supplyHistory.first { it.userId == userId }.continuousReset
+            result shouldBe true
             sut.isAppliedByDate(userId, date) shouldBe true
             resetExpect shouldBe false
 
+        }
+
+        @Test
+        fun `이미 선착순에 든 유저는 쿠폰이 중복발급 할 수 없습니다`() {
+            //given
+            val date = LocalDate.now()
+            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 1, excludedCouponDates = listOf(1))
+            sut.recordSupplyCouponHistory(userId, couponId, date)
+
+            //when
+            val result = sut.recordSupplyCouponHistory(userId, couponId, date) // secound
+
+            //then
+            result shouldBe false
         }
 
         @Test

@@ -9,6 +9,7 @@ import com.fcfs.coupon.core.domain.firstcome.model.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.core.domain.firstcome.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.infra.domain.coupon.dao.CouponJpaDao
 import com.fcfs.coupon.infra.domain.firstcome.dao.FirstComeCouponEventEntityJpaDao
+import com.fcfs.coupon.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
 import com.fcfs.coupon.infra.domain.firstcome.entity.FirstComeCouponEventEntity
 import com.fcfs.coupon.infra.domain.firstcome.entity.FirstComeCouponEventHistoryEntity
 import com.fcfs.coupon.infra.domain.firstcome.entity.FirstComeCouponEventHistoryId
@@ -24,6 +25,7 @@ import java.util.*
 @Repository
 internal class FirstComeCouponEventRepositoryImpl(
     val jpaDao: FirstComeCouponEventEntityJpaDao,
+    val redisDao: FirstComeCouponEventRedisDao,
     val couponDao: CouponJpaDao,
     val userDao: UserJpaDao
 ) : FirstComeCouponEventRepository {
@@ -32,9 +34,10 @@ internal class FirstComeCouponEventRepositoryImpl(
         return jpaDao.save(firstComeCouponEvent.toEntity()).toDomain()
     }
 
-    @Transactional
     override fun applyForFirstComeCouponEvent(id: UUID, date: LocalDate): ApplyFirstComeCouponEventResult {
-        TODO("Not yet implemented")
+        return redisDao.applyForFirstComeCouponEvent(id, date)?.let {
+            ApplyFirstComeCouponEventResult(it.order, it.couponId, true)
+        } ?: ApplyFirstComeCouponEventResult(null, null, false)
     }
 
     @Transactional

@@ -58,7 +58,7 @@ class CouponRepositorySpec : MediumTestSuite() {
         coupon.supply(user2.id!!)
         //when
         val save = sut.save(coupon)
-        //thenx
+        //then
         val find = sut.getById(save.id!!)
         find shouldBe save
         find.suppliedHistory.size shouldBe 2 // createCoupon()에서 생성된 user 1개, supply로 user2가 추가되어 2개

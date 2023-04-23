@@ -2,7 +2,7 @@ package com.fcfs.coupon.core.domain.firstcome
 
 import com.fcfs.coupon.core.domain.firstcome.model.FirstComeCouponEventHistory
 import java.time.LocalDate
-import java.util.UUID
+import java.util.*
 
 /**
  * root aggregate
@@ -21,6 +21,8 @@ class FirstComeCouponEvent(
     * 이 정도 갯수는 문제가 되지 않을것이라 생각하지만 주의 관리 포인트 중에 하나이다.
     */
     history: List<FirstComeCouponEventHistory>,
+    val defaultCouponId: Long,
+    val specialCouponId: Long,
     val startDate: LocalDate,
     val endDate: LocalDate,
 ) {
@@ -60,6 +62,13 @@ class FirstComeCouponEvent(
         }
 
         return true
+    }
+
+    fun recordTodaySupplyCouponHistory(
+        userId: Long,
+        couponId: Long,
+    ): Boolean {
+        return recordSupplyCouponHistory(userId, couponId, LocalDate.now())
     }
 
     /**

@@ -277,7 +277,7 @@ class FirstComeCouponEventSpec {
                             userId = userId,
                             couponId = couponId,
                             continuousReset = (createDates - i) % 7 == 1L, // 8일마다 카운트를 reset합니다.
-                            supplyDate = date.atStartOfDay()
+                            supplyDateTime = date.atStartOfDay()
                         )
                     )
                 )

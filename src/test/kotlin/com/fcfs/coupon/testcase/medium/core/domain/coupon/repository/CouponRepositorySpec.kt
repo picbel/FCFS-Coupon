@@ -9,7 +9,6 @@ import com.fcfs.coupon.testcase.medium.MediumTestSuite
 import com.fcfs.coupon.testutils.factory.CouponFactory.randomCoupon
 import com.fcfs.coupon.testutils.factory.UserFactory.randomUser
 import io.kotest.matchers.shouldBe
-import jakarta.persistence.EntityManager
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,9 +24,6 @@ class CouponRepositorySpec : MediumTestSuite() {
 
     private lateinit var user: User
     private lateinit var user2: User
-
-    @Autowired
-    private lateinit var em: EntityManager
 
     /**
      * 테스트를 위한 초기화 작업을 수행합니다.

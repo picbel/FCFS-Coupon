@@ -1,12 +1,12 @@
 package com.fcfs.coupon.testcase.medium
 
 import com.fcfs.coupon.FcfsCouponApplication
-import com.linecorp.kotlinjdsl.spring.data.autoconfigure.SpringDataQueryFactoryAutoConfiguration
+import jakarta.persistence.EntityManager
+import jakarta.persistence.PersistenceContext
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
 
 @DataJpaTest
 @ComponentScan(
@@ -18,4 +18,7 @@ import org.springframework.test.context.ContextConfiguration
 )
 @ActiveProfiles("medium")
 @EnableAutoConfiguration
-abstract class MediumTestSuite
+abstract class MediumTestSuite {
+    @PersistenceContext
+    lateinit var em: EntityManager
+}

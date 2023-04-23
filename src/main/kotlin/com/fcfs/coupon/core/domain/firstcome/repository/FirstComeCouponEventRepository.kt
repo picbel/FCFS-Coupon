@@ -1,6 +1,7 @@
 package com.fcfs.coupon.core.domain.firstcome.repository
 
 import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
+import com.fcfs.coupon.core.domain.firstcome.message.ApplyFirstComeCouponEventResult
 import java.time.LocalDate
 import java.util.*
 
@@ -18,6 +19,6 @@ interface FirstComeCouponEventRepository : FirstComeCouponEventReadOnlyRepositor
      * 선착순 이벤트에 응모합니다.
      * @return 선착순 이벤트에 응모 결과
      */
-    fun applyForFirstComeCouponEvent(id: UUID, date: LocalDate = LocalDate.now()): Long
+    fun applyForFirstComeCouponEvent(id: UUID, date: LocalDate = LocalDate.now()): ApplyFirstComeCouponEventResult
 
 }

@@ -22,9 +22,9 @@ class FirstComeCouponSupplyHistory(
      */
     val continuousReset: Boolean,
     /**
-     * 쿠폰 발급 일자
+     * 쿠폰 발급 일자 시간
      */
-    val supplyDate: LocalDateTime
+    val supplyDateTime: LocalDateTime
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

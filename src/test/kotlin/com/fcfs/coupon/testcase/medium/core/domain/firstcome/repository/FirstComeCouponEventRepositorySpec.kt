@@ -11,13 +11,12 @@ import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory.randomFirst
 import com.fcfs.coupon.testutils.factory.UserFactory.randomUser
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.math.BigDecimal
 
-@Disabled // 2023-04-23
+
 @Suppress("NonAsciiCharacters", "className") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
 class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
 
@@ -52,6 +51,8 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
         //when
         val save = sut.save(event)
         //then
+        em.flush()
+        em.clear()
         val find = sut.getById(save.id)
         save.id shouldBe event.id
         find shouldBe save
@@ -73,6 +74,8 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
         //when
         val modify = sut.save(event)
         //then
+        em.flush()
+        em.clear()
         val find = sut.getById(event.id)
         find.id shouldBe modify.id
         find shouldBe modify

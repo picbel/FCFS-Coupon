@@ -43,7 +43,7 @@ class FirstComeCouponEventHistory(
                 userId = userId,
                 couponId = couponId,
                 continuousReset = continuousReset,
-                supplyDate = LocalDateTime.now()
+                supplyDateTime = LocalDateTime.now()
             )
         )
     }

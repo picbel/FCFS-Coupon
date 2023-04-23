@@ -8,4 +8,5 @@ enum class ErrorCode(
 ) {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "user not found"),
     COUPON_NOT_FOUND(HttpStatus.NOT_FOUND, "coupon not found"),
+    FC_COUPON_NOT_FOUND(HttpStatus.NOT_FOUND, "fc coupon event not found"),
 }

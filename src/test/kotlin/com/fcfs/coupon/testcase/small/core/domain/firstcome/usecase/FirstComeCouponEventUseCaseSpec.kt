@@ -22,8 +22,7 @@ import org.junit.jupiter.api.Test
 class FirstComeCouponEventUseCaseSpec {
     /*
      * usecase단을 테스트 할때 mocking을 해야하는지 혹은 fakeDao를 구현해야하는지 고민이 됩니다.
-     * 이번 경우엔 mocking보단 fakeRepo를 구현하여 테스트를 진행하였습니다
-     *
+     * fakeDao의 경우 mocking보다 값을 셋팅하는 부분에 있어 편리함이 있어 fakeRepo를 구현하여 테스트를 진행하였습니다
      */
     private lateinit var sut: FirstComeCouponEventUseCase
 

@@ -1,13 +1,12 @@
 package com.fcfs.coupon.testcase.small.core.domain.firstcome
 
 import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.core.domain.firstcome.model.FirstComeCouponEventHistory
-import com.fcfs.coupon.core.domain.firstcome.model.FirstComeCouponSupplyHistory
+import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory
+import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory.setUpFirstComeCouponEvent
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
-import java.util.*
 
 @Suppress("NonAsciiCharacters", "ClassName") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
 class FirstComeCouponEventSpec {
@@ -16,12 +15,101 @@ class FirstComeCouponEventSpec {
     private val couponId = 1L
 
     @Nested
-    inner class `쿠폰 발급이력을 기록합니다`{
+    inner class `이벤트 기간을 검사합니다` {
+        @Test
+        fun `유효한 이벤트입니다`() {
+            //given
+            val date = LocalDate.now()
+            val sut: FirstComeCouponEvent = FirstComeCouponEventFactory.randomFirstComeCouponEvent(
+                startDate = date.minusDays(1),
+                endDate = date.plusDays(1),
+            )
+
+            //when
+            val result = sut.isValid()
+
+            //then
+            result shouldBe true
+        }
+
+        @Test
+        fun `종료된 이벤트입니다`() {
+            //given
+            val date = LocalDate.now()
+            val sut: FirstComeCouponEvent = FirstComeCouponEventFactory.randomFirstComeCouponEvent(
+                startDate = date.minusDays(10),
+                endDate = date.minusDays(1),
+            )
+
+            //when
+            val result = sut.isValid()
+
+            //then
+            result shouldBe false
+        }
+
+        @Test
+        fun `시작하지 않는 이벤트입니다`() {
+            //given
+            val date = LocalDate.now()
+            val sut: FirstComeCouponEvent = FirstComeCouponEventFactory.randomFirstComeCouponEvent(
+                startDate = date.plusDays(1),
+                endDate = date.plusDays(10),
+            )
+
+            //when
+            val result = sut.isValid()
+
+            //then
+            result shouldBe false
+        }
+
+        @Test
+        fun `시작날짜가 오늘입니다`() {
+            //given
+            val date = LocalDate.now()
+            val sut: FirstComeCouponEvent = FirstComeCouponEventFactory.randomFirstComeCouponEvent(
+                startDate = date,
+                endDate = date.plusDays(10),
+            )
+
+            //when
+            val result = sut.isValid()
+
+            //then
+            result shouldBe true
+        }
+
+        @Test
+        fun `종료날짜가 오늘입니다`() {
+            //given
+            val date = LocalDate.now()
+            val sut: FirstComeCouponEvent = FirstComeCouponEventFactory.randomFirstComeCouponEvent(
+                startDate = date.minusDays(10),
+                endDate = date,
+            )
+
+            //when
+            val result = sut.isValid()
+
+            //then
+            result shouldBe true
+        }
+
+    }
+
+    @Nested
+    inner class `쿠폰 발급이력을 기록합니다` {
         @Test
         fun `이전 선착순 응모 기록이 없습니다`() {
             //given
             val date = LocalDate.now()
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 1, excludedCouponDates = listOf(1))
+            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
+                createDates = 1,
+                excludedCouponDates = listOf(1),
+                userId = userId,
+                couponId = couponId
+            )
 
             //when
             val result = sut.recordSupplyCouponHistory(userId, couponId, date)
@@ -39,7 +127,12 @@ class FirstComeCouponEventSpec {
         fun `이미 선착순에 든 유저는 쿠폰이 중복발급 할 수 없습니다`() {
             //given
             val date = LocalDate.now()
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 1, excludedCouponDates = listOf(1))
+            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
+                createDates = 1,
+                excludedCouponDates = listOf(1),
+                userId = userId,
+                couponId = couponId
+            )
             sut.recordSupplyCouponHistory(userId, couponId, date)
 
             //when
@@ -53,7 +146,12 @@ class FirstComeCouponEventSpec {
         fun `7일 연속 선착순 유저입니다`() {
             //given
             val date = LocalDate.now()
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 7, excludedCouponDates = listOf(7))
+            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
+                createDates = 7,
+                excludedCouponDates = listOf(7),
+                userId = userId,
+                couponId = couponId
+            )
 
             //when
             sut.recordSupplyCouponHistory(userId, couponId, date)
@@ -69,7 +167,12 @@ class FirstComeCouponEventSpec {
         fun `8일 연속 선착순 유저입니다`() {
             //given
             val date = LocalDate.now()
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 8, excludedCouponDates = listOf(8))
+            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
+                createDates = 8,
+                excludedCouponDates = listOf(8),
+                userId = userId,
+                couponId = couponId
+            )
 
             //when
             sut.recordSupplyCouponHistory(userId, couponId, date)
@@ -86,7 +189,12 @@ class FirstComeCouponEventSpec {
         fun `3일 연속 선착순 이후 2일뒤 선착순 유저입니다`() {
             //given
             val date = LocalDate.now()
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 5, excludedCouponDates = listOf(4,5))
+            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
+                createDates = 5,
+                excludedCouponDates = listOf(4, 5),
+                userId = userId,
+                couponId = couponId
+            )
 
             //when
             sut.recordSupplyCouponHistory(userId, couponId, date)
@@ -102,7 +210,12 @@ class FirstComeCouponEventSpec {
         fun `6일 연속 선착순 이후 2일뒤 선착순 유저입니다`() {
             //given
             val date = LocalDate.now()
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 8, excludedCouponDates = listOf(6,8))
+            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
+                createDates = 8,
+                excludedCouponDates = listOf(6, 8),
+                userId = userId,
+                couponId = couponId
+            )
 
             //when
             sut.recordSupplyCouponHistory(userId, couponId, date)
@@ -118,7 +231,7 @@ class FirstComeCouponEventSpec {
     @Test
     fun `유저가 특정 날짜로 선착순 쿠폰을 발급 받았는지 조회합니다`() {
         //given
-        val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 3)
+        val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 3, userId = userId, couponId = couponId)
 
         //when
         val expect = sut.isAppliedByDate(userId, LocalDate.now())
@@ -132,7 +245,8 @@ class FirstComeCouponEventSpec {
         @Test
         fun `10일 연속 선착순 유저입니다`() {
             //given
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 10)
+            val sut: FirstComeCouponEvent =
+                setUpFirstComeCouponEvent(createDates = 10, userId = userId, couponId = couponId)
 
             //when
             val count = sut.countNowConsecutiveCouponDays(userId)
@@ -144,7 +258,8 @@ class FirstComeCouponEventSpec {
         @Test
         fun `20일 연속 선착순 유저입니다`() {
             //given
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 20)
+            val sut: FirstComeCouponEvent =
+                setUpFirstComeCouponEvent(createDates = 20, userId = userId, couponId = couponId)
 
             //when
             val count = sut.countNowConsecutiveCouponDays(userId)
@@ -156,7 +271,12 @@ class FirstComeCouponEventSpec {
         @Test
         fun `3일 연속 선착순 이후 다음날 연속 응모 하지 못한 유저입니다`() {
             //given
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 4, excludedCouponDates = listOf(4))
+            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
+                createDates = 4,
+                excludedCouponDates = listOf(4),
+                userId = userId,
+                couponId = couponId
+            )
 
             //when
             val count = sut.countNowConsecutiveCouponDays(userId)
@@ -168,7 +288,12 @@ class FirstComeCouponEventSpec {
         @Test
         fun `3일 연속 선착순 이후 2일뒤 선착순 응모한 유저입니다`() {
             //given
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 5, excludedCouponDates = listOf(4))
+            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
+                createDates = 5,
+                excludedCouponDates = listOf(4),
+                userId = userId,
+                couponId = couponId
+            )
 
             //when
             val count = sut.countNowConsecutiveCouponDays(userId)
@@ -183,7 +308,8 @@ class FirstComeCouponEventSpec {
         @Test
         fun `3일 연속 선착순 유저는 대상자가 맞습니다`() {
             //given
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 3)
+            val sut: FirstComeCouponEvent =
+                setUpFirstComeCouponEvent(createDates = 3, userId = userId, couponId = couponId)
 
             //when
             val expect = sut.isConsecutiveCouponEligible(userId)
@@ -195,7 +321,8 @@ class FirstComeCouponEventSpec {
         @Test
         fun `5일 연속 선착순 유저는 대상자가 맞습니다`() {
             //given
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 5)
+            val sut: FirstComeCouponEvent =
+                setUpFirstComeCouponEvent(createDates = 5, userId = userId, couponId = couponId)
             //when
             val expect = sut.isConsecutiveCouponEligible(userId)
 
@@ -206,7 +333,8 @@ class FirstComeCouponEventSpec {
         @Test
         fun `7일 연속 선착순 유저는 대상자가 맞습니다`() {
             //given
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 7)
+            val sut: FirstComeCouponEvent =
+                setUpFirstComeCouponEvent(createDates = 7, userId = userId, couponId = couponId)
 
             //when
             val expect = sut.isConsecutiveCouponEligible(userId)
@@ -218,7 +346,8 @@ class FirstComeCouponEventSpec {
         @Test
         fun `6일 연속 선착순 유저는 연속 쿠폰 대상자가 아닙니다`() {
             //given
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 6)
+            val sut: FirstComeCouponEvent =
+                setUpFirstComeCouponEvent(createDates = 6, userId = userId, couponId = couponId)
 
             //when
             val expect = sut.isConsecutiveCouponEligible(userId)
@@ -230,7 +359,8 @@ class FirstComeCouponEventSpec {
         @Test
         fun `8일 연속 선착순 유저는 연속 쿠폰 대상자가 아닙니다`() {
             //given
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 8)
+            val sut: FirstComeCouponEvent =
+                setUpFirstComeCouponEvent(createDates = 8, userId = userId, couponId = couponId)
 
             //when
             val expect = sut.isConsecutiveCouponEligible(userId)
@@ -242,7 +372,8 @@ class FirstComeCouponEventSpec {
         @Test
         fun `10일 연속 선착순 유저는 대상자가 맞습니다`() {
             //given
-            val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(createDates = 10)
+            val sut: FirstComeCouponEvent =
+                setUpFirstComeCouponEvent(createDates = 10, userId = userId, couponId = couponId)
 
             //when
             val expect = sut.isConsecutiveCouponEligible(userId)
@@ -252,41 +383,4 @@ class FirstComeCouponEventSpec {
         }
     }
 
-    /**
-     * createDates 만큼 진행된 FirstComeCouponEvent를 생성합니다.
-     * userId로 모든 날짜에 발급받습니다.
-     */
-    private fun setUpFirstComeCouponEvent(
-        createDates: Long,
-        excludedCouponDates: List<Long> = listOf()
-    ): FirstComeCouponEvent {
-        val id = UUID.randomUUID()
-        return FirstComeCouponEvent(
-            id = id,
-            name = "test",
-            description = "test",
-            limitCount = 100,
-            specialLimitCount = 10,
-            history = (0 until createDates).reversed().map { i ->
-                val date = LocalDate.now().minusDays(i)
-                FirstComeCouponEventHistory(
-                    firstComeCouponEventId = id,
-                    date = date,
-                    supplyHistory = if (excludedCouponDates.contains(createDates - i)) listOf() else listOf(
-                        FirstComeCouponSupplyHistory(
-                            userId = userId,
-                            couponId = couponId,
-                            continuousReset = (createDates - i) % 7 == 1L, // 8일마다 카운트를 reset합니다.
-                            supplyDateTime = date.atStartOfDay()
-                        )
-                    )
-                )
-            },
-            defaultCouponId = 1,
-            specialCouponId = 2,
-            consecutiveCouponId = 3,
-            startDate = LocalDate.now().minusDays(createDates),
-            endDate = LocalDate.now().plusDays(createDates),
-        )
-    }
 }

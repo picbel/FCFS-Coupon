@@ -13,9 +13,9 @@ object UserFactory {
         name: String = faker.name().fullName().take(15),
         email: String = faker.internet().emailAddress(),
         phone: String = faker.phoneNumber().cellPhone(),
-        birthday: LocalDate = LocalDate.ofInstant(faker.date().birthday().toInstant(), ZoneOffset.UTC), // 랜덤값이라 타임존 상관x
-        gender: Gender = Gender.values().random(),
-        address: String = faker.address().fullAddress()
+        birthday: LocalDate? = LocalDate.ofInstant(faker.date().birthday().toInstant(), ZoneOffset.UTC), // 랜덤값이라 타임존 상관x
+        gender: Gender? = Gender.values().random(),
+        address: String? = faker.address().fullAddress()
     ): User {
         return User(
             id, name, email, phone, birthday, gender, address

@@ -55,7 +55,8 @@ internal class FirstComeCouponEventUseCaseImpl(
                         couponName = coupon.name,
                         couponDiscountAmount = coupon.discountAmount,
                         isConsecutiveCouponSupplied = this.isConsecutiveCouponEligible(user.userId),
-                        order = order
+                        order = order,
+                        couponId = coupon.id
                     )
                 }
             } else {
@@ -64,7 +65,8 @@ internal class FirstComeCouponEventUseCaseImpl(
                     couponName = null,
                     couponDiscountAmount = null,
                     isConsecutiveCouponSupplied = false,
-                    order = null
+                    order = null,
+                    couponId = null
                 )
             }
         }

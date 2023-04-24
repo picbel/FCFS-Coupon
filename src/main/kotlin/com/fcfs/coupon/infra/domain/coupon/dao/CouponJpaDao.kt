@@ -10,8 +10,8 @@ internal interface CouponJpaDao : JpaRepository<CouponEntity, Long> {
     @Query("""
         SELECT DISTINCT c
         FROM CouponEntity c
-        JOIN FETCH c.suppliedHistory sh
-        JOIN FETCH sh.user u
+        LEFT JOIN FETCH c.suppliedHistory sh
+        LEFT JOIN FETCH sh.user u
         WHERE c.couponId = :id
     """)
     fun findByIdOrNull(id: Long) : CouponEntity?

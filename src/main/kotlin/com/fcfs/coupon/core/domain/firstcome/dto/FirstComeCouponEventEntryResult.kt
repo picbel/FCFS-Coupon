@@ -1,6 +1,6 @@
-package com.fcfs.coupon.core.domain.firstcome.message
+package com.fcfs.coupon.core.domain.firstcome.dto
 
-data class ApplyFirstComeCouponEventResult(
+data class FirstComeCouponEventEntryResult(
     /**
      * 선착순 이벤트에 응모한 순서입니다.
      */

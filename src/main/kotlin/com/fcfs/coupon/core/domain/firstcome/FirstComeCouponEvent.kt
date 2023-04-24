@@ -23,6 +23,7 @@ class FirstComeCouponEvent(
     history: List<FirstComeCouponEventHistory>,
     val defaultCouponId: Long,
     val specialCouponId: Long,
+    val consecutiveCouponId: Long,
     val startDate: LocalDate,
     val endDate: LocalDate,
 ) {
@@ -99,7 +100,8 @@ class FirstComeCouponEvent(
     }
 
     /**
-     * 연속 쿠폰 발급이 가능한지 확인합니다.
+     * 현재 연속 쿠폰 발급대상자인지 확인합니다.
+     * recordSupplyCouponHistory를 통하여 오늘까지의 쿠폰을 발급후 호출해야합니다.
      */
     fun isConsecutiveCouponEligible(userId: Long): Boolean {
         return when (countNowConsecutiveCouponDays(userId)) {
@@ -108,6 +110,14 @@ class FirstComeCouponEvent(
             7L -> true
             else -> false
         }
+    }
+
+    fun isValid(): Boolean {
+        return startDate.isAfter(LocalDate.now()) && endDate.isBefore(LocalDate.now())
+    }
+
+    fun isNotValid(): Boolean {
+        return !isValid()
     }
 
     private fun checkNextContinuousReset(userId: Long): Boolean {

@@ -38,6 +38,9 @@ internal class FirstComeCouponEventEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "special_coupon_id")
     val specialCoupon: CouponEntity,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "consecutive_coupon_id")
+    val consecutiveCoupon: CouponEntity,
     @Column(name = "start_date")
     val startDate: LocalDate,
     @Column(name = "end_date")

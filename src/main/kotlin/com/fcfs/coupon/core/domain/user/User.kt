@@ -15,6 +15,8 @@ class User(
     val gender: Gender?,
     val address: String?,
 ) {
+    val userId: Long
+        get() = id ?: throw IllegalStateException("unidentified user")
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

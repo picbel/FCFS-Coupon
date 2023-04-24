@@ -284,6 +284,7 @@ class FirstComeCouponEventSpec {
             },
             defaultCouponId = 1,
             specialCouponId = 2,
+            consecutiveCouponId = 3,
             startDate = LocalDate.now().minusDays(createDates),
             endDate = LocalDate.now().plusDays(createDates),
         )

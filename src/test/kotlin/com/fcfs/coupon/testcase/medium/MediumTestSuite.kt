@@ -28,4 +28,9 @@ import org.springframework.test.context.ContextConfiguration
 abstract class MediumTestSuite {
     @PersistenceContext
     lateinit var em: EntityManager
+
+    fun flushAndClear() {
+        em.flush()
+        em.clear()
+    }
 }

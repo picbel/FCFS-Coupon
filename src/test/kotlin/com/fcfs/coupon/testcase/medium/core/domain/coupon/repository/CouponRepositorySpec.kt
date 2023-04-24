@@ -43,8 +43,7 @@ class CouponRepositorySpec : MediumTestSuite() {
         //when
         val save = sut.save(coupon)
         //then
-        em.flush()
-        em.clear() // 쿼리 카운트를 위해 영속성 컨텍스트를 초기화합니다.
+        flushAndClear() // 쿼리 카운트를 위해 영속성 컨텍스트를 초기화합니다.
         val find = sut.getById(save.id!!)
         find shouldBe save
         find.discountAmount shouldBe save.discountAmount

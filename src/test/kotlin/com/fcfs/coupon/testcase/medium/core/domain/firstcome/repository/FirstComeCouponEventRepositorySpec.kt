@@ -61,8 +61,7 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
         //when
         val save = sut.save(event)
         //then
-        em.flush()
-        em.clear()
+        flushAndClear()
         val find = sut.getById(save.id)
         save.id shouldBe event.id
         find shouldBe save
@@ -83,8 +82,7 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
         //when
         val modify = sut.save(event)
         //then
-        em.flush()
-        em.clear()
+        flushAndClear()
         val find = sut.getById(event.id)
         find.id shouldBe modify.id
         find shouldBe modify

@@ -22,6 +22,10 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.util.*
 
+/*
+ * redis를 선택한 이유는 레디스가 원자성보장을 제공하여 선착순 구현에 가장 적합하다 생각하였습니다
+ * 출처 : https://redis.io/docs/about/
+ */
 @Repository
 internal class FirstComeCouponEventRepositoryImpl(
     val jpaDao: FirstComeCouponEventEntityJpaDao,

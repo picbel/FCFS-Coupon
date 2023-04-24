@@ -3,7 +3,7 @@ package com.fcfs.coupon.testcase.medium.core.domain.firstcome.repository
 import com.fcfs.coupon.core.domain.coupon.Coupon
 import com.fcfs.coupon.core.domain.coupon.repository.CouponRepository
 import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.core.domain.firstcome.message.ApplyFirstComeCouponEventResult
+import com.fcfs.coupon.core.domain.firstcome.dto.FirstComeCouponEventEntryResult
 import com.fcfs.coupon.core.domain.firstcome.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.core.domain.user.User
 import com.fcfs.coupon.core.domain.user.repository.UserRepository
@@ -44,11 +44,14 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
 
     private lateinit var specialCoupon: Coupon
 
+    private lateinit var consecutiveCoupon: Coupon
+
     @BeforeEach
     fun setUp() {
         user = userRepo.save(randomUser())
         defaultCoupons = couponRepo.save(randomCoupon(discountAmount = BigDecimal(5_000)))
         specialCoupon = couponRepo.save(randomCoupon(discountAmount = BigDecimal(20_000)))
+        consecutiveCoupon = couponRepo.save(randomCoupon(discountAmount = BigDecimal(50_000)))
     }
 
     @Test
@@ -57,6 +60,7 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
         val event = randomFirstComeCouponEvent(
             defaultCouponId = defaultCoupons.id!!,
             specialCouponId = specialCoupon.id!!,
+            consecutiveCouponId = consecutiveCoupon.id!!,
         )
         //when
         val save = sut.save(event)
@@ -76,6 +80,7 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
         val event = randomFirstComeCouponEvent(
             defaultCouponId = defaultCoupons.id!!,
             specialCouponId = specialCoupon.id!!,
+            consecutiveCouponId = consecutiveCoupon.id!!,
         )
         sut.save(event)
         event.recordTodaySupplyCouponHistory(user.id!!, defaultCoupons.id!!)
@@ -151,10 +156,10 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
             val callCount = 11
             val latch = CountDownLatch(callCount)
             val service: ExecutorService = Executors.newCachedThreadPool()
-            val futures: MutableList<Future<ApplyFirstComeCouponEventResult>> = mutableListOf()
+            val futures: MutableList<Future<FirstComeCouponEventEntryResult>> = mutableListOf()
             //when
             repeat(callCount) {
-                futures.add(service.submit<ApplyFirstComeCouponEventResult> {
+                futures.add(service.submit<FirstComeCouponEventEntryResult> {
                     try {
                         sut.applyForFirstComeCouponEvent(event.id)
                     } finally {
@@ -163,7 +168,7 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
                 })
             }
             //then
-            val results: List<ApplyFirstComeCouponEventResult> = futures.map { it.get() }
+            val results: List<FirstComeCouponEventEntryResult> = futures.map { it.get() }
             results.size shouldBe callCount
             results.count { it.isIncludedInFirstCome } shouldBe event.limitCount
             results.count { it.couponId == defaultCoupons.id } shouldBe (event.limitCount - event.specialLimitCount)

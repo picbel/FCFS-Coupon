@@ -16,6 +16,9 @@ class Coupon(
     val suppliedHistory: List<SuppliedCoupon>
         get() = _suppliedHistory.toList()
 
+    val couponId: Long
+        get() = id ?: throw IllegalStateException("unidentified coupon")
+
     fun supply(userId: Long): Coupon {
         _suppliedHistory.add(SuppliedCoupon(userId, false))
         return this

@@ -1,5 +1,7 @@
 package com.fcfs.coupon.core.domain.firstcome
 
+import com.fcfs.coupon.core.common.exception.CustomException
+import com.fcfs.coupon.core.common.exception.ErrorCode
 import com.fcfs.coupon.core.domain.firstcome.model.FirstComeCouponEventHistory
 import java.time.LocalDate
 import java.util.*
@@ -69,7 +71,14 @@ class FirstComeCouponEvent(
         userId: Long,
         couponId: Long,
     ): Boolean {
+        assertSupplyCoupon(couponId)
         return recordSupplyCouponHistory(userId, couponId, LocalDate.now())
+    }
+
+    private fun assertSupplyCoupon(couponId: Long) {
+        if (couponId != defaultCouponId && couponId != specialCouponId) {
+           throw CustomException(ErrorCode.FC_COUPON_MATCH_ERROR)
+        }
     }
 
     /**
@@ -113,7 +122,8 @@ class FirstComeCouponEvent(
     }
 
     fun isValid(): Boolean {
-        return startDate.isAfter(LocalDate.now()) && endDate.isBefore(LocalDate.now())
+        val today = LocalDate.now()
+        return today >= startDate && today <= endDate
     }
 
     fun isNotValid(): Boolean {

@@ -3,7 +3,7 @@ package com.fcfs.coupon.infra.domain.firstcome.repository
 import com.fcfs.coupon.core.common.exception.CustomException
 import com.fcfs.coupon.core.common.exception.ErrorCode
 import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.core.domain.firstcome.message.ApplyFirstComeCouponEventResult
+import com.fcfs.coupon.core.domain.firstcome.dto.FirstComeCouponEventEntryResult
 import com.fcfs.coupon.core.domain.firstcome.model.FirstComeCouponEventHistory
 import com.fcfs.coupon.core.domain.firstcome.model.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.core.domain.firstcome.repository.FirstComeCouponEventRepository
@@ -38,10 +38,10 @@ internal class FirstComeCouponEventRepositoryImpl(
         return jpaDao.save(firstComeCouponEvent.toEntity()).toDomain()
     }
 
-    override fun applyForFirstComeCouponEvent(id: UUID, date: LocalDate): ApplyFirstComeCouponEventResult {
+    override fun applyForFirstComeCouponEvent(id: UUID, date: LocalDate): FirstComeCouponEventEntryResult {
         return redisDao.applyForFirstComeCouponEvent(id, date)?.let {
-            ApplyFirstComeCouponEventResult(it.order, it.couponId, true)
-        } ?: ApplyFirstComeCouponEventResult(null, null, false)
+            FirstComeCouponEventEntryResult(it.order, it.couponId, true)
+        } ?: FirstComeCouponEventEntryResult(null, null, false)
     }
 
     @Transactional
@@ -51,11 +51,12 @@ internal class FirstComeCouponEventRepositoryImpl(
 
     @Transactional
     override fun getById(id: UUID): FirstComeCouponEvent {
-        return findById(id) ?: throw CustomException(ErrorCode.FC_COUPON_NOT_FOUND)
+        return findById(id) ?: throw CustomException(ErrorCode.FC_COUPON_EVENT_NOT_FOUND)
     }
 
     private fun FirstComeCouponEvent.toEntity(): FirstComeCouponEventEntity {
-        val coupons = couponDao.findAllById(listOf(this.defaultCouponId, this.specialCouponId))
+        val coupons =
+            couponDao.findAllById(listOf(this.defaultCouponId, this.specialCouponId, this.consecutiveCouponId))
         return FirstComeCouponEventEntity(
             eventId = this.id,
             name = this.name,
@@ -65,6 +66,7 @@ internal class FirstComeCouponEventRepositoryImpl(
             history = mutableSetOf(),
             defaultCoupon = coupons.first { it.couponId == this.defaultCouponId },
             specialCoupon = coupons.first { it.couponId == this.specialCouponId },
+            consecutiveCoupon = coupons.first { it.couponId == this.consecutiveCouponId },
             startDate = this.startDate,
             endDate = this.endDate,
         ).apply {
@@ -127,6 +129,7 @@ internal class FirstComeCouponEventRepositoryImpl(
             history = this.history.toEventHistoryEntities(),
             defaultCouponId = this.defaultCoupon.couponId ?: throw IllegalStateException("coupon id is null"),
             specialCouponId = this.specialCoupon.couponId ?: throw IllegalStateException("coupon id is null"),
+            consecutiveCouponId = this.consecutiveCoupon.couponId ?: throw IllegalStateException("coupon id is null"),
             startDate = this.startDate,
             endDate = this.endDate,
         )

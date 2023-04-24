@@ -13,6 +13,7 @@ import com.fcfs.coupon.testcase.medium.MediumTestSuite
 import com.fcfs.coupon.testutils.factory.CouponFactory.randomCoupon
 import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
 import com.fcfs.coupon.testutils.factory.UserFactory.randomUser
+import com.fcfs.coupon.util.ConcurrencyTestUtils.parallelExecute
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -20,7 +21,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.util.concurrent.*
 
 
 @Suppress("NonAsciiCharacters", "className") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
@@ -154,18 +154,9 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
         fun `11명이 동시에 시도합니다`() {
             //given
             val callCount = 11
-            val latch = CountDownLatch(callCount)
-            val service: ExecutorService = Executors.newCachedThreadPool()
-            val futures: MutableList<Future<FirstComeCouponEventEntryResult>> = mutableListOf()
             //when
-            repeat(callCount) {
-                futures.add(service.submit<FirstComeCouponEventEntryResult> {
-                    try {
-                        sut.applyForFirstComeCouponEvent(event.id)
-                    } finally {
-                        latch.countDown()
-                    }
-                })
+            val futures = parallelExecute(callCount) {
+                sut.applyForFirstComeCouponEvent(event.id)
             }
             //then
             val results: List<FirstComeCouponEventEntryResult> = futures.map { it.get() }

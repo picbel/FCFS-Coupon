@@ -6,7 +6,7 @@ import java.time.LocalDate
 /**
  * root aggregate
  */
-class User(
+data class User(
     val id: Long?,
     val name: String,
     val email: String,

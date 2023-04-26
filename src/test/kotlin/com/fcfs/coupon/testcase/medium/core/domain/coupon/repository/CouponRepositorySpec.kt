@@ -39,7 +39,7 @@ class CouponRepositorySpec : MediumTestSuite() {
     fun `Coupon을 저장합니다`() {
         //given
         val coupon: Coupon = createCoupon()
-        coupon.supply(user2.id!!)
+            .supply(user2.id!!)
         //when
         val save = sut.save(coupon)
         //then
@@ -54,9 +54,9 @@ class CouponRepositorySpec : MediumTestSuite() {
         //given
         val coupon: Coupon = createCoupon()
         sut.save(coupon)
-        coupon.supply(user2.id!!)
+        val update = coupon.supply(user2.id!!)
         //when
-        val save = sut.save(coupon)
+        val save = sut.save(update)
         //then
         val find = sut.getById(save.id!!)
         find shouldBe save

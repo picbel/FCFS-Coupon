@@ -83,9 +83,9 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
             consecutiveCouponId = consecutiveCoupon.id!!,
         )
         sut.save(event)
-        event.recordTodaySupplyCouponHistory(user.id!!, defaultCoupons.id!!)
+        val update = event.recordTodaySupplyCouponHistory(user.id!!, defaultCoupons.id!!)
         //when
-        val modify = sut.save(event)
+        val modify = sut.save(update)
         //then
         flushAndClear()
         val find = sut.getById(event.id)

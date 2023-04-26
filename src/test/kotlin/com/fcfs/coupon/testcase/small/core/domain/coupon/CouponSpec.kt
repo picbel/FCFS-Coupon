@@ -14,9 +14,9 @@ class CouponSpec {
         val coupon = randomCoupon()
         val randomUser = faker.random().nextLong()
         //when
-        coupon.supply(randomUser)
+        val result = coupon.supply(randomUser)
         //then
-        coupon.suppliedHistory.any { it.userId == randomUser } shouldBe true
-        coupon.suppliedHistory.find { it.userId == randomUser }?.isUsed shouldBe false
+        result.suppliedHistory.any { it.userId == randomUser } shouldBe true
+        result.suppliedHistory.find { it.userId == randomUser }?.isUsed shouldBe false
     }
 }

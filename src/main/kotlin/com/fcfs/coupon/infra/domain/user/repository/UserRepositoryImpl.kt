@@ -1,6 +1,6 @@
 package com.fcfs.coupon.infra.domain.user.repository
 
-import com.fcfs.coupon.core.common.exception.DomainNotFoundException
+import com.fcfs.coupon.core.common.exception.CustomException
 import com.fcfs.coupon.core.common.exception.ErrorCode
 import com.fcfs.coupon.core.domain.user.User
 import com.fcfs.coupon.core.domain.user.repository.UserRepository
@@ -26,7 +26,7 @@ internal class UserRepositoryImpl(
 
     @Transactional(readOnly = true)
     override fun getById(id: Long): User {
-        return findById(id) ?: throw DomainNotFoundException(ErrorCode.USER_NOT_FOUND)
+        return findById(id) ?: throw CustomException(ErrorCode.USER_NOT_FOUND)
     }
 
     private fun User.toEntity(): UserEntity {

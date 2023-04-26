@@ -6,22 +6,17 @@ import java.math.BigDecimal
 /**
  * root aggregate
  */
-class Coupon(
+data class Coupon(
     val id: Long?,
     val name: String,
     val discountAmount: BigDecimal,
-    suppliedHistory: List<SuppliedCoupon>,
+    val suppliedHistory: List<SuppliedCoupon>,
 ) {
-    private val _suppliedHistory: MutableList<SuppliedCoupon> = suppliedHistory.toMutableList()
-    val suppliedHistory: List<SuppliedCoupon>
-        get() = _suppliedHistory.toList()
-
     val couponId: Long
         get() = id ?: throw IllegalStateException("unidentified coupon")
 
     fun supply(userId: Long): Coupon {
-        _suppliedHistory.add(SuppliedCoupon(userId, false))
-        return this
+        return copy(suppliedHistory = suppliedHistory + SuppliedCoupon(userId, false))
     }
 
     override fun equals(other: Any?): Boolean {

@@ -1,6 +1,5 @@
 package com.fcfs.coupon.core.domain.firstcome.usecase
 
-import com.fcfs.coupon.core.common.exception.AlreadyAppliedException
 import com.fcfs.coupon.core.common.exception.CustomException
 import com.fcfs.coupon.core.common.exception.ErrorCode
 import com.fcfs.coupon.core.domain.coupon.Coupon
@@ -30,7 +29,7 @@ internal class FirstComeCouponEventUseCaseImpl(
         val user = userRepo.getById(message.userId)
 
         return if (fcEvent.isTodayApplied(user.userId)) { // 중복을 방지합니다
-            throw AlreadyAppliedException()
+            throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
         } else {
             applyForEventFlow(fcEvent, user)
         }

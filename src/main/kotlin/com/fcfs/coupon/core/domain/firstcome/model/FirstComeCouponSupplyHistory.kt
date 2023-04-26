@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 /**
  * 유저 에게 발급된 쿠폰 이력
  */
-class FirstComeCouponSupplyHistory(
+data class FirstComeCouponSupplyHistory(
     /**
      * user Id
      * 식별자로 활용된다

@@ -68,13 +68,13 @@ class FirstComeCouponEventUseCaseSpec {
         val alreadyUser = (1..10).map { userRepo.save(randomUser()) }
         val user = userRepo.save(randomUser(id = 11))
         val coupon = couponRepo.save(randomCoupon())
-        val event = FirstComeCouponEventFactory.randomFirstComeCouponEvent(
+        var event = FirstComeCouponEventFactory.randomFirstComeCouponEvent(
             defaultCouponId = coupon.couponId,
             limitCount = 10,
             specialLimitCount = 1,
         )
         alreadyUser.forEach { // 10명의 유저를 미리 선점 시켜버립니다
-            event.recordTodaySupplyCouponHistory(it.userId, couponId = coupon.couponId)
+            event = event.recordTodaySupplyCouponHistory(it.userId, couponId = coupon.couponId)
         }
         fcRepo.save(event)
         val message = ApplyFirstComeCouponEventMessage(

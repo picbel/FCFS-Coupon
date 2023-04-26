@@ -1,6 +1,6 @@
 package com.fcfs.coupon.infra.domain.coupon.repository
 
-import com.fcfs.coupon.core.common.exception.DomainNotFoundException
+import com.fcfs.coupon.core.common.exception.CustomException
 import com.fcfs.coupon.core.common.exception.ErrorCode
 import com.fcfs.coupon.core.domain.coupon.Coupon
 import com.fcfs.coupon.core.domain.coupon.model.SuppliedCoupon
@@ -33,7 +33,7 @@ internal class CouponRepositoryImpl(
 
     @Transactional(readOnly = true)
     override fun getById(id: Long): Coupon {
-        return findById(id) ?: throw DomainNotFoundException(ErrorCode.COUPON_NOT_FOUND)
+        return findById(id) ?: throw CustomException(ErrorCode.COUPON_NOT_FOUND)
     }
 
     private fun Coupon.toEntity(
@@ -48,7 +48,7 @@ internal class CouponRepositoryImpl(
     }
 
     private fun SuppliedCoupon.toEntity(coupon: CouponEntity, users: List<UserEntity>): SuppliedCouponEntity {
-        val user = users.find { it.userId == this.userId } ?: throw DomainNotFoundException(ErrorCode.USER_NOT_FOUND)
+        val user = users.find { it.userId == this.userId } ?: throw CustomException(ErrorCode.USER_NOT_FOUND)
         return SuppliedCouponEntity(
             id = SuppliedCouponId(
                 couponId = coupon.couponId,

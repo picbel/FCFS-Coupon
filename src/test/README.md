@@ -14,7 +14,7 @@
 > 테스트를 나눈 기준은 https://testing.googleblog.com/2010/12/test-sizes.html 를 참고하였습니다
 
 테스트 Coverage는 다음과 같습니다. (23-04-27 기준)
-![test-coverage-230427.png](test-coverage-230427.png)
+![test-coverage-230427.png](test-coverage-230427.png) \
 테스트 커버리지가 높다고 해서 반드시 좋은 테스트가 되는 것은 아니지만, \
 테스트 케이스의 스펙 정의를 꼼꼼하게 작성했는지 여부를 평가하는 지표로서 고려될 수 있다고 생각합니다.
 

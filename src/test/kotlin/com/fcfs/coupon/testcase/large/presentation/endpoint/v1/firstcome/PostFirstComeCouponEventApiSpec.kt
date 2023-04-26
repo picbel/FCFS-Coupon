@@ -16,6 +16,7 @@ import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory.randomFirst
 import com.fcfs.coupon.testutils.factory.UserFactory
 import com.fcfs.coupon.testutils.temp.RedisDataSetting.saveRedisFirstComeCouponInfo
 import com.fcfs.coupon.util.ConcurrencyTestUtils.parallelExecute
+import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -70,10 +71,12 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
         }.map { mapper.readValue(it.get(), EntryFirstComeCouponEventResponse::class.java) }
 
         // then
-        results.size shouldBe users.size
-        results.count { it.isSuccess } shouldBe 10
-        results.count { it.couponId == event.defaultCouponId } shouldBe 9
-        results.count { it.couponId == event.specialCouponId } shouldBe 1
+        assertSoftly {
+            results.size shouldBe users.size
+            results.count { it.isSuccess } shouldBe 10
+            results.count { it.couponId == event.defaultCouponId } shouldBe 9
+            results.count { it.couponId == event.specialCouponId } shouldBe 1
+        }
     }
 
     /**
@@ -104,7 +107,9 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
             mapper.readValue(this, ResponseHandler.ErrorResponse::class.java)
         }
         // then
-        response.message shouldBe ErrorCode.FC_COUPON_ALREADY_APPLIED.message
+        assertSoftly {
+            response.message shouldBe ErrorCode.FC_COUPON_ALREADY_APPLIED.message
+        }
     }
 
 

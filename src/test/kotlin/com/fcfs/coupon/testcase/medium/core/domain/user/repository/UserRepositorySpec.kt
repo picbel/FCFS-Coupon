@@ -3,6 +3,7 @@ package com.fcfs.coupon.testcase.medium.core.domain.user.repository
 import com.fcfs.coupon.core.domain.user.repository.UserRepository
 import com.fcfs.coupon.testcase.medium.MediumTestSuite
 import com.fcfs.coupon.testutils.factory.UserFactory.randomUser
+import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Test
@@ -23,8 +24,10 @@ class UserRepositorySpec : MediumTestSuite() {
         val save = sut.save(user)
         //then
         val find = sut.getById(save.id!!)
-        find shouldBe save
-        find.toString() shouldBe save.toString() // 안쪽 데이터에 List가 없기에 가능한 비교입니다
+        assertSoftly {
+            find shouldBe save
+            find.toString() shouldBe save.toString() // 안쪽 데이터에 List가 없기에 가능한 비교입니다
+        }
     }
 
     @Test
@@ -36,9 +39,11 @@ class UserRepositorySpec : MediumTestSuite() {
         val update = sut.save(modify)
         //then
         val find = sut.getById(save.id!!)
-        find shouldBe update
-        find.toString() shouldBe update.toString() // 안쪽 데이터에 List가 없기에 가능한 비교입니다
-        save.toString() shouldNotBe find.toString()
+        assertSoftly {
+            find shouldBe update
+            find.toString() shouldBe update.toString() // 안쪽 데이터에 List가 없기에 가능한 비교입니다
+            save.toString() shouldNotBe find.toString()
+        }
     }
 
 }

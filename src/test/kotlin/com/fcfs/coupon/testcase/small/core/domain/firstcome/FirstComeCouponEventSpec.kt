@@ -5,6 +5,7 @@ import com.fcfs.coupon.core.common.exception.ErrorCode
 import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
 import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory
 import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory.setUpFirstComeCouponEvent
+import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -118,10 +119,11 @@ class FirstComeCouponEventSpec {
             val result = sut.recordSupplyCouponHistory(userId, couponId, date)
 
             //then
-            val resetExpect =
-                result.history.first { it.date == date }.supplyHistory.first { it.userId == userId }.continuousReset
-            result.isAppliedByDate(userId, date) shouldBe true
-            resetExpect shouldBe false
+            val resetExpect = result.getContinuousReset(date)
+            assertSoftly {
+                result.isAppliedByDate(userId, date) shouldBe true
+                resetExpect shouldBe false
+            }
         }
 
         @Test
@@ -159,10 +161,11 @@ class FirstComeCouponEventSpec {
             val result = sut.recordSupplyCouponHistory(userId, couponId, date)
 
             //then 7일까지는 연속 카운트를 reset하지 않습니다
-            val resetExpect =
-                result.history.first { it.date == date }.supplyHistory.first { it.userId == userId }.continuousReset
-            result.isAppliedByDate(userId, date) shouldBe true
-            resetExpect shouldBe false
+            val resetExpect = result.getContinuousReset(date)
+            assertSoftly {
+                result.isAppliedByDate(userId, date) shouldBe true
+                resetExpect shouldBe false
+            }
         }
 
         @Test
@@ -180,10 +183,11 @@ class FirstComeCouponEventSpec {
             val result = sut.recordSupplyCouponHistory(userId, couponId, date)
 
             //then 8일에 연속 카운트를 reset합니다
-            val resetExpect =
-                result.history.first { it.date == date }.supplyHistory.first { it.userId == userId }.continuousReset
-            result.isAppliedByDate(userId, date) shouldBe true
-            resetExpect shouldBe true
+            val resetExpect = result.getContinuousReset(date)
+            assertSoftly {
+                result.isAppliedByDate(userId, date) shouldBe true
+                resetExpect shouldBe true
+            }
         }
 
 
@@ -202,10 +206,11 @@ class FirstComeCouponEventSpec {
             val result = sut.recordSupplyCouponHistory(userId, couponId, date)
 
             //then 8일에 연속 카운트를 reset합니다
-            val resetExpect =
-                result.history.first { it.date == date }.supplyHistory.first { it.userId == userId }.continuousReset
-            result.isAppliedByDate(userId, date) shouldBe true
-            resetExpect shouldBe false
+            val resetExpect = result.getContinuousReset(date)
+            assertSoftly {
+                result.isAppliedByDate(userId, date) shouldBe true
+                resetExpect shouldBe false
+            }
         }
 
         @Test
@@ -223,11 +228,16 @@ class FirstComeCouponEventSpec {
             val result = sut.recordSupplyCouponHistory(userId, couponId, date)
 
             //then 8일에 연속 카운트를 reset합니다
-            val resetExpect =
-                result.history.first { it.date == date }.supplyHistory.first { it.userId == userId }.continuousReset
-            result.isAppliedByDate(userId, date) shouldBe true
-            resetExpect shouldBe false
+            val resetExpect = result.getContinuousReset(date)
+            assertSoftly {
+                result.isAppliedByDate(userId, date) shouldBe true
+                resetExpect shouldBe false
+            }
         }
+
+        private fun FirstComeCouponEvent.getContinuousReset(
+            date: LocalDate?
+        ) = history.first { it.date == date }.supplyHistory.first { it.userId == userId }.continuousReset
     }
 
     @Test

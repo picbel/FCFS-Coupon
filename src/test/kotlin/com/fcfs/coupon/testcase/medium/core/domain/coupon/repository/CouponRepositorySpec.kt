@@ -8,6 +8,7 @@ import com.fcfs.coupon.core.domain.user.repository.UserRepository
 import com.fcfs.coupon.testcase.medium.MediumTestSuite
 import com.fcfs.coupon.testutils.factory.CouponFactory.randomCoupon
 import com.fcfs.coupon.testutils.factory.UserFactory.randomUser
+import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -45,8 +46,10 @@ class CouponRepositorySpec : MediumTestSuite() {
         //then
         flushAndClear() // 쿼리 카운트를 위해 영속성 컨텍스트를 초기화합니다.
         val find = sut.getById(save.id!!)
-        find shouldBe save
-        find.discountAmount shouldBe save.discountAmount
+        assertSoftly {
+            find shouldBe save
+            find.discountAmount shouldBe save.discountAmount
+        }
     }
 
     @Test
@@ -59,8 +62,10 @@ class CouponRepositorySpec : MediumTestSuite() {
         val save = sut.save(update)
         //then
         val find = sut.getById(save.id!!)
-        find shouldBe save
-        find.suppliedHistory.size shouldBe 2 // createCoupon()에서 생성된 user 1개, supply로 user2가 추가되어 2개
+        assertSoftly {
+            find shouldBe save
+            find.suppliedHistory.size shouldBe 2 // createCoupon()에서 생성된 user 1개, supply로 user2가 추가되어 2개
+        }
     }
 
     /**

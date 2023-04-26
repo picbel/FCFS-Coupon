@@ -13,6 +13,7 @@ import com.fcfs.coupon.testutils.factory.UserFactory.randomUser
 import com.fcfs.coupon.testutils.fake.repository.FakeCouponRepository
 import com.fcfs.coupon.testutils.fake.repository.FakeFirstComeCouponEventRepository
 import com.fcfs.coupon.testutils.fake.repository.FakeUserRepository
+import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -58,8 +59,10 @@ class FirstComeCouponEventUseCaseSpec {
         // when
         val result = sut.applyForFirstComeCouponEvent(message)
         // then 쿠폰 발급여부 확인
-        result.isIncludedInFirstCome shouldBe true
-        result.isConsecutiveCouponSupplied shouldBe false
+        assertSoftly {
+            result.isIncludedInFirstCome shouldBe true
+            result.isConsecutiveCouponSupplied shouldBe false
+        }
     }
 
     @Test
@@ -84,8 +87,10 @@ class FirstComeCouponEventUseCaseSpec {
         // when
         val result = sut.applyForFirstComeCouponEvent(message)
         // then 쿠폰 발급여부 확인
-        result.isIncludedInFirstCome shouldBe false
-        result.isConsecutiveCouponSupplied shouldBe false
+        assertSoftly {
+            result.isIncludedInFirstCome shouldBe false
+            result.isConsecutiveCouponSupplied shouldBe false
+        }
     }
 
     @Test
@@ -109,8 +114,10 @@ class FirstComeCouponEventUseCaseSpec {
         // when
         val result = sut.applyForFirstComeCouponEvent(message)
         // then 쿠폰 발급여부 확인
-        result.isIncludedInFirstCome shouldBe true
-        result.isConsecutiveCouponSupplied shouldBe true
+        assertSoftly {
+            result.isIncludedInFirstCome shouldBe true
+            result.isConsecutiveCouponSupplied shouldBe true
+        }
     }
 
 }

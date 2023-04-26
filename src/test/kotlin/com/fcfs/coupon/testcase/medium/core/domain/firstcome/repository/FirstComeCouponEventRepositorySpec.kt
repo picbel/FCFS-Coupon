@@ -14,6 +14,7 @@ import com.fcfs.coupon.testutils.factory.CouponFactory.randomCoupon
 import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
 import com.fcfs.coupon.testutils.factory.UserFactory.randomUser
 import com.fcfs.coupon.util.ConcurrencyTestUtils.parallelExecute
+import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -67,10 +68,12 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
         //then
         flushAndClear()
         val find = sut.getById(save.id)
-        save.id shouldBe event.id
-        find shouldBe save
-        find.defaultCouponId shouldBe save.defaultCouponId
-        find.specialCouponId shouldBe save.specialCouponId
+        assertSoftly {
+            save.id shouldBe event.id
+            find shouldBe save
+            find.defaultCouponId shouldBe save.defaultCouponId
+            find.specialCouponId shouldBe save.specialCouponId
+        }
 
     }
 
@@ -89,9 +92,11 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
         //then
         flushAndClear()
         val find = sut.getById(event.id)
-        find.id shouldBe modify.id
-        find shouldBe modify
-        find.isTodayApplied(user.id!!) shouldBe true
+        assertSoftly {
+            find.id shouldBe modify.id
+            find shouldBe modify
+            find.isTodayApplied(user.id!!) shouldBe true
+        }
     }
 
     @Nested
@@ -117,8 +122,10 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
             //given //when
             val result = sut.applyForFirstComeCouponEvent(event.id)
             //then
-            result.order shouldBe 1
-            result.isIncludedInFirstCome shouldBe true
+            assertSoftly {
+                result.order shouldBe 1
+                result.isIncludedInFirstCome shouldBe true
+            }
         }
 
         @Test
@@ -130,8 +137,10 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
             //when
             val result = sut.applyForFirstComeCouponEvent(event.id)
             //then
-            result.order shouldBe 10
-            result.isIncludedInFirstCome shouldBe true
+            assertSoftly {
+                result.order shouldBe 10
+                result.isIncludedInFirstCome shouldBe true
+            }
         }
 
         @Test
@@ -143,8 +152,10 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
             //when
             val result = sut.applyForFirstComeCouponEvent(event.id)
             //then
-            result.order shouldBe null
-            result.isIncludedInFirstCome shouldBe false
+            assertSoftly {
+                result.order shouldBe null
+                result.isIncludedInFirstCome shouldBe false
+            }
         }
 
         /*
@@ -160,10 +171,12 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
             }
             //then
             val results: List<FirstComeCouponEventEntryResult> = futures.map { it.get() }
-            results.size shouldBe callCount
-            results.count { it.isIncludedInFirstCome } shouldBe event.limitCount
-            results.count { it.couponId == defaultCoupons.id } shouldBe (event.limitCount - event.specialLimitCount)
-            results.count { it.couponId == specialCoupon.id } shouldBe event.specialLimitCount
+            assertSoftly {
+                results.size shouldBe callCount
+                results.count { it.isIncludedInFirstCome } shouldBe event.limitCount
+                results.count { it.couponId == defaultCoupons.id } shouldBe (event.limitCount - event.specialLimitCount)
+                results.count { it.couponId == specialCoupon.id } shouldBe event.specialLimitCount
+            }
         }
 
         /**

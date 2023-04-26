@@ -30,8 +30,7 @@ internal interface ApplyForFirstComeCouponEventDomainService {
         user: User,
         coupon: Coupon,
     ): Pair<FirstComeCouponEvent, Coupon> {
-        coupon.supply(user.userId)
-        return Pair(fcEvent.recordTodaySupplyCouponHistory(user.userId, coupon.couponId), coupon)
+        return Pair(fcEvent.recordTodaySupplyCouponHistory(user.userId, coupon.couponId), coupon.supply(user.userId))
     }
 
 }

@@ -34,7 +34,7 @@
 프로젝트를 확인하시면 꼭! 테스트 코드를 확인해주세요.
 제 코드 스타일을 확인하실 수 있습니다.
 
-[README.md](src%2Ftest%2FREADME.md)
+[TEST-README.md](src%2Ftest%2FREADME.md)
 
 ---
 

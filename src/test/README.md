@@ -21,7 +21,6 @@
 #### 테스트 실행.gif (23-04-27 기준)
 ![runtest-230427.gif](runtest-230427.gif)
 
-
-
-
-
+#### 테스트 결과 export
+테스트 케이스를 한눈에 보고싶다면 아래를 확인하여주세요 :) \
+[Test Result.html](Test%20Results%20-%20FCFS-Coupon_230427.html)

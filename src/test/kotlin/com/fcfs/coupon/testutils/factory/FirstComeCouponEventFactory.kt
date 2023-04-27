@@ -16,7 +16,7 @@ object FirstComeCouponEventFactory {
     fun randomFirstComeCouponEvent(
         id: UUID = UUID.randomUUID(),
         name: String = faker.funnyName().name().take(20),
-        description: String = faker.lorem().paragraph(),
+        description: String = faker.lorem().paragraph().take(200),
         limitCount: Long = faker.number().numberBetween(100, 10000).toLong(),
         specialLimitCount: Long = faker.number().numberBetween(1, limitCount.toInt()).toLong(),
         history: List<FirstComeCouponEventHistory> = mutableListOf(

@@ -192,7 +192,7 @@ class FirstComeCouponEventSpec {
 
 
         @Test
-        fun `3일 연속 선착순 이후 2일뒤 선착순 유저입니다`() {
+        fun `3일 연속 선착순 성공 이후 2일뒤 선착순 성공 유저입니다`() {
             //given
             val date = LocalDate.now()
             val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
@@ -214,7 +214,7 @@ class FirstComeCouponEventSpec {
         }
 
         @Test
-        fun `6일 연속 선착순 이후 2일뒤 선착순 유저입니다`() {
+        fun `6일 연속 선착순 성공 이후 2일뒤 선착순 성공 유저입니다`() {
             //given
             val date = LocalDate.now()
             val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
@@ -255,7 +255,7 @@ class FirstComeCouponEventSpec {
     @Nested
     inner class `이벤트 연속 응모 횟수를 조회합니다` {
         @Test
-        fun `10일 연속 선착순 유저입니다`() {
+        fun `10일 연속 선착순 성공 유저입니다`() {
             //given
             val sut: FirstComeCouponEvent =
                 setUpFirstComeCouponEvent(createDates = 10, userId = userId, couponId = couponId)
@@ -268,7 +268,7 @@ class FirstComeCouponEventSpec {
         }
 
         @Test
-        fun `20일 연속 선착순 유저입니다`() {
+        fun `20일 연속 선착순 성공 유저입니다`() {
             //given
             val sut: FirstComeCouponEvent =
                 setUpFirstComeCouponEvent(createDates = 20, userId = userId, couponId = couponId)
@@ -281,7 +281,7 @@ class FirstComeCouponEventSpec {
         }
 
         @Test
-        fun `3일 연속 선착순 이후 다음날 연속 응모 하지 못한 유저입니다`() {
+        fun `3일 연속 선착순 성공 이후 다음날 연속 응모 하지 못한 유저입니다`() {
             //given
             val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
                 createDates = 4,
@@ -298,7 +298,7 @@ class FirstComeCouponEventSpec {
         }
 
         @Test
-        fun `3일 연속 선착순 이후 2일뒤 선착순 응모한 유저입니다`() {
+        fun `3일 연속 선착순 성공 이후 2일뒤 선착순 응모한 유저입니다`() {
             //given
             val sut: FirstComeCouponEvent = setUpFirstComeCouponEvent(
                 createDates = 5,
@@ -318,7 +318,7 @@ class FirstComeCouponEventSpec {
     @Nested
     inner class `연속 쿠폰 대상자인지 확인합니다` {
         @Test
-        fun `3일 연속 선착순 유저는 대상자가 맞습니다`() {
+        fun `3일 연속 선착순 성공 유저는 대상자가 맞습니다`() {
             //given
             val sut: FirstComeCouponEvent =
                 setUpFirstComeCouponEvent(createDates = 3, userId = userId, couponId = couponId)
@@ -331,7 +331,7 @@ class FirstComeCouponEventSpec {
         }
 
         @Test
-        fun `5일 연속 선착순 유저는 대상자가 맞습니다`() {
+        fun `5일 연속 선착순 성공 유저는 대상자가 맞습니다`() {
             //given
             val sut: FirstComeCouponEvent =
                 setUpFirstComeCouponEvent(createDates = 5, userId = userId, couponId = couponId)
@@ -343,7 +343,7 @@ class FirstComeCouponEventSpec {
         }
 
         @Test
-        fun `7일 연속 선착순 유저는 대상자가 맞습니다`() {
+        fun `7일 연속 선착순 성공 유저는 대상자가 맞습니다`() {
             //given
             val sut: FirstComeCouponEvent =
                 setUpFirstComeCouponEvent(createDates = 7, userId = userId, couponId = couponId)
@@ -356,7 +356,7 @@ class FirstComeCouponEventSpec {
         }
 
         @Test
-        fun `6일 연속 선착순 유저는 연속 쿠폰 대상자가 아닙니다`() {
+        fun `6일 연속 선착순 성공 유저는 연속 쿠폰 대상자가 아닙니다`() {
             //given
             val sut: FirstComeCouponEvent =
                 setUpFirstComeCouponEvent(createDates = 6, userId = userId, couponId = couponId)
@@ -369,7 +369,7 @@ class FirstComeCouponEventSpec {
         }
 
         @Test
-        fun `8일 연속 선착순 유저는 연속 쿠폰 대상자가 아닙니다`() {
+        fun `8일 연속 선착순 성공 유저는 연속 쿠폰 대상자가 아닙니다`() {
             //given
             val sut: FirstComeCouponEvent =
                 setUpFirstComeCouponEvent(createDates = 8, userId = userId, couponId = couponId)
@@ -382,7 +382,7 @@ class FirstComeCouponEventSpec {
         }
 
         @Test
-        fun `10일 연속 선착순 유저는 대상자가 맞습니다`() {
+        fun `10일 연속 선착순 성공 유저는 대상자가 맞습니다`() {
             //given
             val sut: FirstComeCouponEvent =
                 setUpFirstComeCouponEvent(createDates = 10, userId = userId, couponId = couponId)

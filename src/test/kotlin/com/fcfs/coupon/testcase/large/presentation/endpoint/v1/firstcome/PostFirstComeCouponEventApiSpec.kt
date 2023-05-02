@@ -61,7 +61,7 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
     }
 
     @Test
-    fun `11명이 동시에 리워드에 응모합니다`() {
+    fun `11명이 동시에 이벤트에 응모합니다`() {
         // given
         val users = (1..10).map { userRepo.save(UserFactory.randomUser()) } + user
 

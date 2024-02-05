@@ -10,6 +10,6 @@ interface UserReadOnlyRepository {
 
 }
 
-interface UserRepository : com.fcfs.coupon.app.core.domain.user.repository.UserReadOnlyRepository {
+interface UserRepository : UserReadOnlyRepository {
     fun save(user: User): User
 }

@@ -1,7 +1,7 @@
 package com.fcfs.coupon.app.core.domain.firstcome.repository
 
-import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.core.domain.firstcome.dto.FirstComeCouponEventEntryResult
+import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.dto.FirstComeCouponEventEntryResult
 import java.time.LocalDate
 import java.util.*
 
@@ -11,7 +11,7 @@ interface FirstComeCouponEventReadOnlyRepository {
     fun getById(id: UUID): FirstComeCouponEvent
 
 }
-interface FirstComeCouponEventRepository : FirstComeCouponEventReadOnlyRepository{
+interface FirstComeCouponEventRepository : FirstComeCouponEventReadOnlyRepository {
 
     fun save(firstComeCouponEvent: FirstComeCouponEvent): FirstComeCouponEvent
 

@@ -1,6 +1,7 @@
 package com.fcfs.coupon.app.infra.domain.firstcome.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fcfs.coupon.app.infra.domain.firstcome.model.FirstComeCoupon
 import com.fcfs.coupon.infra.domain.firstcome.model.FirstComeCoupon
 import org.redisson.api.RScoredSortedSet
 import org.redisson.api.RedissonClient

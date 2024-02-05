@@ -13,17 +13,17 @@ import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
 import org.springframework.stereotype.Service
 
 interface FirstComeCouponEventUseCase {
-    fun applyForFirstComeCouponEvent(message: com.fcfs.coupon.app.core.domain.firstcome.message.ApplyFirstComeCouponEventMessage): ApplyFirstComeCouponEventResult
+    fun applyForFirstComeCouponEvent(message: ApplyFirstComeCouponEventMessage): ApplyFirstComeCouponEventResult
 }
 
 @Service
 internal class FirstComeCouponEventUseCaseImpl(
     private val fcRepo: FirstComeCouponEventRepository,
-    private val userRepo: com.fcfs.coupon.app.core.domain.user.repository.UserRepository,
+    private val userRepo: UserRepository,
     private val couponRepo: CouponRepository
 ) : FirstComeCouponEventUseCase,
-    com.fcfs.coupon.app.core.domain.firstcome.usecase.ApplyForFirstComeCouponEventDomainService {
-    override fun applyForFirstComeCouponEvent(message: com.fcfs.coupon.app.core.domain.firstcome.message.ApplyFirstComeCouponEventMessage): ApplyFirstComeCouponEventResult {
+    ApplyForFirstComeCouponEventDomainService {
+    override fun applyForFirstComeCouponEvent(message: ApplyFirstComeCouponEventMessage): ApplyFirstComeCouponEventResult {
         val fcEvent = fcRepo.getById(message.firstComeCouponEventId)
         if (fcEvent.isNotValid()) {
             throw CustomException(ErrorCode.FC_COUPON_EVENT_EXPIRED)

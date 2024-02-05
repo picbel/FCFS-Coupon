@@ -21,7 +21,7 @@ data class FirstComeCouponEventHistory(
     /**
      * 쿠폰 발급 이력
      */
-    val supplyHistory: List<com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponSupplyHistory>
+    val supplyHistory: List<FirstComeCouponSupplyHistory>
 ) {
 
     fun isApplied(userId: Long): Boolean {
@@ -32,9 +32,9 @@ data class FirstComeCouponEventHistory(
         return supplyHistory.find { it.userId == userId }?.continuousReset ?: false
     }
 
-    fun supplyCoupon(userId: Long, couponId: Long, continuousReset: Boolean): com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory {
+    fun supplyCoupon(userId: Long, couponId: Long, continuousReset: Boolean): FirstComeCouponEventHistory {
         return copy(
-            supplyHistory = supplyHistory + com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponSupplyHistory(
+            supplyHistory = supplyHistory + FirstComeCouponSupplyHistory(
                 userId = userId,
                 couponId = couponId,
                 continuousReset = continuousReset,
@@ -47,7 +47,7 @@ data class FirstComeCouponEventHistory(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory
+        other as FirstComeCouponEventHistory
 
         if (firstComeCouponEventId != other.firstComeCouponEventId) return false
         return date == other.date

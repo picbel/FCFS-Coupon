@@ -1,5 +1,6 @@
 package com.fcfs.coupon.app.infra.domain.coupon.repository
 
+import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
 import com.fcfs.coupon.core.common.exception.CustomException
 import com.fcfs.coupon.core.common.exception.ErrorCode
 import com.fcfs.coupon.core.domain.coupon.Coupon

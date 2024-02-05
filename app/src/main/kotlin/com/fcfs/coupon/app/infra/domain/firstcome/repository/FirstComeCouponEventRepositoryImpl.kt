@@ -74,7 +74,7 @@ internal class FirstComeCouponEventRepositoryImpl(
         }
     }
 
-    private fun Collection<com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory>.toEntities(fcEvent: FirstComeCouponEventEntity): MutableSet<FirstComeCouponEventHistoryEntity> {
+    private fun Collection<FirstComeCouponEventHistory>.toEntities(fcEvent: FirstComeCouponEventEntity): MutableSet<FirstComeCouponEventHistoryEntity> {
         val entities = map {
             FirstComeCouponEventHistoryEntity(
                 id = FirstComeCouponEventHistoryId(
@@ -135,9 +135,9 @@ internal class FirstComeCouponEventRepositoryImpl(
         )
     }
 
-    private fun Collection<FirstComeCouponEventHistoryEntity>.toEventHistoryEntities(): List<com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory> {
+    private fun Collection<FirstComeCouponEventHistoryEntity>.toEventHistoryEntities(): List<FirstComeCouponEventHistory> {
         return this.map {
-            com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory(
+            FirstComeCouponEventHistory(
                 firstComeCouponEventId = it.id.fcEventId,
                 date = it.id.eventDate,
                 supplyHistory = it.supplyHistory.toSupplyHistoryEntities(),

@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 internal class UserRepositoryImpl(
     private val dao: com.fcfs.coupon.app.infra.domain.user.dao.UserJpaDao
-) : com.fcfs.coupon.app.core.domain.user.repository.UserRepository {
+) : UserRepository {
     @Transactional
     override fun save(user: User): User {
         return dao.save(user.toEntity()).toUser()

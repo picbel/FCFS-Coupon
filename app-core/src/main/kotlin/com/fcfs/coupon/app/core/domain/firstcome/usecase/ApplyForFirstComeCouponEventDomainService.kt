@@ -1,8 +1,8 @@
 package com.fcfs.coupon.app.core.domain.firstcome.usecase
 
-import com.fcfs.coupon.core.domain.coupon.Coupon
-import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.core.domain.user.User
+import com.fcfs.coupon.app.core.domain.coupon.Coupon
+import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.user.User
 
 
 /**

@@ -1,8 +1,8 @@
 package com.fcfs.coupon.app.core.domain.firstcome
 
-import com.fcfs.coupon.core.common.exception.CustomException
-import com.fcfs.coupon.core.common.exception.ErrorCode
 import com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory
+import com.fcfs.coupon.app.core.exception.CustomException
+import com.fcfs.coupon.app.core.exception.ErrorCode
 import java.time.LocalDate
 import java.util.*
 
@@ -22,7 +22,7 @@ data class FirstComeCouponEvent(
     * 현재 제한 수량 100개기준 생각하니 예상되는 데이터수는 36500이다.
     * 이 정도 갯수는 문제가 되지 않을것이라 생각하지만 주의 관리 포인트 중에 하나이다.
     */
-    val history: List<com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory>,
+    val history: List<FirstComeCouponEventHistory>,
     val defaultCouponId: Long,
     val specialCouponId: Long,
     val consecutiveCouponId: Long,
@@ -87,7 +87,7 @@ data class FirstComeCouponEvent(
         }
     }
 
-    private fun List<com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory>.countConsecutiveCouponDays(userId: Long, baseDate: LocalDate): Long {
+    private fun List<FirstComeCouponEventHistory>.countConsecutiveCouponDays(userId: Long, baseDate: LocalDate): Long {
         var count = 0L
         this.forEach {
             if (it.date.isAfter(baseDate)) {

@@ -1,6 +1,7 @@
 package com.fcfs.coupon.app.presentation.endpoint.v1.firstcome
 
 import com.fcfs.coupon.app.core.domain.firstcome.message.ApplyFirstComeCouponEventMessage
+import com.fcfs.coupon.app.presentation.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
 import com.fcfs.coupon.core.domain.firstcome.usecase.FirstComeCouponEventUseCase
 import com.fcfs.coupon.presentation.endpoint.v1.ApiPath
 import com.fcfs.coupon.presentation.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
@@ -32,7 +33,7 @@ class PostFirstComeCouponEventControllerImpl(
 ) : PostFirstComeCouponEventController {
     override fun applyForFirstComeCouponEvent(id: String, userId: Long): EntryFirstComeCouponEventResponse {
        useCase.applyForFirstComeCouponEvent(
-           com.fcfs.coupon.app.core.domain.firstcome.message.ApplyFirstComeCouponEventMessage(
+           ApplyFirstComeCouponEventMessage(
                userId = userId,
                firstComeCouponEventId = UUID.fromString(id)
            )

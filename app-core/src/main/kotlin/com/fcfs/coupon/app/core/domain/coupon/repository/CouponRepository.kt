@@ -1,6 +1,6 @@
 package com.fcfs.coupon.app.core.domain.coupon.repository
 
-import com.fcfs.coupon.core.domain.coupon.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.Coupon
 
 interface CouponReadOnlyRepository {
     fun findById(id: Long): Coupon?

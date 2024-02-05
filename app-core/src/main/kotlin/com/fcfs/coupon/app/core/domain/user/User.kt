@@ -1,5 +1,6 @@
 package com.fcfs.coupon.app.core.domain.user
 
+import com.fcfs.coupon.app.core.domain.user.model.Gender
 import com.fcfs.coupon.core.domain.user.model.Gender
 import java.time.LocalDate
 

@@ -1,4 +1,4 @@
-package com.fcfs.coupon.app.core.common.exception
+package com.fcfs.coupon.app.core.exception
 
 
 open class CustomException(

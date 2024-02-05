@@ -1,6 +1,6 @@
 package com.fcfs.coupon.app.core.domain.coupon
 
-import com.fcfs.coupon.core.domain.coupon.model.SuppliedCoupon
+import com.fcfs.coupon.app.core.domain.coupon.model.SuppliedCoupon
 import java.math.BigDecimal
 
 /**

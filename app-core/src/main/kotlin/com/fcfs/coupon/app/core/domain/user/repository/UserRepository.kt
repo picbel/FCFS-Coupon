@@ -1,6 +1,6 @@
 package com.fcfs.coupon.app.core.domain.user.repository
 
-import com.fcfs.coupon.core.domain.user.User
+import com.fcfs.coupon.app.core.domain.user.User
 
 
 interface UserReadOnlyRepository {

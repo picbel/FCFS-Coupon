@@ -1,5 +1,6 @@
 package coupon.testutils.temp
 
+import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
 import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
 import com.fcfs.coupon.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
 import com.fcfs.coupon.infra.domain.firstcome.model.FirstComeCoupon

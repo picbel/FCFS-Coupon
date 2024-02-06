@@ -1,15 +1,15 @@
 package com.fcfs.coupon.app.core.domain.firstcome.usecase
 
-import com.fcfs.coupon.core.common.exception.CustomException
-import com.fcfs.coupon.core.common.exception.ErrorCode
-import com.fcfs.coupon.core.domain.coupon.Coupon
-import com.fcfs.coupon.core.domain.coupon.repository.CouponRepository
-import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.core.domain.firstcome.dto.ApplyFirstComeCouponEventResult
+import com.fcfs.coupon.app.core.domain.coupon.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.dto.ApplyFirstComeCouponEventResult
 import com.fcfs.coupon.app.core.domain.firstcome.message.ApplyFirstComeCouponEventMessage
-import com.fcfs.coupon.core.domain.firstcome.repository.FirstComeCouponEventRepository
-import com.fcfs.coupon.core.domain.user.User
+import com.fcfs.coupon.app.core.domain.firstcome.repository.FirstComeCouponEventRepository
+import com.fcfs.coupon.app.core.domain.user.User
 import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
+import com.fcfs.coupon.app.core.exception.CustomException
+import com.fcfs.coupon.app.core.exception.ErrorCode
 import org.springframework.stereotype.Service
 
 interface FirstComeCouponEventUseCase {

@@ -7,7 +7,7 @@ import java.util.*
 
 @JsonSerialize
 @JsonDeserialize
-internal data class FirstComeCoupon(
+data class FirstComeCoupon(
     val eventId: UUID,
     val date: LocalDate,
     /**

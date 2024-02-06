@@ -9,7 +9,7 @@ import java.time.LocalDate
 import java.util.*
 
 
-internal interface FirstComeCouponEventRedisDao {
+interface FirstComeCouponEventRedisDao {
     fun applyForFirstComeCouponEvent(id: UUID, date: LocalDate): FirstComeCoupon?
 
     /**

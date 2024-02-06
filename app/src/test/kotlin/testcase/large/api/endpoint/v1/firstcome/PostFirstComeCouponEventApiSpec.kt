@@ -1,21 +1,15 @@
-package coupon.testcase.large.presentation.endpoint.v1.firstcome
+package testcase.large.api.endpoint.v1.firstcome
 
-import com.fcfs.coupon.core.common.exception.ErrorCode
-import com.fcfs.coupon.core.domain.coupon.repository.CouponRepository
-import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.core.domain.firstcome.repository.FirstComeCouponEventRepository
-import com.fcfs.coupon.core.domain.user.User
-import com.fcfs.coupon.core.domain.user.repository.UserRepository
-import com.fcfs.coupon.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
-import com.fcfs.coupon.presentation.endpoint.v1.ApiPath
-import com.fcfs.coupon.presentation.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
-import com.fcfs.coupon.presentation.handler.ResponseHandler
-import testcase.large.LargeTestSuite
-import com.fcfs.coupon.testutils.factory.CouponFactory
-import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
-import com.fcfs.coupon.testutils.factory.UserFactory
-import com.fcfs.coupon.testutils.temp.RedisDataSetting.saveRedisFirstComeCouponInfo
-import com.fcfs.coupon.util.ConcurrencyTestUtils.parallelExecute
+import com.fcfs.coupon.app.api.endpoint.v1.ApiPath
+import com.fcfs.coupon.app.api.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
+import com.fcfs.coupon.app.api.handler.ResponseHandler
+import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.repository.FirstComeCouponEventRepository
+import com.fcfs.coupon.app.core.domain.user.User
+import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
+import com.fcfs.coupon.app.core.exception.ErrorCode
+import com.fcfs.coupon.app.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
@@ -25,8 +19,15 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import testcase.large.LargeTestSuite
+import testutils.concurrency.ConcurrencyTestUtils.parallelExecute
+import testutils.factory.CouponFactory
+import testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
+import testutils.factory.UserFactory
+import testutils.temp.RedisDataSetting
 import java.util.*
 import kotlin.text.Charsets.UTF_8
+
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
 class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
@@ -57,7 +58,7 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
             specialLimitCount = 1
         ).also { eventRepo.save(it) }
         // redisSetting 추후 프로젝트확장으로
-        saveRedisFirstComeCouponInfo(event, redisDao)
+        RedisDataSetting.saveRedisFirstComeCouponInfo(event, redisDao)
     }
 
     @Test

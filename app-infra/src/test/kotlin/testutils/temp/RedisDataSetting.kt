@@ -18,7 +18,7 @@ object RedisDataSetting {
      * 위와 같은 이유료 presentation계층 테스트에서 해당 데이터를 사용 할 수 없습니다.
      * 따라서 어드민 프로젝트가 만들어지기 전까진 임시로 사용합니다.
      */
-    internal fun saveRedisFirstComeCouponInfo(
+    fun saveRedisFirstComeCouponInfo(
         event: FirstComeCouponEvent,
         redisDao: FirstComeCouponEventRedisDao
     ) {

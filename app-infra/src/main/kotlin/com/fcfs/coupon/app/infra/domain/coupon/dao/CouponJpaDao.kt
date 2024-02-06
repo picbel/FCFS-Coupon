@@ -1,7 +1,6 @@
 package com.fcfs.coupon.app.infra.domain.coupon.dao
 
 import com.fcfs.coupon.app.infra.domain.coupon.entity.CouponEntity
-import com.fcfs.coupon.infra.domain.coupon.entity.CouponEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository

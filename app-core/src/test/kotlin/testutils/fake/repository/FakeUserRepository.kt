@@ -1,8 +1,8 @@
-package coupon.testutils.fake.repository
+package testutils.fake.repository
 
-import com.fcfs.coupon.core.domain.user.User
-import com.fcfs.coupon.core.domain.user.repository.UserRepository
-import coupon.testutils.factory.UserFactory.randomUser
+import com.fcfs.coupon.app.core.domain.user.User
+import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
+import testutils.factory.UserFactory.randomUser
 import coupon.testutils.fake.FakeDao
 
 class FakeUserRepository(

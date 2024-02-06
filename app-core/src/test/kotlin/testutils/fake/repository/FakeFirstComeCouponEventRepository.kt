@@ -1,8 +1,8 @@
-package coupon.testutils.fake.repository
+package testutils.fake.repository
 
-import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.core.domain.firstcome.dto.FirstComeCouponEventEntryResult
-import com.fcfs.coupon.core.domain.firstcome.repository.FirstComeCouponEventRepository
+import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.dto.FirstComeCouponEventEntryResult
+import com.fcfs.coupon.app.core.domain.firstcome.repository.FirstComeCouponEventRepository
 import coupon.testutils.fake.FakeDao
 import java.time.LocalDate
 import java.util.*

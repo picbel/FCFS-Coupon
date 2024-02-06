@@ -1,6 +1,9 @@
-package coupon.util
+package testutils.concurrency
 
-import java.util.concurrent.*
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 /**
  * 동시성 테스트를 편리하게 하기위한 utils 입니다

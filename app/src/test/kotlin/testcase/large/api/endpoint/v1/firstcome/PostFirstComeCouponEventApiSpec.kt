@@ -10,7 +10,7 @@ import com.fcfs.coupon.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
 import com.fcfs.coupon.presentation.endpoint.v1.ApiPath
 import com.fcfs.coupon.presentation.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
 import com.fcfs.coupon.presentation.handler.ResponseHandler
-import coupon.testcase.large.LargeTestSuite
+import testcase.large.LargeTestSuite
 import com.fcfs.coupon.testutils.factory.CouponFactory
 import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
 import com.fcfs.coupon.testutils.factory.UserFactory

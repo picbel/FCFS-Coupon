@@ -1,7 +1,7 @@
-package coupon.testutils.factory
+package testutils.factory
 
-import com.fcfs.coupon.core.domain.user.User
-import com.fcfs.coupon.core.domain.user.model.Gender
+import com.fcfs.coupon.app.core.domain.user.User
+import com.fcfs.coupon.app.core.domain.user.model.Gender
 import com.github.javafaker.Faker
 import java.time.LocalDate
 import java.time.ZoneOffset

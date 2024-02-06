@@ -1,18 +1,19 @@
 package testcase.medium.infra.domain.repository.coupon
 
-import com.fcfs.coupon.core.domain.coupon.Coupon
-import com.fcfs.coupon.core.domain.coupon.model.SuppliedCoupon
-import com.fcfs.coupon.core.domain.coupon.repository.CouponRepository
-import com.fcfs.coupon.core.domain.user.User
-import com.fcfs.coupon.core.domain.user.repository.UserRepository
-import coupon.testcase.medium.MediumTestSuite
-import com.fcfs.coupon.testutils.factory.CouponFactory.randomCoupon
-import com.fcfs.coupon.testutils.factory.UserFactory.randomUser
+import com.fcfs.coupon.app.core.domain.coupon.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.model.SuppliedCoupon
+import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.user.User
+import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import testcase.medium.infra.domain.repository.MediumTestSuite
+import testutils.factory.CouponFactory.randomCoupon
+import testutils.factory.UserFactory.randomUser
+
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
 class CouponRepositorySpec : MediumTestSuite() {

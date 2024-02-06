@@ -1,8 +1,7 @@
 package testcase.medium.infra.domain.repository
 
-import com.fcfs.coupon.FcfsCouponApplication
 import com.fcfs.coupon.app.infra.AppInfraApplication
-import com.fcfs.coupon.testutils.config.TestRedisConfig
+import testutils.config.TestRedisConfig
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration

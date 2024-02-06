@@ -1,9 +1,8 @@
-package coupon.testutils.temp
+package testutils.temp
 
 import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
-import com.fcfs.coupon.infra.domain.firstcome.model.FirstComeCoupon
+import com.fcfs.coupon.app.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
+import com.fcfs.coupon.app.infra.domain.firstcome.model.FirstComeCoupon
 import java.time.LocalDate
 
 /**

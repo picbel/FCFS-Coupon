@@ -1,8 +1,8 @@
-package coupon.testutils.factory
+package testutils.factory
 
-import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.core.domain.firstcome.model.FirstComeCouponEventHistory
-import com.fcfs.coupon.core.domain.firstcome.model.FirstComeCouponSupplyHistory
+import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory
+import com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponSupplyHistory
 import com.github.javafaker.Faker
 import java.time.LocalDate
 import java.util.*

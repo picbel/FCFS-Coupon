@@ -1,4 +1,4 @@
-package coupon.testutils.config
+package testutils.config
 
 import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
@@ -10,11 +10,7 @@ import redis.embedded.RedisServer
 class TestRedisConfig(
     @Value("\${spring.data.redis.port}") redisPort: Int,
 ) {
-    private lateinit var redisServer: RedisServer
-
-    init {
-        redisServer = RedisServer(redisPort)
-    }
+    private var redisServer: RedisServer = RedisServer(redisPort)
 
     @PostConstruct
     fun postConstruct() {

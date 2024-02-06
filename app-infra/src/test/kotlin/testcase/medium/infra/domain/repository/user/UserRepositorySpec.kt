@@ -1,13 +1,13 @@
 package testcase.medium.infra.domain.repository.user
 
-import com.fcfs.coupon.core.domain.user.repository.UserRepository
-import coupon.testcase.medium.MediumTestSuite
-import com.fcfs.coupon.testutils.factory.UserFactory.randomUser
+import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import testcase.medium.infra.domain.repository.MediumTestSuite
+import testutils.factory.UserFactory.randomUser
 
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.

@@ -1,15 +1,15 @@
-package coupon.testcase.small.core.domain.firstcome
+package testcase.small.domain.firstcome
 
-import com.fcfs.coupon.core.common.exception.CustomException
-import com.fcfs.coupon.core.common.exception.ErrorCode
-import com.fcfs.coupon.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory
-import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory.setUpFirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.exception.CustomException
+import com.fcfs.coupon.app.core.exception.ErrorCode
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import testutils.factory.FirstComeCouponEventFactory
+import testutils.factory.FirstComeCouponEventFactory.setUpFirstComeCouponEvent
 import java.time.LocalDate
 
 @Suppress("NonAsciiCharacters", "ClassName") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.

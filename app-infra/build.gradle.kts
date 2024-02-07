@@ -1,6 +1,13 @@
 dependencies {
     implementation(project(":app-core"))
 
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("com.h2database:h2:2.1.214")
+    implementation("it.ozimov:embedded-redis:0.7.2")
+    implementation("org.redisson:redisson:3.18.0")
+
+    runtimeOnly("com.h2database:h2")
 
     testImplementation(project(":app-core", "testArtifacts"))
 }

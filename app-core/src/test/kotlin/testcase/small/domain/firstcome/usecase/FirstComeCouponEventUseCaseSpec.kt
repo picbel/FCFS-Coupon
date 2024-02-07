@@ -1,22 +1,22 @@
-package coupon.testcase.small.core.domain.firstcome.usecase
+package testcase.small.domain.firstcome.usecase
 
-import com.fcfs.coupon.core.domain.coupon.repository.CouponRepository
-import com.fcfs.coupon.core.domain.firstcome.message.ApplyFirstComeCouponEventMessage
-import com.fcfs.coupon.core.domain.firstcome.repository.FirstComeCouponEventRepository
-import com.fcfs.coupon.core.domain.firstcome.usecase.FirstComeCouponEventUseCase
-import com.fcfs.coupon.core.domain.firstcome.usecase.FirstComeCouponEventUseCaseImpl
-import com.fcfs.coupon.core.domain.user.repository.UserRepository
-import com.fcfs.coupon.testutils.factory.CouponFactory.randomCoupon
-import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory
-import com.fcfs.coupon.testutils.factory.FirstComeCouponEventFactory.setUpFirstComeCouponEvent
-import com.fcfs.coupon.testutils.factory.UserFactory.randomUser
-import com.fcfs.coupon.testutils.fake.repository.FakeCouponRepository
-import com.fcfs.coupon.testutils.fake.repository.FakeFirstComeCouponEventRepository
-import com.fcfs.coupon.testutils.fake.repository.FakeUserRepository
+import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.firstcome.message.ApplyFirstComeCouponEventMessage
+import com.fcfs.coupon.app.core.domain.firstcome.repository.FirstComeCouponEventRepository
+import com.fcfs.coupon.app.core.domain.firstcome.usecase.FirstComeCouponEventUseCase
+import com.fcfs.coupon.app.core.domain.firstcome.usecase.FirstComeCouponEventUseCaseImpl
+import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import testutils.factory.CouponFactory.randomCoupon
+import testutils.factory.FirstComeCouponEventFactory
+import testutils.factory.FirstComeCouponEventFactory.setUpFirstComeCouponEvent
+import testutils.factory.UserFactory.randomUser
+import testutils.fake.repository.FakeCouponRepository
+import testutils.fake.repository.FakeFirstComeCouponEventRepository
+import testutils.fake.repository.FakeUserRepository
 
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.

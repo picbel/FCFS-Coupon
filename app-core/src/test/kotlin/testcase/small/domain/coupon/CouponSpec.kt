@@ -1,10 +1,10 @@
-package coupon.testcase.small.core.domain.coupon
+package testcase.small.domain.coupon
 
-import com.fcfs.coupon.testutils.factory.CouponFactory.randomCoupon
 import com.github.javafaker.Faker
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
+import testutils.factory.CouponFactory.randomCoupon
 
 @Suppress("NonAsciiCharacters")
 class CouponSpec {

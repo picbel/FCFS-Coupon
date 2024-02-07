@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-@RestControllerAdvice(basePackages = ["com.fcfs.coupon.presentation"])
+@RestControllerAdvice(basePackages = ["com.fcfs.coupon.app"])
 class ResponseHandler {
     private final val headers = HttpHeaders()
     init {

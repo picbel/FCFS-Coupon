@@ -1,7 +1,6 @@
 package testcase.medium.infra.domain.repository
 
 import com.fcfs.coupon.app.infra.AppInfraApplication
-import testutils.config.TestRedisConfig
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -9,12 +8,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
+import testutils.config.TestRedisConfig
 
 @DataJpaTest
 @ComponentScan(
     basePackages = [
-        "com.fcfs.coupon.appconfig",
-        "com.fcfs.coupon.infra"
+        "com.fcfs.coupon.app.api.appconfig",
+        "com.fcfs.coupon.app.infra"
     ],
     basePackageClasses = [AppInfraApplication::class]
 )

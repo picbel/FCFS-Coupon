@@ -1,5 +1,6 @@
 package testcase.large.api.endpoint.v1.firstcome
 
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.fcfs.coupon.app.api.endpoint.v1.ApiPath
 import com.fcfs.coupon.app.api.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
 import com.fcfs.coupon.app.api.handler.ResponseHandler
@@ -69,7 +70,7 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
         // when
         val results = parallelExecute(users.size) {
             applyForFirstComeCouponEventApiCall(event.id, users[it].id!!).expectSuccess()
-        }.map { mapper.readValue(it.get(), EntryFirstComeCouponEventResponse::class.java) }
+        }.map { mapper.readValue<EntryFirstComeCouponEventResponse>(it.get()) }
 
         // then
         assertSoftly {
@@ -105,7 +106,7 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
         applyForFirstComeCouponEventApiCall(event.id, user.userId).expectSuccess()
         // when
         val response = applyForFirstComeCouponEventApiCall(event.id, user.userId).expectError4xx().run {
-            mapper.readValue(this, ResponseHandler.ErrorResponse::class.java)
+            mapper.readValue<ResponseHandler.ErrorResponse>(this)
         }
         // then
         assertSoftly {

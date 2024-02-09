@@ -51,4 +51,13 @@ subprojects {
         useJUnitPlatform()
     }
 
+    tasks.processTestResources {
+        duplicatesStrategy = DuplicatesStrategy.WARN
+    }
 }
+
+tasks.processTestResources {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}
+
+

@@ -11,6 +11,7 @@ dependencies {
     runtimeOnly("com.h2database:h2")
 
     testImplementation(project(":app-core", "testArtifacts"))
+    testImplementation(project(":app"))
 }
 
 sourceSets {

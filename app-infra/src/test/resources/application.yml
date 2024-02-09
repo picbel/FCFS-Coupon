@@ -1,0 +1,33 @@
+spring:
+  config:
+    activate:
+      on-profile: medium
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: true
+        format_sql: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test?serverTimezone=KST
+    username: sa
+    password:
+  data:
+    redis:
+      timeout: 200
+      port: 9900
+      host: localhost
+server:
+  port: 9999
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+logging:
+  level:
+    root: info
+    com.fcfs.coupon: debug

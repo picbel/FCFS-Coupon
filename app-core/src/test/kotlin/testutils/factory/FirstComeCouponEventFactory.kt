@@ -1,11 +1,13 @@
 package testutils.factory
 
+import com.fcfs.coupon.app.core.domain.coupon.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEventId
 import com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory
 import com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponSupplyHistory
+import com.fcfs.coupon.app.core.domain.user.UserId
 import com.github.javafaker.Faker
 import java.time.LocalDate
-import java.util.*
 
 object FirstComeCouponEventFactory {
     private val faker: Faker = Faker()
@@ -14,7 +16,7 @@ object FirstComeCouponEventFactory {
      * 오늘 날짜의 FirstComeCouponEvent를 생성합니다.
      */
     fun randomFirstComeCouponEvent(
-        id: UUID = UUID.randomUUID(),
+        id: FirstComeCouponEventId = FirstComeCouponEventId.newId(),
         name: String = faker.funnyName().name().take(20),
         description: String = faker.lorem().paragraph().take(200),
         limitCount: Long = faker.number().numberBetween(100, 10000).toLong(),
@@ -22,9 +24,9 @@ object FirstComeCouponEventFactory {
         history: List<FirstComeCouponEventHistory> = mutableListOf(
             randomFirstComeCouponEventHistory(id)
         ),
-        defaultCouponId: Long = faker.number().numberBetween(1, 10).toLong(),
-        specialCouponId: Long = faker.number().numberBetween(11, 100).toLong(),
-        consecutiveCouponId: Long = faker.number().numberBetween(101, 1000).toLong(),
+        defaultCouponId: CouponId = CouponId(faker.number().numberBetween(1, 10).toLong()),
+        specialCouponId: CouponId = CouponId(faker.number().numberBetween(11, 100).toLong()),
+        consecutiveCouponId: CouponId = CouponId(faker.number().numberBetween(101, 1000).toLong()),
         startDate: LocalDate = LocalDate.now(),
         endDate: LocalDate = LocalDate.now().plusDays(faker.number().numberBetween(1, 365).toLong()),
     ): FirstComeCouponEvent {
@@ -44,7 +46,7 @@ object FirstComeCouponEventFactory {
     }
 
     fun randomFirstComeCouponEventHistory(
-        id: UUID,
+        id: FirstComeCouponEventId,
         date: LocalDate = LocalDate.now(),
         supplyHistory: List<FirstComeCouponSupplyHistory> = listOf()
     ): FirstComeCouponEventHistory {
@@ -59,13 +61,13 @@ object FirstComeCouponEventFactory {
      */
     fun setUpFirstComeCouponEvent(
         createDates: Long,
-        userId: Long,
-        couponId: Long,
+        userId: UserId,
+        couponId: CouponId,
         excludedCouponDates: List<Long> = listOf(),
         limitCount: Long = 100,
         specialLimitCount: Long = 10
     ): FirstComeCouponEvent {
-        val id = UUID.randomUUID()
+        val id = FirstComeCouponEventId.newId()
         return FirstComeCouponEvent(
             id = id,
             name = "test",
@@ -88,8 +90,8 @@ object FirstComeCouponEventFactory {
                 )
             },
             defaultCouponId = couponId,
-            specialCouponId = couponId + 1,
-            consecutiveCouponId = couponId + 2,
+            specialCouponId = CouponId(couponId.value + 1),
+            consecutiveCouponId = CouponId(couponId.value + 2),
             startDate = LocalDate.now().minusDays(createDates),
             endDate = LocalDate.now().plusDays(createDates),
         )

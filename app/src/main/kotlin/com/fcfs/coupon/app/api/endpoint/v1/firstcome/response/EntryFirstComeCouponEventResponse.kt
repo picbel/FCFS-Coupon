@@ -19,7 +19,7 @@ data class EntryFirstComeCouponEventResponse(
                 couponName = src.couponName,
                 couponDiscountAmount = src.couponDiscountAmount,
                 isConsecutiveCouponSupplied = src.isConsecutiveCouponSupplied,
-                couponId = src.couponId
+                couponId = src.couponId?.value
             )
         }
     }

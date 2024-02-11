@@ -1,16 +1,24 @@
 package com.fcfs.coupon.app.core.domain.firstcome
 
+import com.fcfs.coupon.app.core.domain.coupon.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory
+import com.fcfs.coupon.app.core.domain.user.UserId
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
 import java.time.LocalDate
 import java.util.*
 
+@JvmInline
+value class FirstComeCouponEventId(val value: UUID) {
+    companion object {
+        fun newId() = FirstComeCouponEventId(UUID.randomUUID())
+    }
+}
 /**
  * root aggregate
  */
 data class FirstComeCouponEvent(
-    val id: UUID,
+    val id: FirstComeCouponEventId,
     val name: String,
     val description: String,
     val limitCount: Long,
@@ -23,9 +31,9 @@ data class FirstComeCouponEvent(
     * 이 정도 갯수는 문제가 되지 않을것이라 생각하지만 주의 관리 포인트 중에 하나이다.
     */
     val history: List<FirstComeCouponEventHistory>,
-    val defaultCouponId: Long,
-    val specialCouponId: Long,
-    val consecutiveCouponId: Long,
+    val defaultCouponId: CouponId,
+    val specialCouponId: CouponId,
+    val consecutiveCouponId: CouponId,
     val startDate: LocalDate,
     val endDate: LocalDate,
 ) {
@@ -33,11 +41,11 @@ data class FirstComeCouponEvent(
     /**
      * 특정 날짜에 쿠폰이 발급되었는지 확인합니다.
      */
-    fun isAppliedByDate(userId: Long, date: LocalDate): Boolean {
+    fun isAppliedByDate(userId: UserId, date: LocalDate): Boolean {
         return history.find { it.date == date }?.isApplied(userId) ?: false
     }
 
-    fun isTodayApplied(userId: Long): Boolean {
+    fun isTodayApplied(userId: UserId): Boolean {
         return isAppliedByDate(userId, LocalDate.now())
     }
 
@@ -45,8 +53,8 @@ data class FirstComeCouponEvent(
      * 쿠폰 발급 이력을 기록합니다.
      */
     fun recordSupplyCouponHistory(
-        userId: Long,
-        couponId: Long,
+        userId: UserId,
+        couponId: CouponId,
         date: LocalDate,
     ): FirstComeCouponEvent {
         assertSupplyCoupon(couponId)
@@ -66,13 +74,13 @@ data class FirstComeCouponEvent(
     }
 
     fun recordTodaySupplyCouponHistory(
-        userId: Long,
-        couponId: Long,
+        userId: UserId,
+        couponId: CouponId,
     ): FirstComeCouponEvent {
         return recordSupplyCouponHistory(userId, couponId, LocalDate.now())
     }
 
-    private fun assertSupplyCoupon(couponId: Long) {
+    private fun assertSupplyCoupon(couponId: CouponId) {
         if (couponId != defaultCouponId && couponId != specialCouponId) {
            throw CustomException(ErrorCode.FC_COUPON_MATCH_ERROR)
         }
@@ -81,13 +89,13 @@ data class FirstComeCouponEvent(
     /**
      * 유저가 몇일 연속 쿠폰을 발급하였는지 확인합니다.
      */
-    fun countNowConsecutiveCouponDays(userId: Long): Long {
+    fun countNowConsecutiveCouponDays(userId: UserId): Long {
         history.sortedByDescending { it.date }.run {
             return countConsecutiveCouponDays(userId, LocalDate.now())
         }
     }
 
-    private fun List<FirstComeCouponEventHistory>.countConsecutiveCouponDays(userId: Long, baseDate: LocalDate): Long {
+    private fun List<FirstComeCouponEventHistory>.countConsecutiveCouponDays(userId: UserId, baseDate: LocalDate): Long {
         var count = 0L
         this.forEach {
             if (it.date.isAfter(baseDate)) {
@@ -109,7 +117,7 @@ data class FirstComeCouponEvent(
      * 현재 연속 쿠폰 발급대상자인지 확인합니다.
      * recordSupplyCouponHistory를 통하여 오늘까지의 쿠폰을 발급후 호출해야합니다.
      */
-    fun isConsecutiveCouponEligible(userId: Long): Boolean {
+    fun isConsecutiveCouponEligible(userId: UserId): Boolean {
         return when (countNowConsecutiveCouponDays(userId)) {
             3L -> true
             5L -> true
@@ -127,7 +135,7 @@ data class FirstComeCouponEvent(
         return !isValid()
     }
 
-    private fun checkNextContinuousReset(userId: Long): Boolean {
+    private fun checkNextContinuousReset(userId: UserId): Boolean {
         return history.sortedByDescending { it.date }
             .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
     }

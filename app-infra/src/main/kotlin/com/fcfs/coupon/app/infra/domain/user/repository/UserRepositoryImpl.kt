@@ -1,6 +1,7 @@
 package com.fcfs.coupon.app.infra.domain.user.repository
 
 import com.fcfs.coupon.app.core.domain.user.User
+import com.fcfs.coupon.app.core.domain.user.UserId
 import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
@@ -20,20 +21,20 @@ internal class UserRepositoryImpl(
     }
 
     @Transactional(readOnly = true)
-    override fun findById(id: Long): User? {
-        return dao.findByIdOrNull(id)?.toUser()
+    override fun findById(id: UserId): User? {
+        return dao.findByIdOrNull(id.value)?.toUser()
     }
 
     @Transactional(readOnly = true)
-    override fun getById(id: Long): User {
+    override fun getById(id: UserId): User {
         return findById(id) ?: throw CustomException(ErrorCode.USER_NOT_FOUND)
     }
 
     private fun User.toEntity(): UserEntity {
-        return UserEntity(id, name, email, phone, birthday, gender, address)
+        return UserEntity(id?.value, name, email, phone, birthday, gender, address)
     }
 
     private fun UserEntity.toUser(): User {
-        return User(userId, name, email, phone, birthday, gender, address)
+        return User(userId?.let { UserId(it) }, name, email, phone, birthday, gender, address)
     }
 }

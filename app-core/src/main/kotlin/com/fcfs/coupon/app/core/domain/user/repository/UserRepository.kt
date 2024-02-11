@@ -1,12 +1,13 @@
 package com.fcfs.coupon.app.core.domain.user.repository
 
 import com.fcfs.coupon.app.core.domain.user.User
+import com.fcfs.coupon.app.core.domain.user.UserId
 
 
 interface UserReadOnlyRepository {
-    fun findById(id: Long): User?
+    fun findById(id: UserId): User?
 
-    fun getById(id: Long): User
+    fun getById(id: UserId): User
 
 }
 

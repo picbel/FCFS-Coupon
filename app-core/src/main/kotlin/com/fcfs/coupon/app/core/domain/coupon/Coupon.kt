@@ -1,21 +1,25 @@
 package com.fcfs.coupon.app.core.domain.coupon
 
 import com.fcfs.coupon.app.core.domain.coupon.model.SuppliedCoupon
+import com.fcfs.coupon.app.core.domain.user.UserId
 import java.math.BigDecimal
+
+@JvmInline
+value class CouponId(val value: Long)
 
 /**
  * root aggregate
  */
 data class Coupon(
-    val id: Long?,
+    val id: CouponId?,
     val name: String,
     val discountAmount: BigDecimal,
     val suppliedHistory: List<SuppliedCoupon>,
 ) {
-    val couponId: Long
+    val couponId: CouponId
         get() = id ?: throw IllegalStateException("unidentified coupon")
 
-    fun supply(userId: Long): Coupon {
+    fun supply(userId: UserId): Coupon {
         return copy(suppliedHistory = suppliedHistory + SuppliedCoupon(userId, false))
     }
 

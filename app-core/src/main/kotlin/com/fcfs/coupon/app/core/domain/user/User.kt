@@ -3,11 +3,14 @@ package com.fcfs.coupon.app.core.domain.user
 import com.fcfs.coupon.app.core.domain.user.model.Gender
 import java.time.LocalDate
 
+@JvmInline
+value class UserId(val value: Long)
+
 /**
  * root aggregate
  */
 data class User(
-    val id: Long?,
+    val id: UserId?,
     val name: String,
     val email: String,
     val phone: String,
@@ -15,8 +18,9 @@ data class User(
     val gender: Gender?,
     val address: String?,
 ) {
-    val userId: Long
+    val userId: UserId
         get() = id ?: throw IllegalStateException("unidentified user")
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

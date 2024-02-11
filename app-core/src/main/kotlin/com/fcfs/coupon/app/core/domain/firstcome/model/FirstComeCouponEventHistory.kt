@@ -1,8 +1,11 @@
 package com.fcfs.coupon.app.core.domain.firstcome.model
 
+import com.fcfs.coupon.app.core.domain.coupon.CouponId
+import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEventId
+import com.fcfs.coupon.app.core.domain.user.UserId
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
+
 
 /**
  * FirstComeCouponEvent의 이력
@@ -12,7 +15,7 @@ data class FirstComeCouponEventHistory(
      * firstComeCouponEvent의 id
      * 해당 객체의 식별자로 활용된다
      */
-    val firstComeCouponEventId: UUID,
+    val firstComeCouponEventId: FirstComeCouponEventId,
     /**
      * 날짜
      * 해당 객체의 식별자로 활용된다
@@ -24,15 +27,15 @@ data class FirstComeCouponEventHistory(
     val supplyHistory: List<FirstComeCouponSupplyHistory>
 ) {
 
-    fun isApplied(userId: Long): Boolean {
+    fun isApplied(userId: UserId): Boolean {
         return supplyHistory.any { it.userId == userId }
     }
 
-    fun isUserContinuousReset(userId: Long): Boolean {
+    fun isUserContinuousReset(userId: UserId): Boolean {
         return supplyHistory.find { it.userId == userId }?.continuousReset ?: false
     }
 
-    fun supplyCoupon(userId: Long, couponId: Long, continuousReset: Boolean): FirstComeCouponEventHistory {
+    fun supplyCoupon(userId: UserId, couponId: CouponId, continuousReset: Boolean): FirstComeCouponEventHistory {
         return copy(
             supplyHistory = supplyHistory + FirstComeCouponSupplyHistory(
                 userId = userId,

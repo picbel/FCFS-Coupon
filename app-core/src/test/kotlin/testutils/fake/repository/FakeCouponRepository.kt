@@ -1,16 +1,17 @@
 package testutils.fake.repository
 
 import com.fcfs.coupon.app.core.domain.coupon.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.CouponId
 import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
 import testutils.factory.CouponFactory.randomCoupon
-import coupon.testutils.fake.FakeDao
+import testutils.fake.FakeDao
 
 class FakeCouponRepository(
-    override val data: MutableMap<Long, Coupon> = mutableMapOf()
-) : CouponRepository, FakeDao<Coupon, Long> {
+    override val data: MutableMap<CouponId, Coupon> = mutableMapOf()
+) : CouponRepository, FakeDao<Coupon, CouponId> {
     override fun save(coupon: Coupon): Coupon {
         return if (coupon.id == null) {
-            val id = autoIncrement()
+            val id = CouponId(autoIncrement())
             save(randomCoupon(
                 id = id,
                 name = coupon.name,
@@ -22,11 +23,11 @@ class FakeCouponRepository(
         }
     }
 
-    override fun findById(id: Long): Coupon? {
+    override fun findById(id: CouponId): Coupon? {
         return data[id]
     }
 
-    override fun getById(id: Long): Coupon {
+    override fun getById(id: CouponId): Coupon {
         return findById(id) ?: throw Exception("FakeCouponRepository Coupon Not found")
     }
 }

@@ -189,17 +189,17 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
             repeat(event.limitCount.toInt()) {
                 fcCoupons.add(
                     FirstComeCoupon(
-                        eventId = event.id,
+                        eventId = event.id.value,
                         date = LocalDate.now(),
                         order = (it + 1).toLong(),
-                        couponId = defaultCoupons.id!!
+                        couponId = defaultCoupons.id!!.value
                     )
                 )
             }
-            while (fcCoupons.count { it.couponId == specialCoupon.id } < event.specialLimitCount) {
+            while (fcCoupons.count { it.couponId == specialCoupon.id?.value } < event.specialLimitCount) {
                 val random = fcCoupons.random()
                 fcCoupons.remove(random)
-                fcCoupons.add(random.copy(couponId = specialCoupon.id!!))
+                fcCoupons.add(random.copy(couponId = specialCoupon.id!!.value))
             }
             return fcCoupons.sortedBy { it.order }
         }

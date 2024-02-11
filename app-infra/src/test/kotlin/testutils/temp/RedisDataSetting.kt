@@ -32,17 +32,17 @@ object RedisDataSetting {
         repeat(event.limitCount.toInt()) {
             fcCoupons.add(
                 FirstComeCoupon(
-                    eventId = event.id,
+                    eventId = event.id.value,
                     date = LocalDate.now(),
                     order = (it + 1).toLong(),
-                    couponId = event.defaultCouponId
+                    couponId = event.defaultCouponId.value
                 )
             )
         }
-        while (fcCoupons.count { it.couponId == event.specialCouponId } < event.specialLimitCount) {
+        while (fcCoupons.count { it.couponId == event.specialCouponId.value } < event.specialLimitCount) {
             val random = fcCoupons.random()
             fcCoupons.remove(random)
-            fcCoupons.add(random.copy(couponId = event.specialCouponId))
+            fcCoupons.add(random.copy(couponId = event.specialCouponId.value))
         }
         return fcCoupons.sortedBy { it.order }
     }

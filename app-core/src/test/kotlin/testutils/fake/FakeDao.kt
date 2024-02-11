@@ -1,4 +1,4 @@
-package coupon.testutils.fake
+package testutils.fake
 
 interface FakeDao<T, ID> {
     val data: MutableMap<ID, T>

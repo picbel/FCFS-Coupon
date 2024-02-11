@@ -1,5 +1,7 @@
 package com.fcfs.coupon.app.core.domain.firstcome.model
 
+import com.fcfs.coupon.app.core.domain.coupon.CouponId
+import com.fcfs.coupon.app.core.domain.user.UserId
 import java.time.LocalDateTime
 
 /**
@@ -10,12 +12,12 @@ data class FirstComeCouponSupplyHistory(
      * user Id
      * 식별자로 활용된다
      */
-    val userId : Long,
+    val userId : UserId,
     /**
      * coupon id
      * 식별자로 활용된다
      */
-    val couponId : Long,
+    val couponId : CouponId,
     /**
      * 연속 선착순 일자를 reset 여부
      * 해당 필드가 true일 경우 해당필드부터 1일로 계산합니다

@@ -40,7 +40,7 @@ internal class FirstComeCouponSupplyHistoryEntity(
 @Embeddable
 open class FirstComeCouponSupplyHistoryId(
     @Embedded
-    val eventHistoryId: FirstComeCouponEventHistoryId,
+    val eventHistoryId: FirstComeCouponEventHistoryEntityId,
     @Column(name = "user_id", insertable = false, updatable = false)
     val userId: Long,
     @Column(name = "coupon_id", insertable = false, updatable = false)

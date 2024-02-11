@@ -1,10 +1,12 @@
 package testcase.small.domain.firstcome.usecase
 
+import com.fcfs.coupon.app.core.domain.coupon.CouponId
 import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
 import com.fcfs.coupon.app.core.domain.firstcome.message.ApplyFirstComeCouponEventMessage
 import com.fcfs.coupon.app.core.domain.firstcome.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.app.core.domain.firstcome.usecase.FirstComeCouponEventUseCase
 import com.fcfs.coupon.app.core.domain.firstcome.usecase.FirstComeCouponEventUseCaseImpl
+import com.fcfs.coupon.app.core.domain.user.UserId
 import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
@@ -69,7 +71,7 @@ class FirstComeCouponEventUseCaseSpec {
     fun `유저가 선착순에 들지 못했습니다`() {
         // given
         val alreadyUser = (1..10).map { userRepo.save(randomUser()) }
-        val user = userRepo.save(randomUser(id = 11))
+        val user = userRepo.save(randomUser(id = UserId(11)))
         val coupon = couponRepo.save(randomCoupon())
         var event = FirstComeCouponEventFactory.randomFirstComeCouponEvent(
             defaultCouponId = coupon.couponId,
@@ -97,12 +99,12 @@ class FirstComeCouponEventUseCaseSpec {
     fun `3일 연속 선착순 유저입니다`() {
         // given
         val user = userRepo.save(randomUser())
-        val coupons = (1..3).map { couponRepo.save(randomCoupon(id = it.toLong())) }
+        val coupons = (1..3).map { couponRepo.save(randomCoupon(id = CouponId(it.toLong()))) }
         val event = setUpFirstComeCouponEvent(
             createDates = 3,
             excludedCouponDates = listOf(3),
             userId = user.userId,
-            couponId = coupons.first { it.id == 1L }.id!!,
+            couponId = coupons.first { it.id?.value == 1L }.id!!,
             limitCount = 10,
             specialLimitCount = 1
         )

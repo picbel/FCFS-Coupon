@@ -69,15 +69,15 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
 
         // when
         val results = parallelExecute(users.size) {
-            applyForFirstComeCouponEventApiCall(event.id, users[it].id!!).expectSuccess()
+            applyForFirstComeCouponEventApiCall(event.id.value, users[it].id!!.value).expectSuccess()
         }.map { mapper.readValue<EntryFirstComeCouponEventResponse>(it.get()) }
 
         // then
         assertSoftly {
             results.size shouldBe users.size
             results.count { it.isSuccess } shouldBe 10
-            results.count { it.couponId == event.defaultCouponId } shouldBe 9
-            results.count { it.couponId == event.specialCouponId } shouldBe 1
+            results.count { it.couponId == event.defaultCouponId.value } shouldBe 9
+            results.count { it.couponId == event.specialCouponId.value } shouldBe 1
         }
     }
 
@@ -103,9 +103,9 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
     @Test
     fun `이벤트에 중복지원 할 수 없습니다`() {
         // given
-        applyForFirstComeCouponEventApiCall(event.id, user.userId).expectSuccess()
+        applyForFirstComeCouponEventApiCall(event.id.value, user.userId.value).expectSuccess()
         // when
-        val response = applyForFirstComeCouponEventApiCall(event.id, user.userId).expectError4xx().run {
+        val response = applyForFirstComeCouponEventApiCall(event.id.value, user.userId.value).expectError4xx().run {
             mapper.readValue<ResponseHandler.ErrorResponse>(this)
         }
         // then

@@ -1,5 +1,6 @@
 package testcase.small.domain.coupon
 
+import com.fcfs.coupon.app.core.domain.user.UserId
 import com.github.javafaker.Faker
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
@@ -13,7 +14,7 @@ class CouponSpec {
     fun `유저에게 쿠폰을 발급합니다`() {
         //given
         val coupon = randomCoupon()
-        val randomUser = faker.random().nextLong()
+        val randomUser = UserId(faker.number().randomNumber())
         //when
         val result = coupon.supply(randomUser)
         //then

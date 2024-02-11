@@ -1,16 +1,17 @@
 package testutils.fake.repository
 
 import com.fcfs.coupon.app.core.domain.user.User
+import com.fcfs.coupon.app.core.domain.user.UserId
 import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
 import testutils.factory.UserFactory.randomUser
-import coupon.testutils.fake.FakeDao
+import testutils.fake.FakeDao
 
 class FakeUserRepository(
-    override val data: MutableMap<Long, User> = mutableMapOf()
-) : UserRepository, FakeDao<User, Long> {
+    override val data: MutableMap<UserId, User> = mutableMapOf()
+) : UserRepository, FakeDao<User, UserId> {
     override fun save(user: User): User {
         return if (user.id == null) {
-            val id = autoIncrement()
+            val id = UserId(autoIncrement())
             save(randomUser(
                 id = id,
                 name = user.name,
@@ -25,11 +26,11 @@ class FakeUserRepository(
         }
     }
 
-    override fun findById(id: Long): User? {
+    override fun findById(id: UserId): User? {
         return data[id]
     }
 
-    override fun getById(id: Long): User {
+    override fun getById(id: UserId): User {
         return findById(id) ?: throw Exception("FakeUserRepository User Not found")
     }
 }

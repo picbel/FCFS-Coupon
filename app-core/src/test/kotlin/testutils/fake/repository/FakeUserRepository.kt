@@ -1,8 +1,8 @@
 package testutils.fake.repository
 
-import com.fcfs.coupon.app.core.domain.user.User
-import com.fcfs.coupon.app.core.domain.user.UserId
-import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
+import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import testutils.factory.UserFactory.randomUser
 import testutils.fake.FakeDao
 

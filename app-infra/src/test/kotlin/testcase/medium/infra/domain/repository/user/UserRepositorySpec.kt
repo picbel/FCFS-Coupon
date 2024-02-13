@@ -1,6 +1,6 @@
 package testcase.medium.infra.domain.repository.user
 
-import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
+import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe

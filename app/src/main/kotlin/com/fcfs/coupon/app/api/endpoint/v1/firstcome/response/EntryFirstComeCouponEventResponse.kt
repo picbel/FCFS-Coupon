@@ -1,6 +1,6 @@
 package com.fcfs.coupon.app.api.endpoint.v1.firstcome.response
 
-import com.fcfs.coupon.app.core.domain.firstcome.dto.ApplyFirstComeCouponEventResult
+import com.fcfs.coupon.app.core.domain.firstcome.command.dto.ApplyFirstComeCouponEventResult
 import java.math.BigDecimal
 
 data class EntryFirstComeCouponEventResponse(

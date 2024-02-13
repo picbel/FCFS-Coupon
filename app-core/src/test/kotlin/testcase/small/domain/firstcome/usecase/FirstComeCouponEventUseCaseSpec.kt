@@ -1,13 +1,13 @@
 package testcase.small.domain.firstcome.usecase
 
-import com.fcfs.coupon.app.core.domain.coupon.CouponId
-import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
-import com.fcfs.coupon.app.core.domain.firstcome.message.ApplyFirstComeCouponEventMessage
-import com.fcfs.coupon.app.core.domain.firstcome.repository.FirstComeCouponEventRepository
-import com.fcfs.coupon.app.core.domain.firstcome.usecase.FirstComeCouponEventUseCase
-import com.fcfs.coupon.app.core.domain.firstcome.usecase.FirstComeCouponEventUseCaseImpl
-import com.fcfs.coupon.app.core.domain.user.UserId
-import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
+import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
+import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
+import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCase
+import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCaseImpl
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
+import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach

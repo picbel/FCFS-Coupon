@@ -1,7 +1,7 @@
-package com.fcfs.coupon.app.core.domain.firstcome.model
+package com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model
 
-import com.fcfs.coupon.app.core.domain.coupon.CouponId
-import com.fcfs.coupon.app.core.domain.user.UserId
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import java.time.LocalDateTime
 
 /**

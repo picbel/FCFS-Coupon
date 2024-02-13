@@ -1,7 +1,7 @@
-package com.fcfs.coupon.app.core.domain.coupon
+package com.fcfs.coupon.app.core.domain.coupon.command.aggregate
 
-import com.fcfs.coupon.app.core.domain.coupon.model.SuppliedCoupon
-import com.fcfs.coupon.app.core.domain.user.UserId
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.model.SuppliedCoupon
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import java.math.BigDecimal
 
 @JvmInline

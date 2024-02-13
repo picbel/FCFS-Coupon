@@ -1,7 +1,7 @@
-package com.fcfs.coupon.app.core.domain.coupon.repository
+package com.fcfs.coupon.app.core.domain.coupon.command.repository
 
-import com.fcfs.coupon.app.core.domain.coupon.Coupon
-import com.fcfs.coupon.app.core.domain.coupon.CouponId
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 
 interface CouponReadOnlyRepository {
     fun findById(id: CouponId): Coupon?

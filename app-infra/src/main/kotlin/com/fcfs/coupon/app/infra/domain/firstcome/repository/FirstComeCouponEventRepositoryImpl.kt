@@ -1,13 +1,13 @@
 package com.fcfs.coupon.app.infra.domain.firstcome.repository
 
-import com.fcfs.coupon.app.core.domain.coupon.CouponId
-import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEventId
-import com.fcfs.coupon.app.core.domain.firstcome.dto.FirstComeCouponEventEntryResult
-import com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponEventHistory
-import com.fcfs.coupon.app.core.domain.firstcome.model.FirstComeCouponSupplyHistory
-import com.fcfs.coupon.app.core.domain.firstcome.repository.FirstComeCouponEventRepository
-import com.fcfs.coupon.app.core.domain.user.UserId
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
+import com.fcfs.coupon.app.core.domain.firstcome.command.dto.FirstComeCouponEventEntryResult
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponSupplyHistory
+import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
 import com.fcfs.coupon.app.infra.domain.coupon.dao.CouponJpaDao

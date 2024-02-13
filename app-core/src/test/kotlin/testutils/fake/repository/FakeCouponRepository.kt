@@ -1,8 +1,8 @@
 package testutils.fake.repository
 
-import com.fcfs.coupon.app.core.domain.coupon.Coupon
-import com.fcfs.coupon.app.core.domain.coupon.CouponId
-import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
+import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
 import testutils.factory.CouponFactory.randomCoupon
 import testutils.fake.FakeDao
 

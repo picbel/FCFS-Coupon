@@ -1,6 +1,6 @@
 package testcase.small.domain.coupon
 
-import com.fcfs.coupon.app.core.domain.user.UserId
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.github.javafaker.Faker
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe

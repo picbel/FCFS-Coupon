@@ -1,12 +1,12 @@
 package testcase.medium.infra.domain.repository.firstcome
 
-import com.fcfs.coupon.app.core.domain.coupon.Coupon
-import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
-import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.app.core.domain.firstcome.dto.FirstComeCouponEventEntryResult
-import com.fcfs.coupon.app.core.domain.firstcome.repository.FirstComeCouponEventRepository
-import com.fcfs.coupon.app.core.domain.user.User
-import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.command.dto.FirstComeCouponEventEntryResult
+import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
+import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import com.fcfs.coupon.app.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
 import com.fcfs.coupon.app.infra.domain.firstcome.model.FirstComeCoupon
 import io.kotest.assertions.assertSoftly

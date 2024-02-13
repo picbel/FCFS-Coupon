@@ -1,10 +1,10 @@
 package testcase.medium.infra.domain.repository.coupon
 
-import com.fcfs.coupon.app.core.domain.coupon.Coupon
-import com.fcfs.coupon.app.core.domain.coupon.model.SuppliedCoupon
-import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
-import com.fcfs.coupon.app.core.domain.user.User
-import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.model.SuppliedCoupon
+import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
+import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach

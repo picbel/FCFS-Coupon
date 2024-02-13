@@ -1,11 +1,15 @@
-package com.fcfs.coupon.app.core.domain.firstcome.repository
+package com.fcfs.coupon.app.core.domain.firstcome.command.repository
 
-import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEventId
-import com.fcfs.coupon.app.core.domain.firstcome.dto.FirstComeCouponEventEntryResult
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
+import com.fcfs.coupon.app.core.domain.firstcome.command.dto.FirstComeCouponEventEntryResult
 import java.time.LocalDate
 
 
+/*
+ * 2024-02-14
+ * cqrs 패턴을 작업을 하면 애가 필요 있을까?
+ */
 interface FirstComeCouponEventReadOnlyRepository {
     fun findById(id: FirstComeCouponEventId): FirstComeCouponEvent?
     fun getById(id: FirstComeCouponEventId): FirstComeCouponEvent

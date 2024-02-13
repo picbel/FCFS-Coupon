@@ -2,10 +2,10 @@ package com.fcfs.coupon.app.api.endpoint.v1.firstcome
 
 import com.fcfs.coupon.app.api.endpoint.v1.ApiPath
 import com.fcfs.coupon.app.api.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
-import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEventId
-import com.fcfs.coupon.app.core.domain.firstcome.message.ApplyFirstComeCouponEventMessage
-import com.fcfs.coupon.app.core.domain.firstcome.usecase.FirstComeCouponEventUseCase
-import com.fcfs.coupon.app.core.domain.user.UserId
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
+import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
+import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCase
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestHeader

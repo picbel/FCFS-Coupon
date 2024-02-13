@@ -1,10 +1,10 @@
 package com.fcfs.coupon.app.infra.domain.coupon.repository
 
-import com.fcfs.coupon.app.core.domain.coupon.Coupon
-import com.fcfs.coupon.app.core.domain.coupon.CouponId
-import com.fcfs.coupon.app.core.domain.coupon.model.SuppliedCoupon
-import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
-import com.fcfs.coupon.app.core.domain.user.UserId
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.model.SuppliedCoupon
+import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
 import com.fcfs.coupon.app.infra.domain.coupon.dao.CouponJpaDao

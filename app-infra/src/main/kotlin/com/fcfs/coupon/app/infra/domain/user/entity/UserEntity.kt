@@ -1,6 +1,6 @@
 package com.fcfs.coupon.app.infra.domain.user.entity
 
-import com.fcfs.coupon.app.core.domain.user.model.Gender
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.model.Gender
 import jakarta.persistence.*
 import java.time.LocalDate
 

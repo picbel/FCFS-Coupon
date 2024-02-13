@@ -4,11 +4,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.fcfs.coupon.app.api.endpoint.v1.ApiPath
 import com.fcfs.coupon.app.api.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
 import com.fcfs.coupon.app.api.handler.ResponseHandler
-import com.fcfs.coupon.app.core.domain.coupon.repository.CouponRepository
-import com.fcfs.coupon.app.core.domain.firstcome.FirstComeCouponEvent
-import com.fcfs.coupon.app.core.domain.firstcome.repository.FirstComeCouponEventRepository
-import com.fcfs.coupon.app.core.domain.user.User
-import com.fcfs.coupon.app.core.domain.user.repository.UserRepository
+import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
+import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import com.fcfs.coupon.app.core.exception.ErrorCode
 import com.fcfs.coupon.app.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
 import io.kotest.assertions.assertSoftly

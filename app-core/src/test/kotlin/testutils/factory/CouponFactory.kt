@@ -1,8 +1,8 @@
 package testutils.factory
 
-import com.fcfs.coupon.app.core.domain.coupon.Coupon
-import com.fcfs.coupon.app.core.domain.coupon.CouponId
-import com.fcfs.coupon.app.core.domain.coupon.model.SuppliedCoupon
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.model.SuppliedCoupon
 import com.github.javafaker.Faker
 import java.math.BigDecimal
 import java.math.RoundingMode

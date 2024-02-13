@@ -1,6 +1,6 @@
-package com.fcfs.coupon.app.core.domain.firstcome.dto
+package com.fcfs.coupon.app.core.domain.firstcome.command.dto
 
-import com.fcfs.coupon.app.core.domain.coupon.CouponId
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import java.math.BigDecimal
 
 data class ApplyFirstComeCouponEventResult (

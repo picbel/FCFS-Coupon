@@ -1,6 +1,6 @@
-package com.fcfs.coupon.app.core.domain.user
+package com.fcfs.coupon.app.core.domain.user.command.aggregate
 
-import com.fcfs.coupon.app.core.domain.user.model.Gender
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.model.Gender
 import java.time.LocalDate
 
 @JvmInline

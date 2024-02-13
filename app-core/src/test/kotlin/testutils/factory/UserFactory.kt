@@ -1,8 +1,8 @@
 package testutils.factory
 
-import com.fcfs.coupon.app.core.domain.user.User
-import com.fcfs.coupon.app.core.domain.user.UserId
-import com.fcfs.coupon.app.core.domain.user.model.Gender
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.model.Gender
 import com.github.javafaker.Faker
 import java.time.LocalDate
 import java.time.ZoneOffset

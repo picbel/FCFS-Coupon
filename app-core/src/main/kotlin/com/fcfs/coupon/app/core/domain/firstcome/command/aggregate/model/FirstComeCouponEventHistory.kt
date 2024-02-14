@@ -9,6 +9,8 @@ import java.time.LocalDateTime
 
 /**
  * FirstComeCouponEvent의 이력
+ *
+ * todo : FirstComeCouponSupplyHistory2로 이관하고 해당 객체를 삭제
  */
 data class FirstComeCouponEventHistory(
     /**
@@ -22,7 +24,7 @@ data class FirstComeCouponEventHistory(
      */
     val date: LocalDate,
     /**
-     * 쿠폰 발급 이력
+     * 쿠폰 발급 이력 // todo 애는 분리가 필요하여보임
      */
     val supplyHistory: List<FirstComeCouponSupplyHistory>
 ) {

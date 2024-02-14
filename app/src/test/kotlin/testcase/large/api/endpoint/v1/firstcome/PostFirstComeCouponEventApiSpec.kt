@@ -6,6 +6,7 @@ import com.fcfs.coupon.app.api.endpoint.v1.firstcome.response.EntryFirstComeCoup
 import com.fcfs.coupon.app.api.handler.ResponseHandler
 import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
 import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
@@ -23,9 +24,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import testcase.large.LargeTestSuite
 import testutils.concurrency.ConcurrencyTestUtils.parallelExecute
 import testutils.factory.CouponFactory
+import testutils.factory.FirstComeCouponEventFactory
 import testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
 import testutils.factory.UserFactory
 import testutils.temp.RedisDataSetting
+import java.time.LocalDate
 import java.util.*
 import kotlin.text.Charsets.UTF_8
 
@@ -51,13 +54,28 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
     @BeforeEach
     fun setUp() {
         user = userRepo.save(UserFactory.randomUser())
+        // user는 2일동안 이벤트에 참여하였습니다.
+        val eventId = FirstComeCouponEventId.newId()
         event = randomFirstComeCouponEvent(
+            id = eventId,
             defaultCouponId = couponRepo.save(CouponFactory.randomCoupon()).couponId,
             specialCouponId = couponRepo.save(CouponFactory.randomCoupon()).couponId,
             consecutiveCouponId = couponRepo.save(CouponFactory.randomCoupon()).couponId,
             limitCount = 10,
-            specialLimitCount = 1
-        ).also { eventRepo.save(it) }
+            specialLimitCount = 1,
+            startDate = LocalDate.now().minusDays(2),
+            history = listOf(
+                FirstComeCouponEventFactory.randomFirstComeCouponEventHistory(eventId, LocalDate.now().minusDays(2)),
+                FirstComeCouponEventFactory.randomFirstComeCouponEventHistory(eventId, LocalDate.now().minusDays(1))
+            )
+        ).also {
+            // todo : FirstComeCouponSupplyHistory2 이관때 given 변경이 필요 할것으로 보임
+            eventRepo.save(
+                it.recordSupplyCouponHistory(user.userId, it.defaultCouponId, LocalDate.now().minusDays(2))
+                    .recordSupplyCouponHistory(user.userId, it.defaultCouponId, LocalDate.now().minusDays(1))
+            )
+        }
+
         // redisSetting 추후 프로젝트확장으로
         RedisDataSetting.saveRedisFirstComeCouponInfo(event, redisDao)
     }
@@ -78,6 +96,7 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
             results.count { it.isSuccess } shouldBe 10
             results.count { it.couponId == event.defaultCouponId.value } shouldBe 9
             results.count { it.couponId == event.specialCouponId.value } shouldBe 1
+            results.count { it.isConsecutiveCouponSupplied } shouldBe 1
         }
     }
 

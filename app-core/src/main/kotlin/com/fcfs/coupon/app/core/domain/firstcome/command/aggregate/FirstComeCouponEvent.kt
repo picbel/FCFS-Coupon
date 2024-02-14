@@ -14,6 +14,7 @@ value class FirstComeCouponEventId(val value: UUID) {
         fun newId() = FirstComeCouponEventId(UUID.randomUUID())
     }
 }
+
 /**
  * root aggregate
  */
@@ -32,6 +33,10 @@ data class FirstComeCouponEvent(
     *
     * 2024-02-14 command model 에서 해당 정보가 필요할까...? 발행을 따로 해야하지않을까?
     * FirstComeCouponEventHistory의 생명주기를 이제 따로 보고 분리하자
+    * history를 따로 뺄 필요는 없을꺼같다
+    * history 자체보단 발급이력을 별도의 생명주기로 봐야할것 같다
+    *
+    * todo : FirstComeCouponSupplyHistory2로 이관됨 해당 필드를 삭제해야함
     */
     val history: List<FirstComeCouponEventHistory>,
     val defaultCouponId: CouponId,
@@ -41,6 +46,8 @@ data class FirstComeCouponEvent(
     val endDate: LocalDate,
 ) {
 
+    // todo : FirstComeCouponSupplyHistory2를 참조하는 도메인서비스로 분리 필요
+    // #start region
     /**
      * 특정 날짜에 쿠폰이 발급되었는지 확인합니다.
      */
@@ -143,6 +150,7 @@ data class FirstComeCouponEvent(
             .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
     }
 
+    // #end region
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

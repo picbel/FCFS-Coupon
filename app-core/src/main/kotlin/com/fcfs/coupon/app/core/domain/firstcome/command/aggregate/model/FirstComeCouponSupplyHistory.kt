@@ -6,6 +6,8 @@ import java.time.LocalDateTime
 
 /**
  * 유저 에게 발급된 쿠폰 이력
+ *
+ * todo : FirstComeCouponSupplyHistory2로 이관하고 해당 객체를 삭제
  */
 data class FirstComeCouponSupplyHistory(
     /**

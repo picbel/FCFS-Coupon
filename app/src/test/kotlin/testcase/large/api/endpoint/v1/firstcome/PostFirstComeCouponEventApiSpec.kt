@@ -70,6 +70,7 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
             )
         ).also {
             // todo : FirstComeCouponSupplyHistory2 이관때 given 변경이 필요 할것으로 보임
+            // user는 2일동안 이벤트에 참여한 셋팅으로 테스트 통과시키기
             eventRepo.save(
                 it.recordSupplyCouponHistory(user.userId, it.defaultCouponId, LocalDate.now().minusDays(2))
                     .recordSupplyCouponHistory(user.userId, it.defaultCouponId, LocalDate.now().minusDays(1))

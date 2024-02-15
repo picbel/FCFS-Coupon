@@ -89,6 +89,10 @@ internal class FirstComeCouponEventRepositoryImpl(
                 supplyHistory = mutableSetOf(),
             )
         }.toMutableSet()
+        entities.forEach {
+            println(it.id.fcEventId)
+            println(it.id.eventDate)
+        }
         val supplyHistoryEntities = this.flatMap { it.supplyHistory }.toEntities(entities)
         return entities.onEach { eventHistoryEntity ->
             eventHistoryEntity.supplyHistory.addAll(supplyHistoryEntities.filter {

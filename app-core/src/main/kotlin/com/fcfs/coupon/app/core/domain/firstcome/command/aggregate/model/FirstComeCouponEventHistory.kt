@@ -37,13 +37,18 @@ data class FirstComeCouponEventHistory(
         return supplyHistory.find { it.userId == userId }?.continuousReset ?: false
     }
 
-    fun supplyCoupon(userId: UserId, couponId: CouponId, continuousReset: Boolean): FirstComeCouponEventHistory {
+    fun supplyCoupon(
+        userId: UserId,
+        couponId: CouponId,
+        continuousReset: Boolean,
+        now: LocalDateTime = LocalDateTime.now() // instant로 변경 할까...
+    ): FirstComeCouponEventHistory {
         return copy(
             supplyHistory = supplyHistory + FirstComeCouponSupplyHistory(
                 userId = userId,
                 couponId = couponId,
                 continuousReset = continuousReset,
-                supplyDateTime = LocalDateTime.now()
+                supplyDateTime = now
             )
         )
     }

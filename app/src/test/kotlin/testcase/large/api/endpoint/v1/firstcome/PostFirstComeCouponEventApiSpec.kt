@@ -63,17 +63,25 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
             consecutiveCouponId = couponRepo.save(CouponFactory.randomCoupon()).couponId,
             limitCount = 10,
             specialLimitCount = 1,
-            startDate = LocalDate.now().minusDays(2),
+            startDate = LocalDate.now().minusDays(3),
             history = listOf(
                 FirstComeCouponEventFactory.randomFirstComeCouponEventHistory(eventId, LocalDate.now().minusDays(2)),
-                FirstComeCouponEventFactory.randomFirstComeCouponEventHistory(eventId, LocalDate.now().minusDays(1))
+                FirstComeCouponEventFactory.randomFirstComeCouponEventHistory(eventId, LocalDate.now().minusDays(1)),
+                FirstComeCouponEventFactory.randomFirstComeCouponEventHistory(eventId, LocalDate.now()),
             )
         ).also {
             // todo : FirstComeCouponSupplyHistory2 이관때 given 변경이 필요 할것으로 보임
             // user는 2일동안 이벤트에 참여한 셋팅으로 테스트 통과시키기
             eventRepo.save(
-                it.recordSupplyCouponHistory(user.userId, it.defaultCouponId, LocalDate.now().minusDays(2))
-                    .recordSupplyCouponHistory(user.userId, it.defaultCouponId, LocalDate.now().minusDays(1))
+                it.recordSupplyCouponHistory(
+                    user.userId,
+                    it.defaultCouponId,
+                    LocalDate.now().minusDays(2).atStartOfDay()
+                ).recordSupplyCouponHistory(
+                    user.userId,
+                    it.defaultCouponId,
+                    LocalDate.now().minusDays(1).atStartOfDay()
+                )
             )
         }
 
@@ -84,16 +92,22 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
     @Test
     fun `11명이 동시에 이벤트에 응모합니다`() {
         // given
-        val users = (1..10).map { userRepo.save(UserFactory.randomUser()) } + user
+        val users = (1..10).map { userRepo.save(UserFactory.randomUser()) }
 
         // when
-        val results = parallelExecute(users.size) {
-            applyForFirstComeCouponEventApiCall(event.id.value, users[it].id!!.value).expectSuccess()
-        }.map { mapper.readValue<EntryFirstComeCouponEventResponse>(it.get()) }
+        val results: List<EntryFirstComeCouponEventResponse> = listOf<EntryFirstComeCouponEventResponse>(
+            applyForFirstComeCouponEventApiCall(
+                event.id.value,
+                user.id!!.value
+            ).expectSuccess()
+        ) + parallelExecute(users.size) {
+            applyForFirstComeCouponEventApiCall(event.id.value, users[it].id!!.value)
+        }.map { it.get().expectSuccess() }
 
         // then
+        val totalUserSize = users.size + 1
         assertSoftly {
-            results.size shouldBe users.size
+            results.size shouldBe totalUserSize
             results.count { it.isSuccess } shouldBe 10
             results.count { it.couponId == event.defaultCouponId.value } shouldBe 9
             results.count { it.couponId == event.specialCouponId.value } shouldBe 1
@@ -123,7 +137,7 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
     @Test
     fun `이벤트에 중복지원 할 수 없습니다`() {
         // given
-        applyForFirstComeCouponEventApiCall(event.id.value, user.userId.value).expectSuccess()
+        applyForFirstComeCouponEventApiCall(event.id.value, user.userId.value).expectSuccess2xx()
         // when
         val response = applyForFirstComeCouponEventApiCall(event.id.value, user.userId.value).expectError4xx().run {
             mapper.readValue<ResponseHandler.ErrorResponse>(this)
@@ -145,10 +159,22 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
         )
     }
 
-    private fun ResultActions.expectSuccess(): String {
-        return this.andExpect(status().is2xxSuccessful)
-            .andReturn()
-            .response.contentAsString
+    private inline fun <reified T> ResultActions.expectSuccess(): T {
+        return mapper.readValue(
+            this.andExpect(status().is2xxSuccessful)
+                .andReturn()
+                .response.contentAsString
+        )
+
+    }
+
+    private fun ResultActions.expectSuccess2xx() {
+        return mapper.readValue(
+            this.andExpect(status().is2xxSuccessful)
+                .andReturn()
+                .response.contentAsString
+        )
+
     }
 
     private fun ResultActions.expectError4xx(): String {

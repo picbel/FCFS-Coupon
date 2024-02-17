@@ -6,6 +6,7 @@ import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 @JvmInline
@@ -65,16 +66,16 @@ data class FirstComeCouponEvent(
     fun recordSupplyCouponHistory(
         userId: UserId,
         couponId: CouponId,
-        date: LocalDate,
+        date: LocalDateTime,
     ): FirstComeCouponEvent {
         assertSupplyCoupon(couponId)
         return copy(
             history = history.map { history ->
-                if (history.date == date) {
+                if (history.date == date.toLocalDate()) {
                     if (history.isApplied(userId)) {
                         throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
                     } else {
-                        history.supplyCoupon(userId, couponId, checkNextContinuousReset(userId))
+                        history.supplyCoupon(userId, couponId, checkNextContinuousReset(userId), date)
                     }
                 } else {
                     history
@@ -87,7 +88,7 @@ data class FirstComeCouponEvent(
         userId: UserId,
         couponId: CouponId,
     ): FirstComeCouponEvent {
-        return recordSupplyCouponHistory(userId, couponId, LocalDate.now())
+        return recordSupplyCouponHistory(userId, couponId, LocalDateTime.now())
     }
 
     private fun assertSupplyCoupon(couponId: CouponId) {

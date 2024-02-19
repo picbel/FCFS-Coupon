@@ -137,6 +137,13 @@ data class FirstComeCouponEvent(
         }
     }
 
+    private fun checkNextContinuousReset(userId: UserId): Boolean {
+        return history.sortedByDescending { it.date }
+            .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
+    }
+
+    // #end region
+
     fun isValid(): Boolean {
         val today = LocalDate.now()
         return today >= startDate && today <= endDate
@@ -145,13 +152,6 @@ data class FirstComeCouponEvent(
     fun isNotValid(): Boolean {
         return !isValid()
     }
-
-    private fun checkNextContinuousReset(userId: UserId): Boolean {
-        return history.sortedByDescending { it.date }
-            .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
-    }
-
-    // #end region
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -44,3 +44,101 @@ data class FirstComeCouponSupplyHistory2(
      */
     val supplyDateTime: LocalDateTime
 )
+
+interface FirstComeCouponSupplyHistory2DomainService {
+//    // todo : FirstComeCouponSupplyHistory2를 참조하는 도메인서비스로 분리 필요
+//    // #start region
+//    /**
+//     * 특정 날짜에 쿠폰이 발급되었는지 확인합니다.
+//     */
+//    fun isAppliedByDate(userId: UserId, date: LocalDate): Boolean {
+//        return history.find { it.date == date }?.isApplied(userId) ?: false
+//    }
+//
+//    fun isTodayApplied(userId: UserId): Boolean {
+//        return isAppliedByDate(userId, LocalDate.now())
+//    }
+//
+//    /**
+//     * 쿠폰 발급 이력을 기록합니다.
+//     */
+//    fun recordSupplyCouponHistory(
+//        userId: UserId,
+//        couponId: CouponId,
+//        date: LocalDateTime,
+//    ): FirstComeCouponEvent {
+//        assertSupplyCoupon(couponId)
+//        return copy(
+//            history = history.map { history ->
+//                if (history.date == date.toLocalDate()) {
+//                    if (history.isApplied(userId)) {
+//                        throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
+//                    } else {
+//                        history.supplyCoupon(userId, couponId, checkNextContinuousReset(userId), date)
+//                    }
+//                } else {
+//                    history
+//                }
+//            }
+//        )
+//    }
+//
+//    fun recordTodaySupplyCouponHistory(
+//        userId: UserId,
+//        couponId: CouponId,
+//    ): FirstComeCouponEvent {
+//        return recordSupplyCouponHistory(userId, couponId, LocalDateTime.now())
+//    }
+//
+//    private fun assertSupplyCoupon(couponId: CouponId) {
+//        if (couponId != defaultCouponId && couponId != specialCouponId) {
+//            throw CustomException(ErrorCode.FC_COUPON_MATCH_ERROR)
+//        }
+//    }
+//
+//    /**
+//     * 유저가 몇일 연속 쿠폰을 발급하였는지 확인합니다.
+//     */
+//    fun countNowConsecutiveCouponDays(userId: UserId): Long {
+//        history.sortedByDescending { it.date }.run {
+//            return countConsecutiveCouponDays(userId, LocalDate.now())
+//        }
+//    }
+//
+//    private fun List<FirstComeCouponEventHistory>.countConsecutiveCouponDays(userId: UserId, baseDate: LocalDate): Long {
+//        var count = 0L
+//        this.forEach {
+//            if (it.date.isAfter(baseDate)) {
+//                return@forEach
+//            }
+//            if (it.isApplied(userId)) {
+//                ++count
+//                if (it.isUserContinuousReset(userId)) {
+//                    return count
+//                }
+//            } else {
+//                return count
+//            }
+//        }
+//        return count
+//    }
+//
+//    /**
+//     * 현재 연속 쿠폰 발급대상자인지 확인합니다.
+//     * recordSupplyCouponHistory를 통하여 오늘까지의 쿠폰을 발급후 호출해야합니다.
+//     */
+//    fun isConsecutiveCouponEligible(userId: UserId): Boolean {
+//        return when (countNowConsecutiveCouponDays(userId)) {
+//            3L -> true
+//            5L -> true
+//            7L -> true
+//            else -> false
+//        }
+//    }
+//
+//    private fun checkNextContinuousReset(userId: UserId): Boolean {
+//        return history.sortedByDescending { it.date }
+//            .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
+//    }
+}
+

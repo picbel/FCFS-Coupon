@@ -2,6 +2,7 @@ package com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -52,16 +53,16 @@ object FirstComeCouponSupplyHistoriesExtendService {
 //    /**
 //     * 특정 날짜에 쿠폰이 발급되었는지 확인합니다.
 //     */
-//    fun Collection<FirstComeCouponSupplyHistory2>.isAppliedByDate(userId: UserId, date: LocalDate): Boolean {
-//        return this.find { it.date == date }?.isApplied(userId) ?: false
-//    }
-//
-//    fun isTodayApplied(userId: UserId): Boolean {
-//        return isAppliedByDate(userId, LocalDate.now())
-//    }
+    fun Collection<FirstComeCouponSupplyHistory2>.isAppliedByDate(userId: UserId, date: LocalDate): Boolean {
+        return this.any { it.date == date && it.userId == userId}
+    }
+
+    fun Collection<FirstComeCouponSupplyHistory2>.isTodayApplied(userId: UserId): Boolean {
+        return this.isAppliedByDate(userId, LocalDate.now())
+    }
 //
 //    /**
-//     * 쿠폰 발급 이력을 기록합니다.
+//     * 쿠폰 발급 이력을 기록합니다. -> ApplyForFirstComeCouponEventDomainService 이관
 //     */
 //    fun recordSupplyCouponHistory(
 //        userId: UserId,
@@ -83,7 +84,7 @@ object FirstComeCouponSupplyHistoriesExtendService {
 //            }
 //        )
 //    }
-//
+//    // ApplyForFirstComeCouponEventDomainService 이관
 //    fun recordTodaySupplyCouponHistory(
 //        userId: UserId,
 //        couponId: CouponId,
@@ -97,32 +98,32 @@ object FirstComeCouponSupplyHistoriesExtendService {
 //        }
 //    }
 //
-//    /**
-//     * 유저가 몇일 연속 쿠폰을 발급하였는지 확인합니다.
-//     */
-//    fun countNowConsecutiveCouponDays(userId: UserId): Long {
-//        history.sortedByDescending { it.date }.run {
-//            return countConsecutiveCouponDays(userId, LocalDate.now())
-//        }
-//    }
+    /**
+     * 유저가 몇일 연속 쿠폰을 발급하였는지 확인합니다.
+     */
+    fun Collection<FirstComeCouponSupplyHistory2>.countNowConsecutiveCouponDays(userId: UserId): Long {
+        this.sortedByDescending { it.date }.run {
+            return countConsecutiveCouponDays(userId, LocalDate.now())
+        }
+    }
 //
-//    private fun List<FirstComeCouponEventHistory>.countConsecutiveCouponDays(userId: UserId, baseDate: LocalDate): Long {
-//        var count = 0L
-//        this.forEach {
-//            if (it.date.isAfter(baseDate)) {
-//                return@forEach
-//            }
-//            if (it.isApplied(userId)) {
-//                ++count
-//                if (it.isUserContinuousReset(userId)) {
-//                    return count
-//                }
-//            } else {
-//                return count
-//            }
-//        }
-//        return count
-//    }
+    private fun Collection<FirstComeCouponSupplyHistory2>.countConsecutiveCouponDays(userId: UserId, baseDate: LocalDate): Long {
+        var count = 0L
+        this.forEach {
+            if (it.date.isAfter(baseDate)) {
+                return@forEach
+            }
+            if (it.isApplied(userId)) {
+                ++count
+                if (it.isUserContinuousReset(userId)) {
+                    return count
+                }
+            } else {
+                return count
+            }
+        }
+        return count
+    }
 //
 //    /**
 //     * 현재 연속 쿠폰 발급대상자인지 확인합니다.

@@ -14,6 +14,7 @@ data class Coupon(
     val id: CouponId?,
     val name: String,
     val discountAmount: BigDecimal,
+    // 분리 필요
     val suppliedHistory: List<SuppliedCoupon>,
 ) {
     val couponId: CouponId

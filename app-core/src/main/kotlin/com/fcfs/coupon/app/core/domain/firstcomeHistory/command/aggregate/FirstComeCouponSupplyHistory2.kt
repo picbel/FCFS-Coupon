@@ -2,7 +2,7 @@ package com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
-import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isTodayApplied
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -106,7 +106,7 @@ object FirstComeCouponSupplyHistoriesExtendService {
             return countConsecutiveCouponDays(userId, LocalDate.now())
         }
     }
-//
+    // 해당 오브젝트에 맞게 isApplied 구현? vs 다른거 할까?
     private fun Collection<FirstComeCouponSupplyHistory2>.countConsecutiveCouponDays(userId: UserId, baseDate: LocalDate): Long {
         var count = 0L
         this.forEach {

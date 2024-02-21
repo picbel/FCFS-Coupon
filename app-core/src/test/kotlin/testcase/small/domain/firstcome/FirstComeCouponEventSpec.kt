@@ -16,7 +16,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Suppress("NonAsciiCharacters", "ClassName") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
-class FirstComeCouponEventSpec {
+internal class FirstComeCouponEventSpec {
 
     private val userId = UserId(1L)
     private val couponId = CouponId(1L)

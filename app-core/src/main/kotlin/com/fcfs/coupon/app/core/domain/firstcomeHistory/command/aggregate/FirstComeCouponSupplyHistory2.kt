@@ -45,14 +45,15 @@ data class FirstComeCouponSupplyHistory2(
     val supplyDateTime: LocalDateTime
 )
 
-interface FirstComeCouponSupplyHistory2DomainService {
+object FirstComeCouponSupplyHistoriesExtendService {
+
 //    // todo : FirstComeCouponSupplyHistory2를 참조하는 도메인서비스로 분리 필요
 //    // #start region
 //    /**
 //     * 특정 날짜에 쿠폰이 발급되었는지 확인합니다.
 //     */
-//    fun isAppliedByDate(userId: UserId, date: LocalDate): Boolean {
-//        return history.find { it.date == date }?.isApplied(userId) ?: false
+//    fun Collection<FirstComeCouponSupplyHistory2>.isAppliedByDate(userId: UserId, date: LocalDate): Boolean {
+//        return this.find { it.date == date }?.isApplied(userId) ?: false
 //    }
 //
 //    fun isTodayApplied(userId: UserId): Boolean {
@@ -140,5 +141,6 @@ interface FirstComeCouponSupplyHistory2DomainService {
 //        return history.sortedByDescending { it.date }
 //            .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
 //    }
+
 }
 

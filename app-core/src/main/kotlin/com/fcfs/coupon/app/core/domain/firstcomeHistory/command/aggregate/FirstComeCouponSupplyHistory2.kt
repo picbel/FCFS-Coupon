@@ -2,7 +2,6 @@ package com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
-import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isTodayApplied
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -113,9 +112,9 @@ object FirstComeCouponSupplyHistoriesExtendService {
             if (it.date.isAfter(baseDate)) {
                 return@forEach
             }
-            if (it.isApplied(userId)) {
+            if (it.userId == (userId)) {
                 ++count
-                if (it.isUserContinuousReset(userId)) {
+                if (it.continuousReset) {
                     return count
                 }
             } else {
@@ -124,24 +123,25 @@ object FirstComeCouponSupplyHistoriesExtendService {
         }
         return count
     }
-//
-//    /**
-//     * 현재 연속 쿠폰 발급대상자인지 확인합니다.
-//     * recordSupplyCouponHistory를 통하여 오늘까지의 쿠폰을 발급후 호출해야합니다.
-//     */
-//    fun isConsecutiveCouponEligible(userId: UserId): Boolean {
-//        return when (countNowConsecutiveCouponDays(userId)) {
-//            3L -> true
-//            5L -> true
-//            7L -> true
-//            else -> false
-//        }
-//    }
-//
-//    private fun checkNextContinuousReset(userId: UserId): Boolean {
-//        return history.sortedByDescending { it.date }
-//            .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
-//    }
+
+
+    /**
+     * 현재 연속 쿠폰 발급대상자인지 확인합니다.
+     * recordSupplyCouponHistory를 통하여 오늘까지의 쿠폰을 발급후 호출해야합니다.
+     */
+    fun Collection<FirstComeCouponSupplyHistory2>.isConsecutiveCouponEligible(userId: UserId): Boolean {
+        return when (countNowConsecutiveCouponDays(userId)) {
+            3L -> true
+            5L -> true
+            7L -> true
+            else -> false
+        }
+    }
+
+    private fun Collection<FirstComeCouponSupplyHistory2>.checkNextContinuousReset(userId: UserId): Boolean {
+        return this.sortedByDescending { it.date }
+            .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
+    }
 
 }
 

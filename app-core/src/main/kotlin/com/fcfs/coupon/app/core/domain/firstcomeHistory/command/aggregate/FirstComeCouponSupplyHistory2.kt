@@ -5,6 +5,7 @@ import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCoup
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.Period
 
 /*
  * 2024-02-14
@@ -28,12 +29,12 @@ data class FirstComeCouponSupplyHistory2(
      * user Id
      * 식별자로 활용된다
      */
-    val userId : UserId,
+    val userId: UserId,
     /**
      * coupon id
      * 식별자로 활용된다
      */
-    val couponId : CouponId,
+    val couponId: CouponId,
     /**
      * 연속 선착순 일자를 reset 여부
      * 해당 필드가 true일 경우 해당필드부터 1일로 계산합니다
@@ -47,13 +48,12 @@ data class FirstComeCouponSupplyHistory2(
 
 object FirstComeCouponSupplyHistoriesExtendService {
 
-//    // todo : FirstComeCouponSupplyHistory2를 참조하는 도메인서비스로 분리 필요
-//    // #start region
-//    /**
-//     * 특정 날짜에 쿠폰이 발급되었는지 확인합니다.
-//     */
+
+    /**
+     * 특정 날짜에 쿠폰이 발급되었는지 확인합니다.
+     */
     fun Collection<FirstComeCouponSupplyHistory2>.isAppliedByDate(userId: UserId, date: LocalDate): Boolean {
-        return this.any { it.date == date && it.userId == userId}
+        return this.any { it.date == date && it.userId == userId }
     }
 
     fun Collection<FirstComeCouponSupplyHistory2>.isTodayApplied(userId: UserId): Boolean {
@@ -61,7 +61,7 @@ object FirstComeCouponSupplyHistoriesExtendService {
     }
 
     /**
-     * 유저가 몇일 연속 쿠폰을 발급하였는지 확인합니다.
+     * 오늘을 기준으로 유저가 연속으로 쿠폰을 받은 일수를 카운트합니다.
      */
     fun Collection<FirstComeCouponSupplyHistory2>.countNowConsecutiveCouponDays(userId: UserId): Long {
         this.sortedByDescending { it.date }.run {
@@ -69,13 +69,19 @@ object FirstComeCouponSupplyHistoriesExtendService {
         }
     }
 
-    private fun Collection<FirstComeCouponSupplyHistory2>.countConsecutiveCouponDays(userId: UserId, baseDate: LocalDate): Long {
+    // 가장 최근날짜부터 카운트 합니다
+    private fun Collection<FirstComeCouponSupplyHistory2>.countConsecutiveCouponDays(
+        userId: UserId,
+        baseDate: LocalDate
+    ): Long {
         var count = 0L
+        var lastDate: LocalDate = baseDate.plusDays(1) // 마지막날을 기준으로 하기위해 1일을 더합니다.
         this.forEach {
             if (it.date.isAfter(baseDate)) {
                 return@forEach
             }
-            if (it.userId == (userId)) {
+            if (it.userId == (userId) && isDateConsecutive(it.date, lastDate)) {
+                lastDate = it.date
                 ++count
                 if (it.continuousReset) {
                     return count
@@ -85,6 +91,10 @@ object FirstComeCouponSupplyHistoriesExtendService {
             }
         }
         return count
+    }
+
+    private fun isDateConsecutive(now: LocalDate, lastDate: LocalDate): Boolean {
+        return Period.between(now, lastDate).days == 1 // 1일차이가 나면 연속입니다.
     }
 
     /**
@@ -98,11 +108,6 @@ object FirstComeCouponSupplyHistoriesExtendService {
             7L -> true
             else -> false
         }
-    }
-
-    private fun Collection<FirstComeCouponSupplyHistory2>.checkNextContinuousReset(userId: UserId): Boolean {
-        return this.sortedByDescending { it.date }
-            .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
     }
 
 }

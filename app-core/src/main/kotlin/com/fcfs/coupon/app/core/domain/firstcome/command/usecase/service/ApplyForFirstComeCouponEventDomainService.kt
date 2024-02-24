@@ -71,5 +71,10 @@ internal interface ApplyForFirstComeCouponEventDomainService {
 //        }
 //    }
 //
+//    private fun Collection<FirstComeCouponSupplyHistory2>.checkNextContinuousReset(userId: UserId): Boolean {
+//        return this.sortedByDescending { it.date }
+//            .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
+//    }
+
 
 }

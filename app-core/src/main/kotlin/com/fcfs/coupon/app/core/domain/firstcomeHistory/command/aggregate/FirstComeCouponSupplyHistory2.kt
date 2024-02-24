@@ -59,44 +59,7 @@ object FirstComeCouponSupplyHistoriesExtendService {
     fun Collection<FirstComeCouponSupplyHistory2>.isTodayApplied(userId: UserId): Boolean {
         return this.isAppliedByDate(userId, LocalDate.now())
     }
-//
-//    /**
-//     * 쿠폰 발급 이력을 기록합니다. -> ApplyForFirstComeCouponEventDomainService 이관
-//     */
-//    fun recordSupplyCouponHistory(
-//        userId: UserId,
-//        couponId: CouponId,
-//        date: LocalDateTime,
-//    ): FirstComeCouponEvent {
-//        assertSupplyCoupon(couponId)
-//        return copy(
-//            history = history.map { history ->
-//                if (history.date == date.toLocalDate()) {
-//                    if (history.isApplied(userId)) {
-//                        throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
-//                    } else {
-//                        history.supplyCoupon(userId, couponId, checkNextContinuousReset(userId), date)
-//                    }
-//                } else {
-//                    history
-//                }
-//            }
-//        )
-//    }
-//    // ApplyForFirstComeCouponEventDomainService 이관
-//    fun recordTodaySupplyCouponHistory(
-//        userId: UserId,
-//        couponId: CouponId,
-//    ): FirstComeCouponEvent {
-//        return recordSupplyCouponHistory(userId, couponId, LocalDateTime.now())
-//    }
-//
-//    private fun assertSupplyCoupon(couponId: CouponId) {
-//        if (couponId != defaultCouponId && couponId != specialCouponId) {
-//            throw CustomException(ErrorCode.FC_COUPON_MATCH_ERROR)
-//        }
-//    }
-//
+
     /**
      * 유저가 몇일 연속 쿠폰을 발급하였는지 확인합니다.
      */
@@ -105,7 +68,7 @@ object FirstComeCouponSupplyHistoriesExtendService {
             return countConsecutiveCouponDays(userId, LocalDate.now())
         }
     }
-    // 해당 오브젝트에 맞게 isApplied 구현? vs 다른거 할까?
+
     private fun Collection<FirstComeCouponSupplyHistory2>.countConsecutiveCouponDays(userId: UserId, baseDate: LocalDate): Long {
         var count = 0L
         this.forEach {
@@ -123,7 +86,6 @@ object FirstComeCouponSupplyHistoriesExtendService {
         }
         return count
     }
-
 
     /**
      * 현재 연속 쿠폰 발급대상자인지 확인합니다.

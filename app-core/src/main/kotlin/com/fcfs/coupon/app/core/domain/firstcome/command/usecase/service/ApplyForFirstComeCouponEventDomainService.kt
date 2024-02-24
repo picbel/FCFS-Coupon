@@ -33,4 +33,43 @@ internal interface ApplyForFirstComeCouponEventDomainService {
         return Pair(fcEvent.recordTodaySupplyCouponHistory(user.userId, coupon.couponId), coupon.supply(user.userId))
     }
 
+    //
+//    /**
+//     * 쿠폰 발급 이력을 기록합니다. -> ApplyForFirstComeCouponEventDomainService 이관
+//     */
+//    fun recordSupplyCouponHistory(
+//        userId: UserId,
+//        couponId: CouponId,
+//        date: LocalDateTime,
+//    ): FirstComeCouponEvent {
+//        assertSupplyCoupon(couponId)
+//        return copy(
+//            history = history.map { history ->
+//                if (history.date == date.toLocalDate()) {
+//                    if (history.isApplied(userId)) {
+//                        throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
+//                    } else {
+//                        history.supplyCoupon(userId, couponId, checkNextContinuousReset(userId), date)
+//                    }
+//                } else {
+//                    history
+//                }
+//            }
+//        )
+//    }
+//    // ApplyForFirstComeCouponEventDomainService 이관
+//    fun recordTodaySupplyCouponHistory(
+//        userId: UserId,
+//        couponId: CouponId,
+//    ): FirstComeCouponEvent {
+//        return recordSupplyCouponHistory(userId, couponId, LocalDateTime.now())
+//    }
+//
+//    private fun assertSupplyCoupon(couponId: CouponId) {
+//        if (couponId != defaultCouponId && couponId != specialCouponId) {
+//            throw CustomException(ErrorCode.FC_COUPON_MATCH_ERROR)
+//        }
+//    }
+//
+
 }

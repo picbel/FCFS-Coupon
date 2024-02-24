@@ -7,14 +7,11 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period
 
-/*
- * 2024-02-14
- * todo : FirstComeCouponSupplyHistory과 FirstComeCouponEventHistory를 병합한것
- */
+
 /**
  * 선착순 쿠폰 이벤트의 이력
  */
-data class FirstComeCouponSupplyHistory2(
+data class FirstComeCouponSupplyHistory(
     /**
      * firstComeCouponEvent의 id
      * 해당 객체의 식별자로 활용된다
@@ -52,25 +49,25 @@ object FirstComeCouponSupplyHistoriesExtendService {
     /**
      * 특정 날짜에 쿠폰이 발급되었는지 확인합니다.
      */
-    fun Collection<FirstComeCouponSupplyHistory2>.isAppliedByDate(userId: UserId, date: LocalDate): Boolean {
+    fun Collection<FirstComeCouponSupplyHistory>.isAppliedByDate(userId: UserId, date: LocalDate): Boolean {
         return this.any { it.date == date && it.userId == userId }
     }
 
-    fun Collection<FirstComeCouponSupplyHistory2>.isTodayApplied(userId: UserId): Boolean {
+    fun Collection<FirstComeCouponSupplyHistory>.isTodayApplied(userId: UserId): Boolean {
         return this.isAppliedByDate(userId, LocalDate.now())
     }
 
     /**
      * 오늘을 기준으로 유저가 연속으로 쿠폰을 받은 일수를 카운트합니다.
      */
-    fun Collection<FirstComeCouponSupplyHistory2>.countNowConsecutiveCouponDays(userId: UserId): Long {
+    fun Collection<FirstComeCouponSupplyHistory>.countNowConsecutiveCouponDays(userId: UserId): Long {
         this.sortedByDescending { it.date }.run {
             return countConsecutiveCouponDays(userId, LocalDate.now())
         }
     }
 
     // 가장 최근날짜부터 카운트 합니다
-    private fun Collection<FirstComeCouponSupplyHistory2>.countConsecutiveCouponDays(
+    private fun Collection<FirstComeCouponSupplyHistory>.countConsecutiveCouponDays(
         userId: UserId,
         baseDate: LocalDate
     ): Long {
@@ -101,7 +98,7 @@ object FirstComeCouponSupplyHistoriesExtendService {
      * 현재 연속 쿠폰 발급대상자인지 확인합니다.
      * recordSupplyCouponHistory를 통하여 오늘까지의 쿠폰을 발급후 호출해야합니다.
      */
-    fun Collection<FirstComeCouponSupplyHistory2>.isConsecutiveCouponEligible(userId: UserId): Boolean {
+    fun Collection<FirstComeCouponSupplyHistory>.isConsecutiveCouponEligible(userId: UserId): Boolean {
         return when (countNowConsecutiveCouponDays(userId)) {
             3L -> true
             5L -> true

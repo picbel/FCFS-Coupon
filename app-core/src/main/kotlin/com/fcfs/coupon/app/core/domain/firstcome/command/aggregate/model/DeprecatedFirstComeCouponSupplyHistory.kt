@@ -9,7 +9,7 @@ import java.time.LocalDateTime
  *
  * todo : FirstComeCouponSupplyHistory2로 이관하고 해당 객체를 삭제
  */
-data class FirstComeCouponSupplyHistory(
+data class DeprecatedFirstComeCouponSupplyHistory(
     /**
      * user Id
      * 식별자로 활용된다
@@ -34,7 +34,7 @@ data class FirstComeCouponSupplyHistory(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as FirstComeCouponSupplyHistory
+        other as DeprecatedFirstComeCouponSupplyHistory
 
         if (userId != other.userId) return false
         return couponId == other.couponId

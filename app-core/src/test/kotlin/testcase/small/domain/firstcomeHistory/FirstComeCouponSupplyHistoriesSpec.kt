@@ -5,7 +5,7 @@ import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCoup
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.countNowConsecutiveCouponDays
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isAppliedByDate
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isConsecutiveCouponEligible
-import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory2
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
@@ -218,7 +218,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         excludedCouponDates: List<Long> = listOf(),
         userId: UserId,
         couponId: CouponId,
-    ): List<FirstComeCouponSupplyHistory2> {
+    ): List<FirstComeCouponSupplyHistory> {
         return (0 until createDates).reversed().mapNotNull { i ->
             if (excludedCouponDates.contains(createDates - i)) {
                 null

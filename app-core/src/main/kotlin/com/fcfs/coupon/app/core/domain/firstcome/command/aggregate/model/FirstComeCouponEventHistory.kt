@@ -26,7 +26,7 @@ data class FirstComeCouponEventHistory(
     /**
      * 쿠폰 발급 이력 // todo 애는 분리가 필요하여보임
      */
-    val supplyHistory: List<FirstComeCouponSupplyHistory>
+    val supplyHistory: List<DeprecatedFirstComeCouponSupplyHistory>
 ) {
 
     fun isApplied(userId: UserId): Boolean {
@@ -44,7 +44,7 @@ data class FirstComeCouponEventHistory(
         now: LocalDateTime = LocalDateTime.now() // instant로 변경 할까...
     ): FirstComeCouponEventHistory {
         return copy(
-            supplyHistory = supplyHistory + FirstComeCouponSupplyHistory(
+            supplyHistory = supplyHistory + DeprecatedFirstComeCouponSupplyHistory(
                 userId = userId,
                 couponId = couponId,
                 continuousReset = continuousReset,

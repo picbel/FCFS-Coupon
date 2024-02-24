@@ -4,7 +4,7 @@ import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
-import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponSupplyHistory
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.DeprecatedFirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.firstcome.command.dto.FirstComeCouponEventEntryResult
 import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
@@ -97,7 +97,7 @@ internal class FirstComeCouponEventRepositoryImpl(
         }
     }
 
-    private fun Collection<FirstComeCouponSupplyHistory>.toEntities(
+    private fun Collection<DeprecatedFirstComeCouponSupplyHistory>.toEntities(
         fcEventHistoryEntities: Collection<FirstComeCouponEventHistoryEntity>,
     ): MutableSet<FirstComeCouponSupplyHistoryEntity> {
         val users = userDao.findAllById(this.map { it.userId.value })
@@ -155,9 +155,9 @@ internal class FirstComeCouponEventRepositoryImpl(
         }.toList()
     }
 
-    private fun Collection<FirstComeCouponSupplyHistoryEntity>.toSupplyHistoryDomains(): List<FirstComeCouponSupplyHistory> {
+    private fun Collection<FirstComeCouponSupplyHistoryEntity>.toSupplyHistoryDomains(): List<DeprecatedFirstComeCouponSupplyHistory> {
         return this.map {
-            FirstComeCouponSupplyHistory(
+            DeprecatedFirstComeCouponSupplyHistory(
                 userId = UserId(it.id.userId),
                 couponId = CouponId(it.id.couponId),
                 supplyDateTime = it.supplyDateTime,

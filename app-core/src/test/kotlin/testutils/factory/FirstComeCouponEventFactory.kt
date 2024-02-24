@@ -4,7 +4,7 @@ import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
-import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponSupplyHistory
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.DeprecatedFirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.github.javafaker.Faker
 import java.time.LocalDate
@@ -48,7 +48,7 @@ object FirstComeCouponEventFactory {
     fun randomFirstComeCouponEventHistory(
         id: FirstComeCouponEventId,
         date: LocalDate = LocalDate.now(),
-        supplyHistory: List<FirstComeCouponSupplyHistory> = listOf()
+        supplyHistory: List<DeprecatedFirstComeCouponSupplyHistory> = listOf()
     ): FirstComeCouponEventHistory {
         return FirstComeCouponEventHistory(
             id, date, supplyHistory
@@ -80,7 +80,7 @@ object FirstComeCouponEventFactory {
                     firstComeCouponEventId = id,
                     date = date,
                     supplyHistory = if (excludedCouponDates.contains(createDates - i)) listOf() else listOf(
-                        FirstComeCouponSupplyHistory(
+                        DeprecatedFirstComeCouponSupplyHistory(
                             userId = userId,
                             couponId = couponId,
                             continuousReset = (createDates - i) % 7 == 1L, // 8일마다 카운트를 reset합니다.

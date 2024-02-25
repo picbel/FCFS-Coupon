@@ -2,10 +2,10 @@ package com.fcfs.coupon.app.core.domain.firstcome.command.usecase
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
 import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcome.command.dto.ApplyFirstComeCouponEventResult
 import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
 import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
-import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.service.ApplyForFirstComeCouponEventDomainService
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
@@ -40,7 +40,7 @@ internal class FirstComeCouponEventUseCaseImpl(
                 val coupon =
                     couponRepo.getById(this.couponId ?: throw CustomException(ErrorCode.FC_COUPON_EVENT_NOT_FOUND))
                 // 쿠폰 발급
-                val (suppliedFcEvent, suppliedCoupon) = supplyFirstComeCoupon(fcEvent, user, coupon)
+                val (suppliedFcEvent, suppliedCoupon) = deprecatedSupplyFirstComeCoupon(fcEvent, user, coupon)
                 fcRepo.save(suppliedFcEvent)
                 couponRepo.save(suppliedCoupon)
                 // 연속 쿠폰 발급

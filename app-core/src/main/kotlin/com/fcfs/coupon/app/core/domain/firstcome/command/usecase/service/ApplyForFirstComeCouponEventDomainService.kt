@@ -22,10 +22,11 @@ internal interface ApplyForFirstComeCouponEventDomainService {
      * 해당 서비스를 interface로 할지 class로 할지 고민이 많았습니다.
      * interface로 하면 추후 mixin처럼 사용하여 코드 재사용성이 좋다 판단되어 interface로 구현하였습니다.
      */
+    @Deprecated("recordSupplyCouponHistory로 변경 예정")
     /**
      * FirstComeCouponEvent에 쿠폰 발급 내역을 기록하고 Coupon에 발급합니다.
      */
-    fun supplyFirstComeCoupon(
+    fun deprecatedSupplyFirstComeCoupon(
         fcEvent: FirstComeCouponEvent,
         user: User,
         coupon: Coupon,

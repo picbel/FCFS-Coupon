@@ -226,7 +226,6 @@ internal class FirstComeCouponSupplyHistoriesSpec {
                 val date = LocalDate.now().minusDays(i)
                 randomFirstComeCouponSupplyHistory(
                     firstComeCouponEventId = FirstComeCouponEventId.newId(),
-                    date = date,
                     userId = userId,
                     couponId = couponId,
                     continuousReset = (createDates - i) % 7 == 1L, // 8일마다 카운트를 reset합니다.

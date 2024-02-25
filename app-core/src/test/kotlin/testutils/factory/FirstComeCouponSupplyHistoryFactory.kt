@@ -4,7 +4,6 @@ import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 object FirstComeCouponSupplyHistoryFactory {
@@ -13,17 +12,15 @@ object FirstComeCouponSupplyHistoryFactory {
         firstComeCouponEventId: FirstComeCouponEventId ,
         userId: UserId,
         couponId: CouponId,
-        date: LocalDate = LocalDate.now(),
         continuousReset: Boolean = false,
         supplyDateTime: LocalDateTime = LocalDateTime.now()
     ): FirstComeCouponSupplyHistory {
         return FirstComeCouponSupplyHistory(
             firstComeCouponEventId,
-            date,
             userId,
             couponId,
-            continuousReset,
-            supplyDateTime
+            supplyDateTime,
+            continuousReset
         )
     }
 }

@@ -10,7 +10,7 @@ import java.util.*
 
 @Table(name = "first_come_coupon_event_history")
 @Entity
-internal class FirstComeCouponEventHistoryEntity(
+internal open class FirstComeCouponEventHistoryEntity(
     @EmbeddedId
     val id: FirstComeCouponEventHistoryId,
     val continuousReset: Boolean,
@@ -26,9 +26,7 @@ internal class FirstComeCouponEventHistoryEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
     val coupon: CouponEntity,
-) {
-
-}
+)
 
 @Embeddable
 open class FirstComeCouponEventHistoryId(

@@ -3,8 +3,8 @@ package testutils.factory
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
-import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.DeprecatedFirstComeCouponSupplyHistory
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.github.javafaker.Faker
 import java.time.LocalDate
@@ -45,6 +45,7 @@ object FirstComeCouponEventFactory {
         )
     }
 
+    @Deprecated("use randomFirstComeCouponEventHistory")
     fun randomFirstComeCouponEventHistory(
         id: FirstComeCouponEventId,
         date: LocalDate = LocalDate.now(),

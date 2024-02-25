@@ -4,6 +4,7 @@ import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import java.time.LocalDateTime
 
+@Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
 /**
  * 유저 에게 발급된 쿠폰 이력
  *

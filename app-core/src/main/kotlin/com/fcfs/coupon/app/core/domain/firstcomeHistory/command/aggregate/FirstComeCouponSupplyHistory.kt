@@ -41,7 +41,29 @@ data class FirstComeCouponSupplyHistory(
      * 쿠폰 발급 일자 시간
      */
     val supplyDateTime: LocalDateTime
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as FirstComeCouponSupplyHistory
+
+        if (firstComeCouponEventId != other.firstComeCouponEventId) return false
+        if (date != other.date) return false
+        if (userId != other.userId) return false
+        if (couponId != other.couponId) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = firstComeCouponEventId.hashCode()
+        result = 31 * result + date.hashCode()
+        result = 31 * result + userId.hashCode()
+        result = 31 * result + couponId.hashCode()
+        return result
+    }
+}
 
 object FirstComeCouponSupplyHistoriesExtendService {
 

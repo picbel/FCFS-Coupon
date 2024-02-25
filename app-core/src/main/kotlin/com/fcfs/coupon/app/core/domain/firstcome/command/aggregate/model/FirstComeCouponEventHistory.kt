@@ -7,6 +7,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 
+@Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
 /**
  * FirstComeCouponEvent의 이력
  *
@@ -29,10 +30,12 @@ data class FirstComeCouponEventHistory(
     val supplyHistory: List<DeprecatedFirstComeCouponSupplyHistory>
 ) {
 
+    @Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
     fun isApplied(userId: UserId): Boolean {
         return supplyHistory.any { it.userId == userId }
     }
 
+    @Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
     fun isUserContinuousReset(userId: UserId): Boolean {
         return supplyHistory.find { it.userId == userId }?.continuousReset ?: false
     }

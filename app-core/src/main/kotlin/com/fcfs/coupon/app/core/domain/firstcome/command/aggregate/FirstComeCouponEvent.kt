@@ -49,6 +49,7 @@ data class FirstComeCouponEvent(
 
     // todo : FirstComeCouponSupplyHistory2를 참조하는 도메인서비스로 분리 필요
     // #start region
+    @Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
     /**
      * 특정 날짜에 쿠폰이 발급되었는지 확인합니다.
      */
@@ -56,10 +57,12 @@ data class FirstComeCouponEvent(
         return history.find { it.date == date }?.isApplied(userId) ?: false
     }
 
+    @Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
     fun isTodayApplied(userId: UserId): Boolean {
         return isAppliedByDate(userId, LocalDate.now())
     }
 
+    @Deprecated("ApplyForFirstComeCouponEventDomainService.kt로 이관")
     /**
      * 쿠폰 발급 이력을 기록합니다.
      */
@@ -84,6 +87,7 @@ data class FirstComeCouponEvent(
         )
     }
 
+    @Deprecated("ApplyForFirstComeCouponEventDomainService.kt로 이관")
     fun recordTodaySupplyCouponHistory(
         userId: UserId,
         couponId: CouponId,
@@ -97,6 +101,7 @@ data class FirstComeCouponEvent(
         }
     }
 
+    @Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
     /**
      * 유저가 몇일 연속 쿠폰을 발급하였는지 확인합니다.
      */
@@ -106,6 +111,7 @@ data class FirstComeCouponEvent(
         }
     }
 
+    @Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
     private fun List<FirstComeCouponEventHistory>.countConsecutiveCouponDays(userId: UserId, baseDate: LocalDate): Long {
         var count = 0L
         this.forEach {
@@ -124,6 +130,7 @@ data class FirstComeCouponEvent(
         return count
     }
 
+    @Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
     /**
      * 현재 연속 쿠폰 발급대상자인지 확인합니다.
      * recordSupplyCouponHistory를 통하여 오늘까지의 쿠폰을 발급후 호출해야합니다.

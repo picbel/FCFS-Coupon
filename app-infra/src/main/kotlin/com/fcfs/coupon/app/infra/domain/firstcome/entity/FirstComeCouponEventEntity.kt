@@ -2,15 +2,7 @@ package com.fcfs.coupon.app.infra.domain.firstcome.entity
 
 
 import com.fcfs.coupon.app.infra.domain.coupon.entity.CouponEntity
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToMany
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.time.LocalDate
 import java.util.*
 
@@ -30,9 +22,12 @@ internal class FirstComeCouponEventEntity(
     val specialLimitCount: Long,
     /**
      * history이다 보니 저장만 일어 날것이라 가정하였습니다.
+     *
+     * TODO : cascade끊기
      */
+    @Deprecated("history이다 보니 저장만 일어 날것이라 가정하였습니다.")
     @OneToMany(mappedBy = "fcEvent", fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
-    val history: MutableSet<FirstComeCouponEventHistoryEntity>,
+    val history: MutableSet<DeprecatedFirstComeCouponEventHistoryEntity>,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "default_coupon_id")
     val defaultCoupon: CouponEntity,

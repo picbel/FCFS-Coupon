@@ -5,11 +5,11 @@ import java.io.Serializable
 import java.time.LocalDate
 import java.util.*
 
-@Table(name = "first_come_coupon_event_history")
+@Table(name = "deprecated_first_come_coupon_event_history")
 @Entity
-internal class FirstComeCouponEventHistoryEntity(
+internal class DeprecatedFirstComeCouponEventHistoryEntity(
     @EmbeddedId
-    val id: FirstComeCouponEventHistoryEntityId,
+    val id: DeprecatedFirstComeCouponEventHistoryEntityId,
     @MapsId("fcEventId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", columnDefinition = "BINARY(16)", insertable = false, updatable = false)
@@ -18,11 +18,11 @@ internal class FirstComeCouponEventHistoryEntity(
      * history이다 보니 저장만 일어 날것이라 가정하였습니다.
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "fcEventHistory", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
-    val supplyHistory: MutableSet<FirstComeCouponSupplyHistoryEntity>
+    val supplyHistory: MutableSet<DeprecatedFirstComeCouponSupplyHistoryEntity>
 )
 
 @Embeddable
-open class FirstComeCouponEventHistoryEntityId(
+open class DeprecatedFirstComeCouponEventHistoryEntityId(
     @Column(name = "event_id", columnDefinition = "BINARY(16)")
     val fcEventId: UUID,
     @Column(name = "event_date")

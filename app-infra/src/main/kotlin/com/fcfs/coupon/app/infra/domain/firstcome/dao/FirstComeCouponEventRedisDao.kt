@@ -1,6 +1,7 @@
 package com.fcfs.coupon.app.infra.domain.firstcome.dao
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.fcfs.coupon.app.infra.domain.firstcome.model.FirstComeCoupon
 import org.redisson.api.RScoredSortedSet
 import org.redisson.api.RedissonClient
@@ -30,7 +31,7 @@ internal class FirstComeCouponEventRedisDaoImpl(
 ) : FirstComeCouponEventRedisDao {
     override fun applyForFirstComeCouponEvent(id: UUID, date: LocalDate): FirstComeCoupon? {
         val queue: RScoredSortedSet<String> = getQueue(id, date)
-        return queue.pollFirst()?.let { objectMapper.readValue(it, FirstComeCoupon::class.java) }
+        return queue.pollFirst()?.let { objectMapper.readValue(it) }
     }
 
     override fun saveAll(firstComeCoupons: Collection<FirstComeCoupon>): List<FirstComeCoupon> {
@@ -40,7 +41,7 @@ internal class FirstComeCouponEventRedisDaoImpl(
         val queue: RScoredSortedSet<String> = getQueue(firstComeCoupons.first().eventId, firstComeCoupons.first().date)
         return firstComeCoupons.associate { objectMapper.writeValueAsString(it) to it.order.toDouble()}.toMutableMap()
             .run { queue.addAll(this) }
-            .run { queue.readAll().map { objectMapper.readValue(it, FirstComeCoupon::class.java) } }
+            .run { queue.readAll().map { objectMapper.readValue(it) } }
     }
 
     private fun getQueue(id: UUID, date: LocalDate): RScoredSortedSet<String> =

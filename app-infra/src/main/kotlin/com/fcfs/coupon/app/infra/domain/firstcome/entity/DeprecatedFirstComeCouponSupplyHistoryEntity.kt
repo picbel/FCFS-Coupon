@@ -7,10 +7,10 @@ import java.io.Serializable
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "first_come_coupon_supply_history")
-internal class FirstComeCouponSupplyHistoryEntity(
+@Table(name = "deprecated_first_come_coupon_supply_history")
+internal class DeprecatedFirstComeCouponSupplyHistoryEntity(
     @EmbeddedId
-    val id: FirstComeCouponSupplyHistoryId,
+    val id: DeprecatedFirstComeCouponSupplyHistoryId,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns(
         JoinColumn(
@@ -22,7 +22,7 @@ internal class FirstComeCouponSupplyHistoryEntity(
         ),
         JoinColumn(name = "event_date", referencedColumnName = "event_date", insertable = false, updatable = false)
     )
-    val fcEventHistory: FirstComeCouponEventHistoryEntity,
+    val fcEventHistory: DeprecatedFirstComeCouponEventHistoryEntity,
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -38,9 +38,9 @@ internal class FirstComeCouponSupplyHistoryEntity(
 )
 
 @Embeddable
-open class FirstComeCouponSupplyHistoryId(
+open class DeprecatedFirstComeCouponSupplyHistoryId(
     @Embedded
-    val eventHistoryId: FirstComeCouponEventHistoryEntityId,
+    val eventHistoryId: DeprecatedFirstComeCouponEventHistoryEntityId,
     @Column(name = "user_id", insertable = false, updatable = false)
     val userId: Long,
     @Column(name = "coupon_id", insertable = false, updatable = false)

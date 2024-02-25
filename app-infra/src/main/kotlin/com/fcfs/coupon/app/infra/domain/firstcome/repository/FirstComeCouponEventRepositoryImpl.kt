@@ -3,8 +3,8 @@ package com.fcfs.coupon.app.infra.domain.firstcome.repository
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
-import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.DeprecatedFirstComeCouponSupplyHistory
+import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
 import com.fcfs.coupon.app.core.domain.firstcome.command.dto.FirstComeCouponEventEntryResult
 import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
@@ -42,12 +42,12 @@ internal class FirstComeCouponEventRepositoryImpl(
         } ?: FirstComeCouponEventEntryResult(null, null, false)
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     override fun findById(id: FirstComeCouponEventId): FirstComeCouponEvent? {
         return jpaDao.findByIdOrNull(id.value)?.toDomain()
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     override fun getById(id: FirstComeCouponEventId): FirstComeCouponEvent {
         return findById(id) ?: throw CustomException(ErrorCode.FC_COUPON_EVENT_NOT_FOUND)
     }
@@ -78,10 +78,10 @@ internal class FirstComeCouponEventRepositoryImpl(
         }
     }
 
-    private fun Collection<FirstComeCouponEventHistory>.toEntities(fcEvent: FirstComeCouponEventEntity): MutableSet<FirstComeCouponEventHistoryEntity> {
+    private fun Collection<FirstComeCouponEventHistory>.toEntities(fcEvent: FirstComeCouponEventEntity): MutableSet<DeprecatedFirstComeCouponEventHistoryEntity> {
         val entities = map {
-            FirstComeCouponEventHistoryEntity(
-                id = FirstComeCouponEventHistoryEntityId(
+            DeprecatedFirstComeCouponEventHistoryEntity(
+                id = DeprecatedFirstComeCouponEventHistoryEntityId(
                     fcEventId = fcEvent.eventId,
                     eventDate = it.date,
                 ),
@@ -98,8 +98,8 @@ internal class FirstComeCouponEventRepositoryImpl(
     }
 
     private fun Collection<DeprecatedFirstComeCouponSupplyHistory>.toEntities(
-        fcEventHistoryEntities: Collection<FirstComeCouponEventHistoryEntity>,
-    ): MutableSet<FirstComeCouponSupplyHistoryEntity> {
+        fcEventHistoryEntities: Collection<DeprecatedFirstComeCouponEventHistoryEntity>,
+    ): MutableSet<DeprecatedFirstComeCouponSupplyHistoryEntity> {
         val users = userDao.findAllById(this.map { it.userId.value })
         val coupons = couponDao.findAllById(this.map { it.couponId.value })
         return map { history ->
@@ -108,8 +108,8 @@ internal class FirstComeCouponEventRepositoryImpl(
             }
             val user = users.first { it.userId == history.userId.value }
             val coupon = coupons.first { it.couponId == history.couponId.value }
-            FirstComeCouponSupplyHistoryEntity(
-                id = FirstComeCouponSupplyHistoryId(
+            DeprecatedFirstComeCouponSupplyHistoryEntity(
+                id = DeprecatedFirstComeCouponSupplyHistoryId(
                     userId = user.userId ?: throw IllegalStateException("user id is null"),
                     couponId = coupon.couponId ?: throw IllegalStateException("coupon id is null"),
                     eventHistoryId = fcEventHistory.id,
@@ -145,7 +145,7 @@ internal class FirstComeCouponEventRepositoryImpl(
         )
     }
 
-    private fun Collection<FirstComeCouponEventHistoryEntity>.toEventHistoryDomains(): List<FirstComeCouponEventHistory> {
+    private fun Collection<DeprecatedFirstComeCouponEventHistoryEntity>.toEventHistoryDomains(): List<FirstComeCouponEventHistory> {
         return this.map {
             FirstComeCouponEventHistory(
                 firstComeCouponEventId = FirstComeCouponEventId(it.id.fcEventId),
@@ -155,7 +155,7 @@ internal class FirstComeCouponEventRepositoryImpl(
         }.toList()
     }
 
-    private fun Collection<FirstComeCouponSupplyHistoryEntity>.toSupplyHistoryDomains(): List<DeprecatedFirstComeCouponSupplyHistory> {
+    private fun Collection<DeprecatedFirstComeCouponSupplyHistoryEntity>.toSupplyHistoryDomains(): List<DeprecatedFirstComeCouponSupplyHistory> {
         return this.map {
             DeprecatedFirstComeCouponSupplyHistory(
                 userId = UserId(it.id.userId),

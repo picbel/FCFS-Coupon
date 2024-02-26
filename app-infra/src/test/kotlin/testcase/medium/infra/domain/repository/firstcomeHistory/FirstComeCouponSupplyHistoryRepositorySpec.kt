@@ -7,6 +7,8 @@ import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCou
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.repository.FirstComeCouponSupplyHistoryRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
+import io.kotest.assertions.assertSoftly
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -17,6 +19,7 @@ import testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
 import testutils.factory.FirstComeCouponSupplyHistoryFactory.randomFirstComeCouponSupplyHistory
 import testutils.factory.UserFactory
 import java.math.BigDecimal
+import java.time.LocalDate
 
 @Suppress("NonAsciiCharacters", "className") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
 class FirstComeCouponSupplyHistoryRepositorySpec: MediumTestSuite()  {
@@ -67,9 +70,37 @@ class FirstComeCouponSupplyHistoryRepositorySpec: MediumTestSuite()  {
         }
     }
 
+    @Test
     fun `userId와 supplyDate를 start와 end로 받아서 해당 기간동안의 history를 조회합니다`() {
-        //given
+        //given 2명의 유저로 총 10일간의 history를 저장합니다.
+        val now = LocalDate.now()
+        val otherUser = userRepo.save(UserFactory.randomUser())
+        repeat(10) {
+            sut.save(randomFirstComeCouponSupplyHistory(
+                firstComeCouponEventId = event.id,
+                userId = user.id!!,
+                couponId = defaultCoupons.id!!,
+                supplyDateTime = now.plusDays(it.toLong()).atStartOfDay()
+            ))
+            sut.save(randomFirstComeCouponSupplyHistory(
+                firstComeCouponEventId = event.id,
+                userId = otherUser.id!!,
+                couponId = defaultCoupons.id!!,
+                supplyDateTime = now.plusDays(it.toLong()).atStartOfDay()
+            ))
+        }
         //when
-        //then
+        val histories = sut.findByUserIdAndSupplyDateBetween(
+            userId = user.id!!,
+            start = now,
+            end = now.plusDays(5)
+        )
+        //then user의 5, 4, 3, 2, 1, 0 간의 history가 조회되어야 합니다.
+        assertSoftly {
+            histories.size shouldBe 6
+            histories.all { it.userId == user.userId } shouldBe true
+            histories.all { it.supplyDateTime.toLocalDate() in now..now.plusDays(5) } shouldBe true
+        }
+
     }
 }

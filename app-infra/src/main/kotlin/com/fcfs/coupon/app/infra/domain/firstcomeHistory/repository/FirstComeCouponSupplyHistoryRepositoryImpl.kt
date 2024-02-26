@@ -29,11 +29,15 @@ internal class FirstComeCouponSupplyHistoryRepositoryImpl(
     }
 
     override fun findByUserIdAndSupplyDateBetween(
-        userId: Long,
+        userId: UserId,
         start: LocalDate,
         end: LocalDate
     ): List<FirstComeCouponSupplyHistory> {
-        TODO("Not yet implemented")
+        return jpaDao.findByUserIdAndSupplyDateTimeBetween(
+            userId = userId.value,
+            start = start,
+            end = end
+        ).map { it.toDomain() }
     }
 
 

@@ -10,7 +10,7 @@ import java.util.*
 
 @Table(name = "first_come_coupon_event_history")
 @Entity
-internal open class FirstComeCouponEventHistoryEntity(
+internal class FirstComeCouponEventHistoryEntity(
     @EmbeddedId
     val id: FirstComeCouponEventHistoryId,
     val continuousReset: Boolean,

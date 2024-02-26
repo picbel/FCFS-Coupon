@@ -60,7 +60,6 @@ class FirstComeCouponSupplyHistoryRepositorySpec: MediumTestSuite()  {
             userId = user.id!!,
             couponId = defaultCoupons.id!!
         )
-        println("---------------------------")
         //when //then
         assertDoesNotThrow { // 조회 검증은 다른 테스트에서 진행합니다.
             sut.save(history)

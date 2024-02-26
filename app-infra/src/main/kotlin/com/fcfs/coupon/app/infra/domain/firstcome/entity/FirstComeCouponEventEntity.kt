@@ -28,9 +28,6 @@ internal open class FirstComeCouponEventEntity(
     @Deprecated("history이다 보니 저장만 일어 날것이라 가정하였습니다.")
     @OneToMany(mappedBy = "fcEvent", fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     val history: MutableSet<DeprecatedFirstComeCouponEventHistoryEntity>,
-    /* Start
-     * Lazy 제대로 동작 안하는 문제 있음 - 도메인 이관중에 연관관계가 꼬여서생긴걸로 추측됨
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "default_coupon_id")
     val defaultCoupon: CouponEntity,
@@ -40,10 +37,6 @@ internal open class FirstComeCouponEventEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consecutive_coupon_id")
     val consecutiveCoupon: CouponEntity,
-    /* End
-     * Lazy 제대로 동작 안하는 문제 있음 - 도메인 이관중에 연관관계가 꼬여서생긴걸로 추측됨
-     */
-
     @Column(name = "start_date")
     val startDate: LocalDate,
     @Column(name = "end_date")

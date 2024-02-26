@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
+    kotlin("plugin.allopen")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -26,7 +27,7 @@ subprojects {
     apply(plugin = "kotlin")
     apply(plugin = "kotlin-spring")
     apply(plugin = "kotlin-jpa")
-
+    apply(plugin = "kotlin-allopen")
 
     dependencies {
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

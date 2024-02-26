@@ -5,7 +5,7 @@ import com.fcfs.coupon.app.infra.domain.firstcomeHistory.entity.FirstComeCouponE
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Repository
 internal interface FirstComeCouponSupplyHistoryEntityJpaDao :
@@ -18,8 +18,8 @@ internal interface FirstComeCouponSupplyHistoryEntityJpaDao :
     """)
     fun findByUserIdAndSupplyDateTimeBetween(
         userId: Long,
-        start: LocalDate,
-        end: LocalDate
+        start: LocalDateTime,
+        end: LocalDateTime
     ): List<FirstComeCouponEventHistoryEntity>
 }
 

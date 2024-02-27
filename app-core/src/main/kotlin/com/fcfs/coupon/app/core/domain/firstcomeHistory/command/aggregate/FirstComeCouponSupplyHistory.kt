@@ -65,7 +65,6 @@ data class FirstComeCouponSupplyHistory(
         return result
     }
 
-
 }
 
 object FirstComeCouponSupplyHistoriesExtendService {

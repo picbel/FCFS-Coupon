@@ -2,6 +2,7 @@ package com.fcfs.coupon.app.core.domain.firstcome.command.usecase.service
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 
 
@@ -32,6 +33,16 @@ internal interface ApplyForFirstComeCouponEventDomainService {
         coupon: Coupon,
     ): Pair<FirstComeCouponEvent, Coupon> {
         return Pair(fcEvent.recordTodaySupplyCouponHistory(user.userId, coupon.couponId), coupon.supply(user.userId))
+    }
+
+    // Coupon history로 변경 하거나 삭제
+    fun supplyFirstComeCoupon(
+        fcEvent: FirstComeCouponEvent,
+        user: User,
+        coupon: Coupon,
+    ): Pair<FirstComeCouponSupplyHistory, Coupon> {
+        TODO()
+//        return Pair(fcEvent.recordTodaySupplyCouponHistory(user.userId, coupon.couponId), coupon.supply(user.userId))
     }
 
     //

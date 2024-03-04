@@ -1,9 +1,13 @@
 package com.fcfs.coupon.app.core.domain.firstcome.command.usecase.service
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
+import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
+import com.fcfs.coupon.app.core.exception.CustomException
+import com.fcfs.coupon.app.core.exception.ErrorCode
+import java.time.LocalDateTime
 
 
 /**
@@ -24,9 +28,9 @@ internal interface ApplyForFirstComeCouponEventDomainService {
      * interface로 하면 추후 mixin처럼 사용하여 코드 재사용성이 좋다 판단되어 interface로 구현하였습니다.
      */
     @Deprecated("recordSupplyCouponHistory로 변경 예정")
-    /**
-     * FirstComeCouponEvent에 쿠폰 발급 내역을 기록하고 Coupon에 발급합니다.
-     */
+            /**
+             * FirstComeCouponEvent에 쿠폰 발급 내역을 기록하고 Coupon에 발급합니다.
+             */
     fun deprecatedSupplyFirstComeCoupon(
         fcEvent: FirstComeCouponEvent,
         user: User,
@@ -36,13 +40,30 @@ internal interface ApplyForFirstComeCouponEventDomainService {
     }
 
     // Coupon history로 변경 하거나 삭제
-    fun supplyFirstComeCoupon(
+    fun supplyTodayFirstComeCoupon(
         fcEvent: FirstComeCouponEvent,
         user: User,
         coupon: Coupon,
     ): Pair<FirstComeCouponSupplyHistory, Coupon> {
+        return supplyFirstComeCoupon(
+            fcEvent, user, coupon, LocalDateTime.now()
+        )
+    }
+
+    private fun supplyFirstComeCoupon(
+        fcEvent: FirstComeCouponEvent,
+        user: User,
+        coupon: Coupon,
+        now: LocalDateTime
+    ): Pair<FirstComeCouponSupplyHistory, Coupon> {
         TODO()
-//        return Pair(fcEvent.recordTodaySupplyCouponHistory(user.userId, coupon.couponId), coupon.supply(user.userId))
+        //        return Pair(fcEvent.recordTodaySupplyCouponHistory(user.userId, coupon.couponId), coupon.supply(user.userId))
+    }
+
+    private fun FirstComeCouponEvent.assertSupplyCoupon(couponId: CouponId) {
+        if (couponId != defaultCouponId && couponId != specialCouponId) {
+            throw CustomException(ErrorCode.FC_COUPON_MATCH_ERROR)
+        }
     }
 
     //

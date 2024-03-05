@@ -3,8 +3,11 @@ package com.fcfs.coupon.app.core.domain.firstcome.command.usecase.service
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.countNowConsecutiveCouponDays
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isTodayApplied
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
+import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
 import java.time.LocalDateTime
@@ -40,24 +43,39 @@ internal interface ApplyForFirstComeCouponEventDomainService {
     }
 
     // Coupon history로 변경 하거나 삭제
+    // 현재 의문인것 굳이 완성된 domain으로 받아야 할까...? 그냥 FirstComeCouponSupplyHistory의 생성자로 해결해도 될것같은 느낌?
     fun supplyTodayFirstComeCoupon(
         fcEvent: FirstComeCouponEvent,
+        history: List<FirstComeCouponSupplyHistory>,
         user: User,
         coupon: Coupon,
     ): Pair<FirstComeCouponSupplyHistory, Coupon> {
         return supplyFirstComeCoupon(
-            fcEvent, user, coupon, LocalDateTime.now()
+            fcEvent, history, user, coupon, LocalDateTime.now()
         )
     }
 
     private fun supplyFirstComeCoupon(
         fcEvent: FirstComeCouponEvent,
+        history: List<FirstComeCouponSupplyHistory>,
         user: User,
         coupon: Coupon,
         now: LocalDateTime
     ): Pair<FirstComeCouponSupplyHistory, Coupon> {
-        TODO()
-        //        return Pair(fcEvent.recordTodaySupplyCouponHistory(user.userId, coupon.couponId), coupon.supply(user.userId))
+        fcEvent.assertSupplyCoupon(couponId = coupon.couponId)
+        if (history.isTodayApplied(user.userId)) {
+            throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
+        }
+        return Pair(
+            FirstComeCouponSupplyHistory(
+                firstComeCouponEventId = fcEvent.id,
+                userId = user.userId,
+                couponId = coupon.couponId,
+                continuousReset = checkNextContinuousReset(history, user.userId),
+                supplyDateTime = now
+            ),
+            coupon // todo 변경 필수
+        )
     }
 
     private fun FirstComeCouponEvent.assertSupplyCoupon(couponId: CouponId) {
@@ -66,48 +84,11 @@ internal interface ApplyForFirstComeCouponEventDomainService {
         }
     }
 
-    //
-//    /**
-//     * 쿠폰 발급 이력을 기록합니다. -> ApplyForFirstComeCouponEventDomainService 이관
-//     */
-//    fun recordSupplyCouponHistory(
-//        userId: UserId,
-//        couponId: CouponId,
-//        date: LocalDateTime,
-//    ): FirstComeCouponEvent {
-//        assertSupplyCoupon(couponId)
-//        return copy(
-//            history = history.map { history ->
-//                if (history.date == date.toLocalDate()) {
-//                    if (history.isApplied(userId)) {
-//                        throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
-//                    } else {
-//                        history.supplyCoupon(userId, couponId, checkNextContinuousReset(userId), date)
-//                    }
-//                } else {
-//                    history
-//                }
-//            }
-//        )
-//    }
-//    // ApplyForFirstComeCouponEventDomainService 이관
-//    fun recordTodaySupplyCouponHistory(
-//        userId: UserId,
-//        couponId: CouponId,
-//    ): FirstComeCouponEvent {
-//        return recordSupplyCouponHistory(userId, couponId, LocalDateTime.now())
-//    }
-//
-//    private fun assertSupplyCoupon(couponId: CouponId) {
-//        if (couponId != defaultCouponId && couponId != specialCouponId) {
-//            throw CustomException(ErrorCode.FC_COUPON_MATCH_ERROR)
-//        }
-//    }
-//
-//    private fun Collection<FirstComeCouponSupplyHistory2>.checkNextContinuousReset(userId: UserId): Boolean {
-//        return this.sortedByDescending { it.date }
-//            .countConsecutiveCouponDays(userId, LocalDate.now().minusDays(1)) == 7L
-//    }
-
+    private fun checkNextContinuousReset(
+        history: List<FirstComeCouponSupplyHistory>,
+        userId: UserId
+    ): Boolean {
+        return history.countNowConsecutiveCouponDays(userId) == 7L
+    }
 
 }

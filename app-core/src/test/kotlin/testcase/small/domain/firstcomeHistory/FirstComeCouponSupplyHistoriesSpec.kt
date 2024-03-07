@@ -1,16 +1,14 @@
 package testcase.small.domain.firstcomeHistory
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
-import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.countNowConsecutiveCouponDays
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isAppliedByDate
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isConsecutiveCouponEligible
-import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import testutils.factory.FirstComeCouponSupplyHistoryFactory.randomFirstComeCouponSupplyHistory
+import testutils.factory.FirstComeCouponSupplyHistoryFactory.firstComeCouponSupplyHistoriesSetUp
 import java.time.LocalDate
 
 @Suppress("NonAsciiCharacters", "ClassName")
@@ -25,7 +23,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `10일 연속 선착순 성공 유저입니다`() {
             //given
-            val sut = setUpHistory(
+            val sut = firstComeCouponSupplyHistoriesSetUp(
                 createDates = 10,
                 userId = userId,
                 couponId = couponId
@@ -41,7 +39,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `8일 연속 선착순 성공 유저입니다`() {
             //given
-            val sut = setUpHistory(
+            val sut = firstComeCouponSupplyHistoriesSetUp(
                 createDates = 8,
                 userId = userId,
                 couponId = couponId
@@ -57,7 +55,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `20일 연속 선착순 성공 유저입니다`() {
             //given
-            val sut = setUpHistory(
+            val sut = firstComeCouponSupplyHistoriesSetUp(
                     createDates = 20,
                     userId = userId,
                     couponId = couponId
@@ -73,7 +71,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `3일 연속 선착순 성공 이후 다음날 연속 응모 하지 못한 유저입니다`() {
             //given
-            val sut = setUpHistory(
+            val sut = firstComeCouponSupplyHistoriesSetUp(
                 createDates = 4,
                 excludedCouponDates = listOf(4),
                 userId = userId,
@@ -90,7 +88,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `3일 연속 선착순 성공 이후 2일뒤 선착순 응모한 유저입니다`() {
             //given
-            val sut = setUpHistory(
+            val sut = firstComeCouponSupplyHistoriesSetUp(
                 createDates = 5,
                 excludedCouponDates = listOf(4),
                 userId = userId,
@@ -111,7 +109,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `3일 연속 선착순 성공 유저는 대상자가 맞습니다`() {
             //given
-            val sut = setUpHistory(
+            val sut = firstComeCouponSupplyHistoriesSetUp(
                     createDates = 3, userId = userId,
                     couponId = couponId
                 )
@@ -126,7 +124,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `5일 연속 선착순 성공 유저는 대상자가 맞습니다`() {
             //given
-            val sut= setUpHistory(
+            val sut= firstComeCouponSupplyHistoriesSetUp(
                     createDates = 5, userId = userId,
                     couponId = couponId
                 )
@@ -140,7 +138,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `7일 연속 선착순 성공 유저는 대상자가 맞습니다`() {
             //given
-            val sut = setUpHistory(
+            val sut = firstComeCouponSupplyHistoriesSetUp(
                     createDates = 7, userId = userId,
                     couponId = couponId
                 )
@@ -155,7 +153,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `6일 연속 선착순 성공 유저는 연속 쿠폰 대상자가 아닙니다`() {
             //given
-            val sut= setUpHistory(
+            val sut= firstComeCouponSupplyHistoriesSetUp(
                     createDates = 6, userId = userId,
                     couponId = couponId
                 )
@@ -170,7 +168,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `8일 연속 선착순 성공 유저는 연속 쿠폰 대상자가 아닙니다`() {
             //given
-            val sut = setUpHistory(
+            val sut = firstComeCouponSupplyHistoriesSetUp(
                     createDates = 8, userId = userId,
                     couponId = couponId
                 )
@@ -185,7 +183,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
         @Test
         fun `10일 연속 선착순 성공 유저는 대상자가 맞습니다`() {
             //given
-            val sut = setUpHistory(
+            val sut = firstComeCouponSupplyHistoriesSetUp(
                     createDates = 10, userId = userId,
                     couponId = couponId
                 )
@@ -201,7 +199,7 @@ internal class FirstComeCouponSupplyHistoriesSpec {
     @Test
     fun `유저가 특정 날짜로 선착순 쿠폰을 발급 받았는지 조회합니다`() {
         //given
-        val sut = setUpHistory(
+        val sut = firstComeCouponSupplyHistoriesSetUp(
             createDates = 3, userId = userId,
             couponId = couponId
         )
@@ -211,27 +209,5 @@ internal class FirstComeCouponSupplyHistoriesSpec {
 
         //then
         expect shouldBe true
-    }
-
-    private fun setUpHistory(
-        createDates: Long,
-        excludedCouponDates: List<Long> = listOf(),
-        userId: UserId,
-        couponId: CouponId,
-    ): List<FirstComeCouponSupplyHistory> {
-        return (0 until createDates).reversed().mapNotNull { i ->
-            if (excludedCouponDates.contains(createDates - i)) {
-                null
-            } else {
-                val date = LocalDate.now().minusDays(i)
-                randomFirstComeCouponSupplyHistory(
-                    firstComeCouponEventId = FirstComeCouponEventId.newId(),
-                    userId = userId,
-                    couponId = couponId,
-                    continuousReset = (createDates - i) % 7 == 1L, // 8일마다 카운트를 reset합니다.
-                    supplyDateTime = date.atStartOfDay()
-                )
-            }
-        }
     }
 }

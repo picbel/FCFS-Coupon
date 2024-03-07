@@ -47,9 +47,9 @@ internal interface ApplyForFirstComeCouponEventDomainService {
     fun supplyTodayFirstComeCoupon(
         fcEvent: FirstComeCouponEvent,
         history: List<FirstComeCouponSupplyHistory>,
-        user: User,
-        coupon: Coupon,
-    ): Pair<FirstComeCouponSupplyHistory, Coupon> {
+        user: UserId,
+        coupon: CouponId,
+    ): FirstComeCouponSupplyHistory {
         return supplyFirstComeCoupon(
             fcEvent, history, user, coupon, LocalDateTime.now()
         )
@@ -58,24 +58,21 @@ internal interface ApplyForFirstComeCouponEventDomainService {
     private fun supplyFirstComeCoupon(
         fcEvent: FirstComeCouponEvent,
         history: List<FirstComeCouponSupplyHistory>,
-        user: User,
-        coupon: Coupon,
+        user: UserId,
+        coupon: CouponId,
         now: LocalDateTime
-    ): Pair<FirstComeCouponSupplyHistory, Coupon> {
-        fcEvent.assertSupplyCoupon(couponId = coupon.couponId)
-        if (history.isTodayApplied(user.userId)) {
+    ): FirstComeCouponSupplyHistory {
+        fcEvent.assertSupplyCoupon(couponId = coupon)
+        if (history.isTodayApplied(user)) {
             throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
         }
-        return Pair(
-            FirstComeCouponSupplyHistory(
+        return FirstComeCouponSupplyHistory(
                 firstComeCouponEventId = fcEvent.id,
-                userId = user.userId,
-                couponId = coupon.couponId,
-                continuousReset = checkNextContinuousReset(history, user.userId),
+                userId = user,
+                couponId = coupon,
+                continuousReset = checkNextContinuousReset(history, user),
                 supplyDateTime = now
-            ),
-            coupon // todo 변경 필수
-        )
+            )
     }
 
     private fun FirstComeCouponEvent.assertSupplyCoupon(couponId: CouponId) {

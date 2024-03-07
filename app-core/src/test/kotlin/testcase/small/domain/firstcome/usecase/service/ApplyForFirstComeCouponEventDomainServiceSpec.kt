@@ -51,7 +51,6 @@ internal class ApplyForFirstComeCouponEventDomainServiceSpec  {
             //given
             val histories = FirstComeCouponSupplyHistoryFactory.firstComeCouponSupplyHistoriesSetUp(
                 createDates = 1,
-                excludedCouponDates = listOf(1),
                 userId = userId,
                 couponId = couponId
             )

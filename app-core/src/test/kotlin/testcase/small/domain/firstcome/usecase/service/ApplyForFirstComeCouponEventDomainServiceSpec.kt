@@ -14,7 +14,7 @@ import testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
 import testutils.factory.FirstComeCouponSupplyHistoryFactory
 import testutils.factory.FirstComeCouponSupplyHistoryFactory.firstComeCouponSupplyHistoriesSetUp
 
-@Suppress("NonAsciiCharacters")
+@Suppress("NonAsciiCharacters", "ClassName")
 internal class ApplyForFirstComeCouponEventDomainServiceSpec  {
     // TODO ApplyForFirstComeCouponEventDomainServiceSpec.kt 이관 필요
     private val userId = UserId(1L)

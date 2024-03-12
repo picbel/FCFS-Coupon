@@ -34,6 +34,7 @@ internal class FirstComeCouponEventUseCaseImpl(
         if (fcEvent.isTodayApplied(user.userId)) {
             throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
         }
+        // 리펙토링 필요
 
         return fcRepo.applyForFirstComeCouponEvent(fcEvent.id).run {
             if (this.isIncludedInFirstCome) {

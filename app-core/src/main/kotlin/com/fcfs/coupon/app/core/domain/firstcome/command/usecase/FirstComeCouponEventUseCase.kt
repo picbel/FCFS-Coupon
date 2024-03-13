@@ -24,6 +24,22 @@ internal class FirstComeCouponEventUseCaseImpl(
     private val couponRepo: CouponRepository
 ) : FirstComeCouponEventUseCase,
     ApplyForFirstComeCouponEventDomainService {
+    override fun applyForFirstComeCouponEvent(
+        message: ApplyFirstComeCouponEventMessage
+    ): ApplyFirstComeCouponEventResult {
+        // 리펙토링된 함수 구현
+        TODO("Not yet implemented")
+    }
+
+}
+
+@Service
+internal class DeprecatedFirstComeCouponEventUseCaseImpl(
+    private val fcRepo: FirstComeCouponEventRepository,
+    private val userRepo: UserRepository,
+    private val couponRepo: CouponRepository
+) : FirstComeCouponEventUseCase,
+    ApplyForFirstComeCouponEventDomainService {
     override fun applyForFirstComeCouponEvent(message: ApplyFirstComeCouponEventMessage): ApplyFirstComeCouponEventResult {
         val fcEvent = fcRepo.getById(message.firstComeCouponEventId)
         if (fcEvent.isNotValid()) {
@@ -35,7 +51,6 @@ internal class FirstComeCouponEventUseCaseImpl(
             throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
         }
         // 리펙토링 필요
-
         return fcRepo.applyForFirstComeCouponEvent(fcEvent.id).run {
             if (this.isIncludedInFirstCome) {
                 val coupon =

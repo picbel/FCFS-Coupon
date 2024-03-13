@@ -5,7 +5,7 @@ import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepositor
 import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
 import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCase
-import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCaseImpl
+import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.DeprecatedFirstComeCouponEventUseCaseImpl
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import io.kotest.assertions.assertSoftly
@@ -38,7 +38,7 @@ class FirstComeCouponEventUseCaseSpec {
         fcRepo = FakeFirstComeCouponEventRepository()
         userRepo = FakeUserRepository()
         couponRepo = FakeCouponRepository()
-        sut = FirstComeCouponEventUseCaseImpl(
+        sut = DeprecatedFirstComeCouponEventUseCaseImpl(
             fcRepo, userRepo, couponRepo
         )
     }

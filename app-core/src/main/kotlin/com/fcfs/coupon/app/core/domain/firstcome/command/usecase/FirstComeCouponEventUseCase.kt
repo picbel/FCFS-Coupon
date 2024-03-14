@@ -7,6 +7,7 @@ import com.fcfs.coupon.app.core.domain.firstcome.command.dto.ApplyFirstComeCoupo
 import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
 import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.service.ApplyForFirstComeCouponEventDomainService
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.repository.FirstComeCouponSupplyHistoryRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import com.fcfs.coupon.app.core.exception.CustomException
@@ -20,6 +21,7 @@ interface FirstComeCouponEventUseCase {
 @Service
 internal class FirstComeCouponEventUseCaseImpl(
     private val fcRepo: FirstComeCouponEventRepository,
+    private val fcHistoryRepo: FirstComeCouponSupplyHistoryRepository,
     private val userRepo: UserRepository,
     private val couponRepo: CouponRepository
 ) : FirstComeCouponEventUseCase,

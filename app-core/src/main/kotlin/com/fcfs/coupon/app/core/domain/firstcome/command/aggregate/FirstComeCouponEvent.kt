@@ -39,6 +39,7 @@ data class FirstComeCouponEvent(
     *
     * todo : FirstComeCouponSupplyHistory2로 이관됨 해당 필드를 삭제해야함
     */
+    @Deprecated("FirstComeCouponSupplyHistory2로 이관됨 해당 필드를 삭제해야함")
     val history: List<FirstComeCouponEventHistory>,
     val defaultCouponId: CouponId,
     val specialCouponId: CouponId,

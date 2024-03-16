@@ -5,7 +5,8 @@ import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepositor
 import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
 import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCase
-import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.DeprecatedFirstComeCouponEventUseCaseImpl
+import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCaseImpl
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.repository.FirstComeCouponSupplyHistoryRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import io.kotest.assertions.assertSoftly
@@ -15,9 +16,11 @@ import org.junit.jupiter.api.Test
 import testutils.factory.CouponFactory.randomCoupon
 import testutils.factory.FirstComeCouponEventFactory
 import testutils.factory.FirstComeCouponEventFactory.setUpFirstComeCouponEvent
+import testutils.factory.FirstComeCouponSupplyHistoryFactory.firstComeCouponSupplyHistoriesSetUp
 import testutils.factory.UserFactory.randomUser
 import testutils.fake.repository.FakeCouponRepository
 import testutils.fake.repository.FakeFirstComeCouponEventRepository
+import testutils.fake.repository.FakeFirstComeCouponSupplyHistoryRepository
 import testutils.fake.repository.FakeUserRepository
 
 
@@ -30,16 +33,18 @@ class FirstComeCouponEventUseCaseSpec {
     private lateinit var sut: FirstComeCouponEventUseCase
 
     private lateinit var fcRepo: FirstComeCouponEventRepository
+    private lateinit var fcHistoryRepo: FirstComeCouponSupplyHistoryRepository
     private lateinit var userRepo: UserRepository
     private lateinit var couponRepo: CouponRepository
 
     @BeforeEach
     fun setUp() {
         fcRepo = FakeFirstComeCouponEventRepository()
+        fcHistoryRepo = FakeFirstComeCouponSupplyHistoryRepository()
         userRepo = FakeUserRepository()
         couponRepo = FakeCouponRepository()
-        sut = DeprecatedFirstComeCouponEventUseCaseImpl(
-            fcRepo, userRepo, couponRepo
+        sut = FirstComeCouponEventUseCaseImpl(
+            fcRepo, fcHistoryRepo,userRepo, couponRepo
         )
     }
 
@@ -109,6 +114,13 @@ class FirstComeCouponEventUseCaseSpec {
             specialLimitCount = 1
         )
         fcRepo.save(event)
+        firstComeCouponSupplyHistoriesSetUp(
+            createDates = 2,
+            userId = user.userId,
+            couponId = coupons.first { it.id?.value == 1L }.id!!
+        ).forEach {
+            fcHistoryRepo.save(it)
+        }
         val message = ApplyFirstComeCouponEventMessage(
             userId = user.userId,
             firstComeCouponEventId = event.id,

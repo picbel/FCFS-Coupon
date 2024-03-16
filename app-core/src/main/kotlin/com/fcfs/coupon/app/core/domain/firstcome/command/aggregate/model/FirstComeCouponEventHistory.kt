@@ -30,16 +30,6 @@ data class FirstComeCouponEventHistory(
     val supplyHistory: List<DeprecatedFirstComeCouponSupplyHistory>
 ) {
 
-    @Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
-    fun isApplied(userId: UserId): Boolean {
-        return supplyHistory.any { it.userId == userId }
-    }
-
-    @Deprecated("FirstComeCouponSupplyHistory.kt로 이관")
-    fun isUserContinuousReset(userId: UserId): Boolean {
-        return supplyHistory.find { it.userId == userId }?.continuousReset ?: false
-    }
-
     fun supplyCoupon(
         userId: UserId,
         couponId: CouponId,

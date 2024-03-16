@@ -7,6 +7,7 @@ import com.fcfs.coupon.app.core.domain.firstcome.command.dto.ApplyFirstComeCoupo
 import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
 import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.service.ApplyForFirstComeCouponEventDomainService
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isConsecutiveCouponEligible
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isTodayApplied
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.repository.FirstComeCouponSupplyHistoryRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
@@ -51,20 +52,20 @@ internal class FirstComeCouponEventUseCaseImpl(
                 val coupon =
                     couponRepo.getById(this.couponId ?: throw CustomException(ErrorCode.FC_COUPON_EVENT_NOT_FOUND))
                 // 쿠폰 발급
-                val supplyHistory= supplyTodayFirstComeCoupon(fcEvent, history,user.userId, coupon.couponId)
+                val supplyHistory = supplyTodayFirstComeCoupon(fcEvent, history, user.userId, coupon.couponId)
                 fcHistoryRepo.save(supplyHistory)
 //                couponRepo.save(suppliedCoupon) // todo: 쿠폰도 추후 변경 대상
                 // 연속 쿠폰 발급
-                if (suppliedFcEvent.isConsecutiveCouponEligible(user.userId)) {
-                    supplyConsecutiveCoupon(suppliedFcEvent, user).also {
-                        couponRepo.save(it)
-                    }
-                }
                 ApplyFirstComeCouponEventResult(
                     isIncludedInFirstCome = true,
                     couponName = coupon.name,
                     couponDiscountAmount = coupon.discountAmount,
-                    isConsecutiveCouponSupplied = suppliedFcEvent.isConsecutiveCouponEligible(user.userId),
+                    isConsecutiveCouponSupplied = if ((history + supplyHistory).isConsecutiveCouponEligible(user.userId)) {
+                        couponRepo.save(supplyConsecutiveCoupon(fcEvent, user))
+                        true
+                    } else {
+                        false
+                    },
                     order = order,
                     couponId = coupon.id
                 )
@@ -81,6 +82,10 @@ internal class FirstComeCouponEventUseCaseImpl(
         }
     }
 
+    private fun supplyConsecutiveCoupon(fcEvent: FirstComeCouponEvent, user: User): Coupon {
+        return couponRepo.findById(fcEvent.consecutiveCouponId)?.supply(user.userId)
+            ?: throw CustomException(ErrorCode.FC_COUPON_EVENT_NOT_FOUND)
+    }
 }
 
 @Service
@@ -91,7 +96,7 @@ internal class DeprecatedFirstComeCouponEventUseCaseImpl(
 ) : FirstComeCouponEventUseCase,
     ApplyForFirstComeCouponEventDomainService {
 
-        @Deprecated("use applyForFirstComeCouponEvent instead")
+    @Deprecated("use applyForFirstComeCouponEvent instead")
     override fun applyForFirstComeCouponEvent(message: ApplyFirstComeCouponEventMessage): ApplyFirstComeCouponEventResult {
         val fcEvent = fcRepo.getById(message.firstComeCouponEventId)
         if (fcEvent.isNotValid()) {

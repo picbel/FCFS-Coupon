@@ -114,8 +114,10 @@ class FirstComeCouponEventUseCaseSpec {
             specialLimitCount = 1
         )
         fcRepo.save(event)
+        // 미지막날을 제외하고 3일간의 선착순 이벤트를 진행합니다
         firstComeCouponSupplyHistoriesSetUp(
-            createDates = 2,
+            createDates = 3,
+            excludedCouponDates = listOf(3),
             userId = user.userId,
             couponId = coupons.first { it.id?.value == 1L }.id!!
         ).forEach {

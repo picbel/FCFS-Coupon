@@ -1,7 +1,6 @@
 package com.fcfs.coupon.app.core.domain.firstcome.command.aggregate
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
-import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
 import java.time.LocalDate
@@ -23,22 +22,6 @@ data class FirstComeCouponEvent(
     val description: String,
     val limitCount: Long,
     val specialLimitCount: Long,
-    /*
-    * domain의 표현상 모든 이력을 들고있는것이 좋다 생각하지만 만약 이벤트가 1년을 넘어 2..3년이 된다면 문제가 발생할 수 있다
-    * 1년지속시 FirstComeCouponEventHistory의 예상데이터수는 365개이며
-    * 내부의 FirstComeCouponSupplyHistory의 데이터까지 생각하면 limitCount만큼 곱한 사이즈가 예상데이터 수이다
-    * 현재 제한 수량 100개기준 생각하니 예상되는 데이터수는 36500이다.
-    * 이 정도 갯수는 문제가 되지 않을것이라 생각하지만 주의 관리 포인트 중에 하나이다.
-    *
-    * 2024-02-14 command model 에서 해당 정보가 필요할까...? 발행을 따로 해야하지않을까?
-    * FirstComeCouponEventHistory의 생명주기를 이제 따로 보고 분리하자
-    * history를 따로 뺄 필요는 없을꺼같다
-    * history 자체보단 발급이력을 별도의 생명주기로 봐야할것 같다
-    *
-    * todo : FirstComeCouponSupplyHistory2로 이관됨 해당 필드를 삭제해야함
-    */
-    @Deprecated("FirstComeCouponSupplyHistory2로 이관됨 해당 필드를 삭제해야함")
-    val history: List<FirstComeCouponEventHistory>,
     val defaultCouponId: CouponId,
     val specialCouponId: CouponId,
     val consecutiveCouponId: CouponId,

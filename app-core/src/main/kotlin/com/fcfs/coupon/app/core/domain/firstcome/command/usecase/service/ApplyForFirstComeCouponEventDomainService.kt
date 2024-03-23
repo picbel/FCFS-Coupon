@@ -1,12 +1,10 @@
 package com.fcfs.coupon.app.core.domain.firstcome.command.usecase.service
 
-import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.countNowConsecutiveCouponDays
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isTodayApplied
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
-import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
@@ -30,18 +28,6 @@ internal interface ApplyForFirstComeCouponEventDomainService {
      * 해당 서비스를 interface로 할지 class로 할지 고민이 많았습니다.
      * interface로 하면 추후 mixin처럼 사용하여 코드 재사용성이 좋다 판단되어 interface로 구현하였습니다.
      */
-    @Deprecated("recordSupplyCouponHistory로 변경 예정")
-            /**
-             * FirstComeCouponEvent에 쿠폰 발급 내역을 기록하고 Coupon에 발급합니다.
-             */
-    fun deprecatedSupplyFirstComeCoupon(
-        fcEvent: FirstComeCouponEvent,
-        user: User,
-        coupon: Coupon,
-    ): Pair<FirstComeCouponEvent, Coupon> {
-        return Pair(fcEvent.recordTodaySupplyCouponHistory(user.userId, coupon.couponId), coupon.supply(user.userId))
-    }
-
     // Coupon history로 변경 하거나 삭제
     // 현재 의문인것 굳이 완성된 domain으로 받아야 할까...? 그냥 FirstComeCouponSupplyHistory의 생성자로 해결해도 될것같은 느낌?
     fun supplyTodayFirstComeCoupon(

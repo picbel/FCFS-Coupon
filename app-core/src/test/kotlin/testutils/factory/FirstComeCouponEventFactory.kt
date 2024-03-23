@@ -3,8 +3,6 @@ package testutils.factory
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
-import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.DeprecatedFirstComeCouponSupplyHistory
-import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.github.javafaker.Faker
 import java.time.LocalDate
@@ -21,9 +19,6 @@ object FirstComeCouponEventFactory {
         description: String = faker.lorem().paragraph().take(200),
         limitCount: Long = faker.number().numberBetween(100, 10000).toLong(),
         specialLimitCount: Long = faker.number().numberBetween(1, limitCount.toInt()).toLong(),
-        history: List<FirstComeCouponEventHistory> = mutableListOf(
-            randomFirstComeCouponEventHistory(id)
-        ),
         defaultCouponId: CouponId = CouponId(faker.number().numberBetween(1, 10).toLong()),
         specialCouponId: CouponId = CouponId(faker.number().numberBetween(11, 100).toLong()),
         consecutiveCouponId: CouponId = CouponId(faker.number().numberBetween(101, 1000).toLong()),
@@ -36,23 +31,11 @@ object FirstComeCouponEventFactory {
             description,
             limitCount,
             specialLimitCount,
-            history,
             defaultCouponId,
             specialCouponId,
             consecutiveCouponId,
             startDate,
             endDate
-        )
-    }
-
-    @Deprecated("use randomFirstComeCouponEventHistory")
-    fun randomFirstComeCouponEventHistory(
-        id: FirstComeCouponEventId,
-        date: LocalDate = LocalDate.now(),
-        supplyHistory: List<DeprecatedFirstComeCouponSupplyHistory> = listOf()
-    ): FirstComeCouponEventHistory {
-        return FirstComeCouponEventHistory(
-            id, date, supplyHistory
         )
     }
 
@@ -75,21 +58,6 @@ object FirstComeCouponEventFactory {
             description = "test",
             limitCount = limitCount,
             specialLimitCount = specialLimitCount,
-            history = (0 until createDates).reversed().map { i ->
-                val date = LocalDate.now().minusDays(i)
-                FirstComeCouponEventHistory(
-                    firstComeCouponEventId = id,
-                    date = date,
-                    supplyHistory = if (excludedCouponDates.contains(createDates - i)) listOf() else listOf(
-                        DeprecatedFirstComeCouponSupplyHistory(
-                            userId = userId,
-                            couponId = couponId,
-                            continuousReset = (createDates - i) % 7 == 1L, // 8일마다 카운트를 reset합니다.
-                            supplyDateTime = date.atStartOfDay()
-                        )
-                    )
-                )
-            },
             defaultCouponId = couponId,
             specialCouponId = CouponId(couponId.value + 1),
             consecutiveCouponId = CouponId(couponId.value + 2),

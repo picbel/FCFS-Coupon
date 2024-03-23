@@ -1,8 +1,6 @@
 package com.fcfs.coupon.app.core.domain.firstcome.command.aggregate
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
-import com.fcfs.coupon.app.core.exception.CustomException
-import com.fcfs.coupon.app.core.exception.ErrorCode
 import java.time.LocalDate
 import java.util.*
 
@@ -28,14 +26,6 @@ data class FirstComeCouponEvent(
     val startDate: LocalDate,
     val endDate: LocalDate,
 ) {
-
-
-    private fun assertSupplyCoupon(couponId: CouponId) {
-        if (couponId != defaultCouponId && couponId != specialCouponId) {
-           throw CustomException(ErrorCode.FC_COUPON_MATCH_ERROR)
-        }
-    }
-
     // #end region
 
     fun isValid(): Boolean {

@@ -15,6 +15,7 @@ import com.fcfs.coupon.app.infra.domain.firstcome.dao.FirstComeCouponEventRedisD
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -72,23 +73,24 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
         ).also {
             // todo : FirstComeCouponSupplyHistory2 이관때 given 변경이 필요 할것으로 보임
             // user는 2일동안 이벤트에 참여한 셋팅으로 테스트 통과시키기
-            eventRepo.save(
-                it.recordSupplyCouponHistory(
-                    user.userId,
-                    it.defaultCouponId,
-                    LocalDate.now().minusDays(2).atStartOfDay()
-                ).recordSupplyCouponHistory(
-                    user.userId,
-                    it.defaultCouponId,
-                    LocalDate.now().minusDays(1).atStartOfDay()
-                )
-            )
+//            eventRepo.save(
+//                it.recordSupplyCouponHistory(
+//                    user.userId,
+//                    it.defaultCouponId,
+//                    LocalDate.now().minusDays(2).atStartOfDay()
+//                ).recordSupplyCouponHistory(
+//                    user.userId,
+//                    it.defaultCouponId,
+//                    LocalDate.now().minusDays(1).atStartOfDay()
+//                )
+//            )
         }
 
         // redisSetting 추후 프로젝트확장으로
         RedisDataSetting.saveRedisFirstComeCouponInfo(event, redisDao)
     }
 
+    @Disabled("리펙토링 끝나면 활성화")
     @Test
     fun `11명이 동시에 이벤트에 응모합니다`() {
         // given

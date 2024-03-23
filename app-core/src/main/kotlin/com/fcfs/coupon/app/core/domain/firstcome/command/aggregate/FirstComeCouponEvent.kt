@@ -2,11 +2,9 @@ package com.fcfs.coupon.app.core.domain.firstcome.command.aggregate
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.model.FirstComeCouponEventHistory
-import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 
 @JvmInline
@@ -47,31 +45,6 @@ data class FirstComeCouponEvent(
     val startDate: LocalDate,
     val endDate: LocalDate,
 ) {
-
-    @Deprecated("추후 쿠폰쪽 리펙토링때 분리 예정")
-    /**
-     * 쿠폰 발급 이력을 기록합니다.
-     */
-    fun recordSupplyCouponHistory(
-        userId: UserId,
-        couponId: CouponId,
-        date: LocalDateTime,
-    ): FirstComeCouponEvent {
-        assertSupplyCoupon(couponId)
-        return copy(
-            history = history.map { history ->
-                if (history.date == date.toLocalDate()) {
-                    if (history.isApplied(userId)) {
-                        throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
-                    } else {
-                        history.supplyCoupon(userId, couponId, checkNextContinuousReset(userId), date)
-                    }
-                } else {
-                    history
-                }
-            }
-        )
-    }
 
 
     private fun assertSupplyCoupon(couponId: CouponId) {

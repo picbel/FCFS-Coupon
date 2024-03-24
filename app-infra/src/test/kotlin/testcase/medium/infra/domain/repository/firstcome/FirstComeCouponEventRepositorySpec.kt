@@ -86,7 +86,10 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
             consecutiveCouponId = consecutiveCoupon.id!!,
         )
         sut.save(event)
-        val update = event.recordTodaySupplyCouponHistory(user.id!!, defaultCoupons.id!!)
+        val newName = "수정 이벤트"
+        val update = event.copy(
+            name = newName,
+        )
         //when
         val modify = sut.save(update)
         //then
@@ -95,7 +98,7 @@ class FirstComeCouponEventRepositorySpec : MediumTestSuite() {
         assertSoftly {
             find.id shouldBe modify.id
             find shouldBe modify
-            find.isTodayApplied(user.id!!) shouldBe true
+            find.name shouldBe newName
         }
     }
 

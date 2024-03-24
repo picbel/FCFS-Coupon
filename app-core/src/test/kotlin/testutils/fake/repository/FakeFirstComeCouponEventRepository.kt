@@ -23,13 +23,11 @@ internal class FakeFirstComeCouponEventRepository(
         date: LocalDate
     ): FirstComeCouponEventEntryResult {
         val event = getById(id)
-        return event.history.first { it.date == date }.run {
-            FirstComeCouponEventEntryResult(
-                order = this.supplyHistory.count().toLong(),
-                couponId = event.defaultCouponId,
-                isIncludedInFirstCome = supplyHistory.count().toLong() < event.limitCount
-            )
-        }
+        return FirstComeCouponEventEntryResult(
+            order = this.supplyHistory.count().toLong(),
+            couponId = event.defaultCouponId,
+            isIncludedInFirstCome = supplyHistory.count().toLong() < event.limitCount
+        )
     }
 
     override fun findById(id: FirstComeCouponEventId): FirstComeCouponEvent? {

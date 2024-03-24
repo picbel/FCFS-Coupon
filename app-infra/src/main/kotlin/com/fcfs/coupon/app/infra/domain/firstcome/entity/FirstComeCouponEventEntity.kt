@@ -2,6 +2,7 @@ package com.fcfs.coupon.app.infra.domain.firstcome.entity
 
 
 import com.fcfs.coupon.app.infra.domain.coupon.entity.CouponEntity
+import com.fcfs.coupon.app.infra.domain.firstcomeHistory.entity.FirstComeCouponEventHistoryEntity
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.util.*
@@ -20,14 +21,8 @@ internal open class FirstComeCouponEventEntity(
     val limitCount: Long,
     @Column(name = "special_limit_count", columnDefinition = "NUMBER")
     val specialLimitCount: Long,
-    /**
-     * history이다 보니 저장만 일어 날것이라 가정하였습니다.
-     *
-     * TODO : cascade끊기
-     */
-    @Deprecated("history이다 보니 저장만 일어 날것이라 가정하였습니다.")
-    @OneToMany(mappedBy = "fcEvent", fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE])
-    val history: MutableSet<DeprecatedFirstComeCouponEventHistoryEntity>,
+    @OneToMany(mappedBy = "fcEvent", fetch = FetchType.LAZY)
+    val history: MutableSet<FirstComeCouponEventHistoryEntity>,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "default_coupon_id")
     val defaultCoupon: CouponEntity,

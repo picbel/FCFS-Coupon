@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import testcase.large.LargeTestSuite
 import testutils.concurrency.ConcurrencyTestUtils.parallelExecute
 import testutils.factory.CouponFactory
-import testutils.factory.FirstComeCouponEventFactory
 import testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
 import testutils.factory.UserFactory
 import testutils.temp.RedisDataSetting
@@ -64,12 +63,7 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
             consecutiveCouponId = couponRepo.save(CouponFactory.randomCoupon()).couponId,
             limitCount = 10,
             specialLimitCount = 1,
-            startDate = LocalDate.now().minusDays(3),
-            history = listOf(
-                FirstComeCouponEventFactory.randomFirstComeCouponEventHistory(eventId, LocalDate.now().minusDays(2)),
-                FirstComeCouponEventFactory.randomFirstComeCouponEventHistory(eventId, LocalDate.now().minusDays(1)),
-                FirstComeCouponEventFactory.randomFirstComeCouponEventHistory(eventId, LocalDate.now()),
-            )
+            startDate = LocalDate.now().minusDays(3)
         ).also {
             // todo : FirstComeCouponSupplyHistory2 이관때 given 변경이 필요 할것으로 보임
             // user는 2일동안 이벤트에 참여한 셋팅으로 테스트 통과시키기

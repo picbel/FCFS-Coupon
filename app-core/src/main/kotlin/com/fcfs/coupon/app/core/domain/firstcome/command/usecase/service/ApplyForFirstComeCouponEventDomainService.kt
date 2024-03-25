@@ -2,7 +2,7 @@ package com.fcfs.coupon.app.core.domain.firstcome.command.usecase.service
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
-import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.countNowConsecutiveCouponDays
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.countConsecutiveCouponDays
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistoriesExtendService.isTodayApplied
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
@@ -44,19 +44,19 @@ internal interface ApplyForFirstComeCouponEventDomainService {
     private fun supplyFirstComeCoupon(
         fcEvent: FirstComeCouponEvent,
         history: List<FirstComeCouponSupplyHistory>,
-        user: UserId,
-        coupon: CouponId,
+        userId: UserId,
+        couponId: CouponId,
         now: LocalDateTime
     ): FirstComeCouponSupplyHistory {
-        fcEvent.assertSupplyCoupon(couponId = coupon)
-        if (history.isTodayApplied(user)) {
+        fcEvent.assertSupplyCoupon(couponId = couponId)
+        if (history.isTodayApplied(userId)) {
             throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
         }
         return FirstComeCouponSupplyHistory(
                 firstComeCouponEventId = fcEvent.id,
-                userId = user,
-                couponId = coupon,
-                continuousReset = checkNextContinuousReset(history, user),
+                userId = userId,
+                couponId = couponId,
+                continuousReset = checkNextContinuousReset(history, userId, now),
                 supplyDateTime = now
             )
     }
@@ -69,9 +69,10 @@ internal interface ApplyForFirstComeCouponEventDomainService {
 
     private fun checkNextContinuousReset(
         history: List<FirstComeCouponSupplyHistory>,
-        userId: UserId
+        userId: UserId,
+        now: LocalDateTime
     ): Boolean {
-        return history.countNowConsecutiveCouponDays(userId) == 7L
+        return history.countConsecutiveCouponDays(userId,now.toLocalDate().minusDays(1)) == 7L
     }
 
 }

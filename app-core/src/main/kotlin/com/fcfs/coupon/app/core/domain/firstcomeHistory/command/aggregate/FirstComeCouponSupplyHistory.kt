@@ -85,19 +85,16 @@ object FirstComeCouponSupplyHistoriesExtendService {
      * 오늘을 기준으로 유저가 연속으로 쿠폰을 받은 일수를 카운트합니다.
      */
     fun Collection<FirstComeCouponSupplyHistory>.countNowConsecutiveCouponDays(userId: UserId): Long {
-        this.sortedByDescending { it.date }.run {
-            return countConsecutiveCouponDays(userId, LocalDate.now())
-        }
+        return countConsecutiveCouponDays(userId, LocalDate.now())
     }
 
-    // 가장 최근날짜부터 카운트 합니다
-    private fun Collection<FirstComeCouponSupplyHistory>.countConsecutiveCouponDays(
+    fun Collection<FirstComeCouponSupplyHistory>.countConsecutiveCouponDays(
         userId: UserId,
         baseDate: LocalDate
     ): Long {
         var count = 0L
         var lastDate: LocalDate = baseDate.plusDays(1) // 마지막날을 기준으로 하기위해 1일을 더합니다.
-        this.forEach {
+        this.sortedByDescending { it.date }.forEach {
             if (it.date.isAfter(baseDate)) {
                 return@forEach
             }

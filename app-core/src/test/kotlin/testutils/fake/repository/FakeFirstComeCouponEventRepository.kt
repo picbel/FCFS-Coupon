@@ -23,6 +23,7 @@ internal class FakeFirstComeCouponEventRepository(
         date: LocalDate
     ): FirstComeCouponEventEntryResult {
         val event = getById(id)
+
         return FirstComeCouponEventEntryResult(
             order = this.supplyHistory.count().toLong(),
             couponId = event.defaultCouponId,

@@ -3,7 +3,6 @@ package testcase.small.domain.firstcome.usecase
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
-import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCase
 import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCaseImpl
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.repository.FirstComeCouponSupplyHistoryRepository
@@ -32,7 +31,7 @@ class FirstComeCouponEventUseCaseSpec {
      */
     private lateinit var sut: FirstComeCouponEventUseCase
 
-    private lateinit var fcRepo: FirstComeCouponEventRepository
+    private lateinit var fcRepo: FakeFirstComeCouponEventRepository
     private lateinit var fcHistoryRepo: FirstComeCouponSupplyHistoryRepository
     private lateinit var userRepo: UserRepository
     private lateinit var couponRepo: CouponRepository
@@ -75,7 +74,6 @@ class FirstComeCouponEventUseCaseSpec {
     @Test
     fun `유저가 선착순에 들지 못했습니다`() {
         // given
-        val alreadyUser = (1..10).map { userRepo.save(randomUser()) }
         val user = userRepo.save(randomUser(id = UserId(11)))
         val coupon = couponRepo.save(randomCoupon())
         val event = FirstComeCouponEventFactory.randomFirstComeCouponEvent(
@@ -84,6 +82,7 @@ class FirstComeCouponEventUseCaseSpec {
             specialLimitCount = 1,
         )
         fcRepo.save(event)
+        fcRepo.setApplyForFirstComeCouponEventFlag(false)
         val message = ApplyFirstComeCouponEventMessage(
             userId = user.userId,
             firstComeCouponEventId = event.id,

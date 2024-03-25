@@ -1,8 +1,6 @@
 package testcase.small.domain.firstcome
 
-import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
-import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -11,10 +9,6 @@ import java.time.LocalDate
 
 @Suppress("NonAsciiCharacters", "ClassName") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
 internal class FirstComeCouponEventSpec {
-
-    private val userId = UserId(1L)
-    private val couponId = CouponId(1L)
-
     @Nested
     inner class `이벤트 기간을 검사합니다` {
         @Test

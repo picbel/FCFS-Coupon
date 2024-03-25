@@ -8,6 +8,8 @@ import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepositor
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
 import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
+import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.repository.FirstComeCouponSupplyHistoryRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import com.fcfs.coupon.app.core.exception.ErrorCode
@@ -15,7 +17,6 @@ import com.fcfs.coupon.app.infra.domain.firstcome.dao.FirstComeCouponEventRedisD
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -29,6 +30,7 @@ import testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
 import testutils.factory.UserFactory
 import testutils.temp.RedisDataSetting
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.text.Charsets.UTF_8
 
@@ -46,7 +48,10 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
     private lateinit var userRepo: UserRepository
 
     @Autowired
-    private lateinit var redisDao: FirstComeCouponEventRedisDao
+    private lateinit var redisDao: FirstComeCouponEventRedisDao // 애도 internal 처리 해야하는데..
+
+    @Autowired
+    private lateinit var fcfsHistoryRepo : FirstComeCouponSupplyHistoryRepository
 
     lateinit var event: FirstComeCouponEvent
     lateinit var user: User
@@ -64,27 +69,24 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
             limitCount = 10,
             specialLimitCount = 1,
             startDate = LocalDate.now().minusDays(3)
-        ).also {
-            // todo : FirstComeCouponSupplyHistory2 이관때 given 변경이 필요 할것으로 보임
-            // user는 2일동안 이벤트에 참여한 셋팅으로 테스트 통과시키기
-//            eventRepo.save(
-//                it.recordSupplyCouponHistory(
-//                    user.userId,
-//                    it.defaultCouponId,
-//                    LocalDate.now().minusDays(2).atStartOfDay()
-//                ).recordSupplyCouponHistory(
-//                    user.userId,
-//                    it.defaultCouponId,
-//                    LocalDate.now().minusDays(1).atStartOfDay()
-//                )
-//            )
+        )
+        eventRepo.save(event)
+        repeat(2) {
+            fcfsHistoryRepo.save(
+                FirstComeCouponSupplyHistory(
+                    userId = user.userId,
+                    firstComeCouponEventId = event.id,
+                    couponId = event.defaultCouponId,
+                    supplyDateTime = LocalDateTime.now().minusDays(it.toLong() + 1),
+                    continuousReset = false
+                )
+            )
         }
 
         // redisSetting 추후 프로젝트확장으로
         RedisDataSetting.saveRedisFirstComeCouponInfo(event, redisDao)
     }
 
-    @Disabled("리펙토링 끝나면 활성화")
     @Test
     fun `11명이 동시에 이벤트에 응모합니다`() {
         // given

@@ -35,6 +35,8 @@ internal class UserRepositoryImpl(
     }
 
     private fun UserEntity.toUser(): User {
-        return User(userId?.let { UserId(it) }, name, email, phone, birthday, gender, address)
+        return User(userId?.let { UserId(it) }, name, email, phone, birthday, gender, address,
+            emptyList() // TODO: Implement this
+        )
     }
 }

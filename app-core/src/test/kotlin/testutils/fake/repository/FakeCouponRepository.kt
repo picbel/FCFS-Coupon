@@ -15,8 +15,7 @@ class FakeCouponRepository(
             save(randomCoupon(
                 id = id,
                 name = coupon.name,
-                discountAmount = coupon.discountAmount,
-                suppliedHistory = coupon.suppliedHistory
+                discountAmount = coupon.discountAmount
             ), id)
         } else {
             save(coupon, coupon.id!!)

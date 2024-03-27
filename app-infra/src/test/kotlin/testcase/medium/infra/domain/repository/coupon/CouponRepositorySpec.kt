@@ -1,7 +1,6 @@
 package testcase.medium.infra.domain.repository.coupon
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
-import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.model.SuppliedCoupon
 import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
@@ -40,8 +39,7 @@ class CouponRepositorySpec : MediumTestSuite() {
     @Test
     fun `Coupon을 저장합니다`() {
         //given
-        val coupon: Coupon = createCoupon()
-            .supply(user2.id!!)
+        val coupon: Coupon = randomCoupon()
         //when
         val save = sut.save(coupon)
         //then
@@ -50,35 +48,30 @@ class CouponRepositorySpec : MediumTestSuite() {
         assertSoftly {
             find shouldBe save
             find.discountAmount shouldBe save.discountAmount
+            find.name shouldBe save.name
         }
     }
 
     @Test
     fun `Coupon을 수정합니다`() {
         //given
-        val coupon: Coupon = createCoupon()
+        val coupon: Coupon = randomCoupon()
         sut.save(coupon)
-        val update = coupon.supply(user2.id!!)
+        val name = "update"
+        val discountAmount = 10000.toBigDecimal()
+        val update = coupon.copy(
+            name = name,
+            discountAmount = discountAmount
+        )
         //when
         val save = sut.save(update)
         //then
         val find = sut.getById(save.id!!)
         assertSoftly {
             find shouldBe save
-            find.suppliedHistory.size shouldBe 2 // createCoupon()에서 생성된 user 1개, supply로 user2가 추가되어 2개
+            find.discountAmount shouldBe discountAmount
+            find.name shouldBe name
         }
     }
 
-    /**
-     * Coupon을 생성합니다.
-     * user를 suppliedHistory에 추가합니다.
-     */
-    private fun createCoupon() = randomCoupon(
-        suppliedHistory = listOf(
-            SuppliedCoupon(
-                userId = user.id!!,
-                isUsed = false
-            )
-        )
-    )
 }

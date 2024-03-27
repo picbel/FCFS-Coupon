@@ -54,7 +54,7 @@ internal class FirstComeCouponEventUseCaseImpl(
                 // 쿠폰 발급
                 val supplyHistory = supplyTodayFirstComeCoupon(fcEvent, history, user.userId, coupon.couponId)
                 fcHistoryRepo.save(supplyHistory)
-//                couponRepo.save(suppliedCoupon) // todo: 쿠폰도 추후 변경 대상
+//                couponRepo.save(suppliedCoupon)
                 // 연속 쿠폰 발급
                 ApplyFirstComeCouponEventResult(
                     isIncludedInFirstCome = true,
@@ -82,9 +82,9 @@ internal class FirstComeCouponEventUseCaseImpl(
         }
     }
 
+    @Deprecated("coupon 관리 주체 변경")
     private fun supplyConsecutiveCoupon(fcEvent: FirstComeCouponEvent, user: User): Coupon {
-        return couponRepo.findById(fcEvent.consecutiveCouponId)?.supply(user.userId)
-            ?: throw CustomException(ErrorCode.FC_COUPON_EVENT_NOT_FOUND)
+        return couponRepo.getById(fcEvent.consecutiveCouponId)
     }
 }
 

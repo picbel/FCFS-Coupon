@@ -1,8 +1,9 @@
-package com.fcfs.coupon.app.infra.domain.coupon.entity
+package com.fcfs.coupon.app.infra.domain.user.entity
 
-import com.fcfs.coupon.app.infra.domain.user.entity.UserEntity
+import com.fcfs.coupon.app.infra.domain.coupon.entity.CouponEntity
 import jakarta.persistence.*
 import java.io.Serializable
+import java.time.LocalDateTime
 
 @Embeddable
 internal open class SuppliedCouponId(
@@ -18,7 +19,11 @@ internal class SuppliedCouponEntity(
     @EmbeddedId
     val id: SuppliedCouponId,
     @Column(name = "used", columnDefinition = "BOOLEAN")
-    val used: Boolean,
+    val isUsed: Boolean,
+    @Column(name = "supplied_at", columnDefinition = "TIMESTAMP")
+    val suppliedAt: LocalDateTime,
+    @Column(name = "used_at", columnDefinition = "TIMESTAMP")
+    val usedAt: LocalDateTime?,
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("couponId")
     val coupon: CouponEntity,

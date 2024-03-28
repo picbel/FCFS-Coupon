@@ -30,8 +30,9 @@ internal class UserRepositoryImpl(
         return findById(id) ?: throw CustomException(ErrorCode.USER_NOT_FOUND)
     }
 
+    // SuppliedCouponEntity를 여기서 직접 만들지 jpa로 읽어서 만들지 고민하기
     private fun User.toEntity(): UserEntity {
-        return UserEntity(id?.value, name, email, phone, birthday, gender, address)
+        return UserEntity(id?.value, name, email, phone, birthday, gender, address, mutableSetOf())
     }
 
     private fun UserEntity.toUser(): User {

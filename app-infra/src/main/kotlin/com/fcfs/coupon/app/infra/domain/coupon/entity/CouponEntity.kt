@@ -1,5 +1,6 @@
 package com.fcfs.coupon.app.infra.domain.coupon.entity
 
+import com.fcfs.coupon.app.infra.domain.user.entity.SuppliedCouponEntity
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

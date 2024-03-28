@@ -1,6 +1,5 @@
 package com.fcfs.coupon.app.core.domain.coupon.command.aggregate
 
-import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import java.math.BigDecimal
 
 @JvmInline
@@ -17,10 +16,6 @@ data class Coupon(
     val couponId: CouponId
         get() = id ?: throw IllegalStateException("unidentified coupon")
 
-    fun supply(userId: UserId): Coupon {
-        TODO(userId.toString())
-//        return copy(suppliedHistory = suppliedHistory + DeprecatedSuppliedCoupon(userId, false))
-    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

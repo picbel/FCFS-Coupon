@@ -31,3 +31,4 @@ internal class UserEntity(
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     val suppliedCoupons: MutableSet<SuppliedCouponEntity>
 )
+

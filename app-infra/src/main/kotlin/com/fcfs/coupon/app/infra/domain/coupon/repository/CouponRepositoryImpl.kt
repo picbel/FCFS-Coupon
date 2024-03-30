@@ -33,31 +33,12 @@ internal class CouponRepositoryImpl(
     private fun Coupon.toEntity() = CouponEntity(
         couponId = this.id?.value,
         name = this.name,
-        discountAmount = this.discountAmount,
-        suppliedHistory = mutableSetOf()
+        discountAmount = this.discountAmount
     )
-
-//    private fun SuppliedCoupon.toEntity(coupon: CouponEntity, users: List<UserEntity>): SuppliedCouponEntity {
-//        val user = users.find { it.userId == this.userId.value } ?: throw CustomException(ErrorCode.USER_NOT_FOUND)
-//        return SuppliedCouponEntity(
-//            id = SuppliedCouponId(
-//                couponId = coupon.couponId,
-//                userId = user.userId
-//            ),
-//            used = this.isUsed,
-//            coupon = coupon,
-//            user = user
-//        )
-//    }
 
     private fun CouponEntity.toDomain() = Coupon(
         id = CouponId(this.couponId ?: throw IllegalStateException("CouponEntity.couponId is null")),
         name = this.name,
         discountAmount = this.discountAmount,
     )
-
-//    private fun SuppliedCouponEntity.toDomain() = DeprecatedSuppliedCoupon(
-//        userId = UserId(this.id.userId ?: throw IllegalStateException("SuppliedCouponEntity.userId is null")),
-//        isUsed = this.used
-//    )
 }

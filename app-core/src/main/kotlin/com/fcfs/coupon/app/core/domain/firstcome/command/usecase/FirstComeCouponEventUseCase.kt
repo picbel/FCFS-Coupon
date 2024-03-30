@@ -41,7 +41,7 @@ internal class FirstComeCouponEventUseCaseImpl(
         val now = LocalDate.now()
         val history = fcHistoryRepo.findByUserIdAndSupplyDateBetween(
             userId = user.userId,
-            start = now.minusDays(8), //
+            start = now.minusDays(8),
             end = now
         )
         if (history.isTodayApplied(userId = user.userId)) {
@@ -53,8 +53,15 @@ internal class FirstComeCouponEventUseCaseImpl(
                     couponRepo.getById(this.couponId ?: throw CustomException(ErrorCode.FC_COUPON_EVENT_NOT_FOUND))
                 // 쿠폰 발급
                 val supplyHistory = supplyTodayFirstComeCoupon(fcEvent, history, user.userId, coupon.couponId)
+                /*
+                 * 완벽한 트랙잭션을 보장할려면 아래 두 save를 한 트랜잭션으로 묶는게 좋아보인다
+                 * 이건 추후에 리팩토링을 통해 개선할 예정
+                 *
+                 * 혹은 이벤트 발행 형식으로 해서 해도 될것 같다
+                 * 현재 회사에서 사용하는 트랜잭션chain이라는 개념을 들고와도 좋을꺼 같다.
+                 */
                 fcHistoryRepo.save(supplyHistory)
-//                couponRepo.save(suppliedCoupon)
+                userRepo.save(user.supplyCoupon(coupon.couponId))
                 // 연속 쿠폰 발급
                 ApplyFirstComeCouponEventResult(
                     isIncludedInFirstCome = true,

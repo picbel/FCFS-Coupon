@@ -2,16 +2,12 @@ package testcase.medium.infra.domain.repository.coupon
 
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.Coupon
 import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
-import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
-import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import testcase.medium.infra.domain.repository.MediumTestSuite
 import testutils.factory.CouponFactory.randomCoupon
-import testutils.factory.UserFactory.randomUser
 
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
@@ -19,22 +15,6 @@ class CouponRepositorySpec : MediumTestSuite() {
 
     @Autowired
     private lateinit var sut: CouponRepository
-
-    @Autowired
-    private lateinit var userRepo: UserRepository
-
-    private lateinit var user: User
-    private lateinit var user2: User
-
-    /**
-     * 테스트를 위한 초기화 작업을 수행합니다.
-     * user를 생성합니다.
-     */
-    @BeforeEach
-    fun setUp() {
-        user = userRepo.save(randomUser())
-        user2 = userRepo.save(randomUser())
-    }
 
     @Test
     fun `Coupon을 저장합니다`() {

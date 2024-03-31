@@ -29,8 +29,6 @@ internal interface ApplyForFirstComeCouponEventDomainService {
      * 해당 서비스를 interface로 할지 class로 할지 고민이 많았습니다.
      * interface로 하면 추후 mixin처럼 사용하여 코드 재사용성이 좋다 판단되어 interface로 구현하였습니다.
      */
-    // Coupon history로 변경 하거나 삭제
-    // 현재 의문인것 굳이 완성된 domain으로 받아야 할까...? 그냥 FirstComeCouponSupplyHistory의 생성자로 해결해도 될것같은 느낌?
     fun supplyTodayFirstComeCoupon(
         fcEvent: FirstComeCouponEvent,
         history: List<FirstComeCouponSupplyHistory>,

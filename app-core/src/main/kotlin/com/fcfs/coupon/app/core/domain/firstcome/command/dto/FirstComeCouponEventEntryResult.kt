@@ -15,4 +15,7 @@ data class FirstComeCouponEventEntryResult(
      * 선착순 이벤트에 응모한 순서가 포함되었는지 여부입니다.
      */
     val isIncludedInFirstCome: Boolean
-)
+) {
+    val isNotIncludedInFirstCome: Boolean
+        get() = !isIncludedInFirstCome
+}

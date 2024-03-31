@@ -46,6 +46,7 @@ class CouponRepositorySpec : MediumTestSuite() {
         //when
         val save = sut.save(update)
         //then
+        flushAndClear()
         val find = sut.getById(save.id!!)
         assertSoftly {
             find shouldBe save

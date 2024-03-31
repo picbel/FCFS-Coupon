@@ -54,6 +54,8 @@ internal class FirstComeCouponSupplyHistoryRepositoryImpl(
             ?: throw IllegalStateException("FirstComeCouponEventId not found"),
         user = userDao.findByIdOrNull(this.userId.value) ?: throw IllegalStateException("UserId not found"),
         coupon = couponDao.findByIdOrNull(this.couponId.value) ?: throw IllegalStateException("CouponId not found"),
+        isSupplyContinuousCoupon = this.isSupplyContinuousCoupon
+
     )
 
     private fun FirstComeCouponEventHistoryEntity.toDomain() = FirstComeCouponSupplyHistory(
@@ -61,6 +63,7 @@ internal class FirstComeCouponSupplyHistoryRepositoryImpl(
         userId = UserId(this.id.userId),
         couponId = CouponId(this.id.couponId),
         supplyDateTime = this.id.supplyDateTime,
-        continuousReset = this.continuousReset
+        continuousReset = this.continuousReset,
+        isSupplyContinuousCoupon = this.isSupplyContinuousCoupon
     )
 }

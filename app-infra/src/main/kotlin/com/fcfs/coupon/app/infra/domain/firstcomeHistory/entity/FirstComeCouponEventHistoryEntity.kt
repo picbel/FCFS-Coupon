@@ -26,6 +26,7 @@ internal class FirstComeCouponEventHistoryEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
     val coupon: CouponEntity,
+    val isSupplyContinuousCoupon : Boolean
 )
 
 @Embeddable

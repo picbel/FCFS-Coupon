@@ -35,7 +35,13 @@ data class FirstComeCouponSupplyHistory(
      * 연속 선착순 일자를 reset 여부
      * 해당 필드가 true일 경우 해당필드부터 1일로 계산합니다
      */
-    val continuousReset: Boolean
+    val continuousReset: Boolean,
+
+    /**
+     * 연속 쿠폰 발급 여부
+     * 해당 필드가 true일 경우 연속 쿠폰을 발급한 것으로 판단합니다
+     */
+    val isSupplyContinuousCoupon : Boolean
 ) {
     /**
      * 발급한 날짜

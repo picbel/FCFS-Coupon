@@ -78,7 +78,8 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
                     firstComeCouponEventId = event.id,
                     couponId = event.defaultCouponId,
                     supplyDateTime = LocalDateTime.now().minusDays(it.toLong() + 1),
-                    continuousReset = false
+                    continuousReset = false,
+                    isSupplyContinuousCoupon = false
                 )
             )
         }

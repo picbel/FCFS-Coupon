@@ -30,6 +30,7 @@ class UserRepositorySpec : MediumTestSuite() {
         //when
         val save = sut.save(user)
         //then
+        flushAndClear()
         val find = sut.getById(save.id!!)
         assertSoftly {
             find shouldBe save
@@ -42,10 +43,12 @@ class UserRepositorySpec : MediumTestSuite() {
         val user = randomUser()
         val save = sut.save(user)
         val coupon: Coupon = couponRepo.save(CouponFactory.randomCoupon())
+        flushAndClear()
         val modify = randomUser(id = save.id).supplyCoupon(coupon.couponId)
         //when
         val update = sut.save(modify)
         //then
+        flushAndClear()
         val find = sut.getById(save.id!!)
         assertSoftly {
             find shouldBe update

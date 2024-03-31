@@ -14,14 +14,16 @@ object FirstComeCouponSupplyHistoryFactory {
         userId: UserId,
         couponId: CouponId,
         continuousReset: Boolean = false,
-        supplyDateTime: LocalDateTime = LocalDateTime.now()
+        supplyDateTime: LocalDateTime = LocalDateTime.now(),
+        isSupplyContinuousCoupon: Boolean = false
     ): FirstComeCouponSupplyHistory {
         return FirstComeCouponSupplyHistory(
             firstComeCouponEventId,
             userId,
             couponId,
             supplyDateTime,
-            continuousReset
+            continuousReset,
+            isSupplyContinuousCoupon
         )
     }
 
@@ -41,7 +43,8 @@ object FirstComeCouponSupplyHistoryFactory {
                     userId = userId,
                     couponId = couponId,
                     continuousReset = (createDates - i) % 7 == 1L, // 8일마다 카운트를 reset합니다.
-                    supplyDateTime = date.atStartOfDay()
+                    supplyDateTime = date.atStartOfDay(),
+                    isSupplyContinuousCoupon = false
                 )
             }
         }

@@ -8,10 +8,19 @@ dependencies {
     implementation("com.github.codemonstur:embedded-redis:1.0.0")
     implementation("org.redisson:redisson:3.18.0")
 
+    implementation("com.linecorp.kotlin-jdsl:jpql-dsl:3.4.0")
+    implementation("com.linecorp.kotlin-jdsl:jpql-render:3.4.0")
+    implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-support:3.4.0")
+
+
     runtimeOnly("com.h2database:h2")
 
     testImplementation(project(":app-core", "testArtifacts"))
     testImplementation(project(":app"))
+}
+
+repositories {
+    maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
 }
 
 sourceSets {

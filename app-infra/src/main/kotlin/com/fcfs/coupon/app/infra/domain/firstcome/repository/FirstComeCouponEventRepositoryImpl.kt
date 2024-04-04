@@ -11,7 +11,6 @@ import com.fcfs.coupon.app.infra.domain.coupon.dao.CouponJpaDao
 import com.fcfs.coupon.app.infra.domain.firstcome.dao.FirstComeCouponEventEntityJpaDao
 import com.fcfs.coupon.app.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
 import com.fcfs.coupon.app.infra.domain.firstcome.entity.FirstComeCouponEventEntity
-import com.fcfs.coupon.app.infra.domain.user.dao.UserJpaDao
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -26,7 +25,6 @@ internal class FirstComeCouponEventRepositoryImpl(
     val jpaDao: FirstComeCouponEventEntityJpaDao,
     val redisDao: FirstComeCouponEventRedisDao,
     val couponDao: CouponJpaDao,
-    val userDao: UserJpaDao
 ) : FirstComeCouponEventRepository {
     @Transactional
     override fun save(firstComeCouponEvent: FirstComeCouponEvent): FirstComeCouponEvent {

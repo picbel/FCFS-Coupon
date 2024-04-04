@@ -1,8 +1,8 @@
 package com.fcfs.coupon.app.core.domain.coupon.query.readmodel
 
+import com.fcfs.coupon.app.core.commons.Slice
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
-import com.fcfs.coupon.app.core.utils.Slice
 import java.time.LocalDateTime
 
 /**
@@ -19,9 +19,9 @@ data class IssuedCoupon(
     val start: LocalDateTime,
     val end: LocalDateTime,
     val history: List<IssuedCouponHistory>,
-    override val cursor: String,
+    override val nextCursor: LocalDateTime,
     override val size: Int
-) : Slice<String, IssuedCouponHistory> {
+) : Slice<LocalDateTime, IssuedCouponHistory> {
 
     override val content: List<IssuedCouponHistory>
         get() = history

@@ -3,6 +3,7 @@ package com.fcfs.coupon.app.core.domain.coupon.query.readmodel
 import com.fcfs.coupon.app.core.commons.Slice
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
 /**
@@ -15,16 +16,14 @@ import java.time.LocalDateTime
 data class IssuedCoupon(
     val couponId: CouponId,
     val name: String,
-    val discountAmount: String,
+    val discountAmount: BigDecimal,
     val start: LocalDateTime,
     val end: LocalDateTime,
-    val history: List<IssuedCouponHistory>,
-    override val nextCursor: LocalDateTime,
+    override val content: List<IssuedCouponHistory>,
+    override val nextCursor: LocalDateTime?,
     override val size: Int
 ) : Slice<LocalDateTime, IssuedCouponHistory> {
-
-    override val content: List<IssuedCouponHistory>
-        get() = history
+    val history: List<IssuedCouponHistory> = content
 }
 
 data class IssuedCouponHistory(

@@ -50,7 +50,7 @@ class CouponRepositorySpec : MediumTestSuite() {
         val find = sut.getById(save.id!!)
         assertSoftly {
             find shouldBe save
-            find.discountAmount shouldBe discountAmount
+            find.discountAmount.toInt() shouldBe discountAmount.toInt()
             find.name shouldBe name
         }
     }

@@ -1,6 +1,7 @@
 package testcase.medium.infra.domain.repository
 
 import com.fcfs.coupon.app.infra.AppInfraApplication
+import com.linecorp.kotlinjdsl.support.spring.data.jpa.autoconfigure.KotlinJdslAutoConfiguration
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -20,7 +21,8 @@ import testutils.config.TestRedisConfig
 )
 @ContextConfiguration(
     classes = [
-        TestRedisConfig::class
+        TestRedisConfig::class,
+        KotlinJdslAutoConfiguration::class
     ],
 )
 @ActiveProfiles("medium")

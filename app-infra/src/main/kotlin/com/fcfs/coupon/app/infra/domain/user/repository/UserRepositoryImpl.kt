@@ -47,9 +47,12 @@ internal class UserRepositoryImpl(
 
     private fun SuppliedCoupon.toEntity(user: UserEntity): SuppliedCouponEntity {
         return SuppliedCouponEntity(
-            id = SuppliedCouponId(couponId.value, user.userId),
+            id = SuppliedCouponId(
+                couponId.value,
+                user.userId ?: throw IllegalStateException("UserEntity.userId is null"),
+                suppliedAt = suppliedAt,
+            ),
             isUsed = isUsed,
-            suppliedAt = suppliedAt,
             usedAt = usedAt,
             coupon = couponDao.findById(couponId.value).orElseThrow { CustomException(ErrorCode.COUPON_NOT_FOUND) },
             user = user
@@ -57,7 +60,8 @@ internal class UserRepositoryImpl(
     }
 
     private fun UserEntity.toUser(): User {
-        return User(userId?.let { UserId(it) },
+        return User(
+            userId?.let { UserId(it) },
             name,
             email,
             phone,
@@ -70,10 +74,9 @@ internal class UserRepositoryImpl(
 
     private fun SuppliedCouponEntity.toSuppliedCoupon(): SuppliedCoupon {
         return SuppliedCoupon(
-            couponId = coupon.couponId?.let { CouponId(it) }
-                ?: throw IllegalStateException("SuppliedCouponEntity.coupon.couponId is null"),
+            couponId = CouponId(id.couponId),
             isUsed = isUsed,
-            suppliedAt = suppliedAt,
+            suppliedAt = id.suppliedAt,
             usedAt = usedAt
         )
     }

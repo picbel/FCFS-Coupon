@@ -8,10 +8,12 @@ import java.time.LocalDateTime
 @Embeddable
 internal open class SuppliedCouponId(
     @Column(name = "coupon_id", insertable = false, updatable = false)
-    val couponId: Long?,
+    val couponId: Long,
 
     @Column(name = "user_id", insertable = false, updatable = false)
-    val userId: Long?
+    val userId: Long,
+    @Column(name = "supplied_at", columnDefinition = "DATETIME")
+    val suppliedAt: LocalDateTime,
 ) : Serializable
 
 @Entity
@@ -20,9 +22,7 @@ internal class SuppliedCouponEntity(
     val id: SuppliedCouponId,
     @Column(name = "used", columnDefinition = "BOOLEAN")
     val isUsed: Boolean,
-    @Column(name = "supplied_at", columnDefinition = "TIMESTAMP")
-    val suppliedAt: LocalDateTime,
-    @Column(name = "used_at", columnDefinition = "TIMESTAMP")
+    @Column(name = "used_at", columnDefinition = "DATETIME")
     val usedAt: LocalDateTime?,
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("couponId")

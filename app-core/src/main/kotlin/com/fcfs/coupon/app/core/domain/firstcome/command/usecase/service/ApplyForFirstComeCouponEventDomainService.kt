@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 /**
  * 선착순 이벤트 응모 도메인 서비스
  */
-internal interface ApplyForFirstComeCouponEventDomainService {
+interface ApplyForFirstComeCouponEventDomainService {
     /*
      * 여러 도메인을 묶어서 처리해야하는 요구사항의 경우 도메인서비스를 사용합니다.
      * 해당 개념은 최범균님의 DDD Start를 참고하였습니다.

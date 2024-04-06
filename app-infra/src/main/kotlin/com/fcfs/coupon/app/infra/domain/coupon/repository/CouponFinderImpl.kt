@@ -12,6 +12,7 @@ import com.fcfs.coupon.app.infra.domain.coupon.dao.CouponJpaDao
 import com.fcfs.coupon.app.infra.domain.coupon.entity.CouponEntity
 import com.fcfs.coupon.app.infra.domain.user.dao.SuppliedCouponJpaDao
 import com.fcfs.coupon.app.infra.domain.user.entity.SuppliedCouponEntity
+import com.fcfs.coupon.app.infra.domain.user.entity.SuppliedCouponId
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -34,10 +35,11 @@ internal class CouponFinderImpl(
                     fetchJoin(SuppliedCouponEntity::coupon)
                 ).whereAnd(
                     path(CouponEntity::couponId).eq(filter.couponId.value),
-                    path(SuppliedCouponEntity::suppliedAt).between(filter.start, filter.end),
-                    filter.cursor?.let { path(SuppliedCouponEntity::suppliedAt).greaterThanOrEqualTo(it) }
+                    path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).greaterThanOrEqualTo(filter.start),
+                    path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).lessThanOrEqualTo(filter.end),
+                    filter.cursor?.let { path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).greaterThanOrEqualTo(it) }
                 ).orderBy(
-                    path(SuppliedCouponEntity::suppliedAt).asc()
+                    path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).asc()
                 )
         }.mapNotNull { it }
 
@@ -48,7 +50,7 @@ internal class CouponFinderImpl(
         } ?: throw CustomException(ErrorCode.COUPON_NOT_FOUND)
 
         val (content, nextCursor) = if (histories.size > filter.size) {
-            Pair(histories.take(filter.size), histories.last().suppliedAt)
+            Pair(histories.take(filter.size), histories.last().id.suppliedAt)
         } else {
             Pair(histories, null)
         }
@@ -66,9 +68,9 @@ internal class CouponFinderImpl(
 
     private fun SuppliedCouponEntity.toIssuedCouponHistory(): IssuedCouponHistory {
         return IssuedCouponHistory(
-            userId = UserId(this.user.userId ?: throw IllegalStateException("userId is null")),
+            userId = UserId(this.id.userId),
             isUsed = this.isUsed,
-            suppliedAt = this.suppliedAt,
+            suppliedAt = this.id.suppliedAt,
             usedAt = this.usedAt
         )
     }

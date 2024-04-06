@@ -37,9 +37,9 @@ internal class CouponFinderImpl(
                     path(CouponEntity::couponId).eq(filter.couponId.value),
                     path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).greaterThanOrEqualTo(filter.start),
                     path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).lessThanOrEqualTo(filter.end),
-                    filter.cursor?.let { path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).greaterThanOrEqualTo(it) }
+                    filter.cursor?.let { path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).lessThanOrEqualTo(it) }
                 ).orderBy(
-                    path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).asc()
+                    path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).desc()
                 )
         }.mapNotNull { it }
 

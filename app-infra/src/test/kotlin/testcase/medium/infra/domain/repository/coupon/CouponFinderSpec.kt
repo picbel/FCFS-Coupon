@@ -46,6 +46,7 @@ class CouponFinderSpec : MediumTestSuite() {
 
     @BeforeEach
     fun setUp() {
+        // 10일간 10명의 유저가 이벤트에 응모하였습니다 총 100개의 데이터가 생성됩니다
         val users = (1..10).map { userRepo.save(randomUser()) }
         event = randomFirstComeCouponEvent(
             defaultCouponId = couponRepo.save(randomCoupon()).couponId,
@@ -79,7 +80,7 @@ class CouponFinderSpec : MediumTestSuite() {
 
     @Test
     fun `Coupon 발급내역을 조회합니다`() {
-        //given 10일간 10명의 유저가 이벤트에 응모하였습니다 총 100개의 데이터가 생성됩니다
+        //given
         val filter = IssuedCouponFilter(
             cursor = null,
             size = 10,
@@ -99,7 +100,7 @@ class CouponFinderSpec : MediumTestSuite() {
 
     @Test
     fun `Coupon 발급내역을 5번 조회합니다`() {
-        //given 10일간 10명의 유저가 이벤트에 응모하였습니다 총 100개의 데이터가 생성됩니다
+        //given
         val filter = IssuedCouponFilter(
             cursor = null,
             size = 10,
@@ -129,7 +130,7 @@ class CouponFinderSpec : MediumTestSuite() {
 
     @Test
     fun `발급 이력이 없는 Coupon을 조회합니다`() {
-        //given 10일간 10명의 유저가 이벤트에 응모하였습니다 총 100개의 데이터가 생성됩니다
+        //given
         val filter = IssuedCouponFilter(
             cursor = null,
             size = 10,

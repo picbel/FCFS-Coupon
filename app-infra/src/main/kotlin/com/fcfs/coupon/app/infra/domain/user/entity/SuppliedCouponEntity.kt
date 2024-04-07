@@ -9,7 +9,6 @@ import java.time.LocalDateTime
 internal open class SuppliedCouponId(
     @Column(name = "coupon_id", insertable = false, updatable = false)
     val couponId: Long,
-
     @Column(name = "user_id", insertable = false, updatable = false)
     val userId: Long,
     @Column(name = "supplied_at", columnDefinition = "DATETIME")

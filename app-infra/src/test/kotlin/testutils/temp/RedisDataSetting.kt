@@ -12,6 +12,7 @@ import java.time.LocalDate
 object RedisDataSetting {
 
     /**
+     * TODO 여기 주석 수정 필 240416
      * [com.fcfs.coupon.testcase.medium.core.domain.firstcome.repository.FirstComeCouponEventRepositorySpec]의 firstComeCouponSetUp()을 copy&paste한 함수입니다.
      * 현재 관리자용 프로젝트가 없어 redis에 초기 데이터를 셋팅 할 방법이 core-repository 단계에서 없습니다.
      * 또한 core, presentation, infra를 별도로 모듈화 하여 리펙토링할 계획으로 각 내부에서 사용할 객체에는 internal 접근제한자를 사용하고 있습니다.

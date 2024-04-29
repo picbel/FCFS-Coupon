@@ -6,4 +6,5 @@ object ApiPath {
     const val FIRSTCOME_EVENT = "$V1/firstcome/event"
     const val FIRSTCOME_EVENT_ID = "$FIRSTCOME_EVENT/$id"
 
+    const val COUPON_ISSUE = "$V1/coupon/issue"
 }

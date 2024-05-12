@@ -6,6 +6,7 @@ import com.fcfs.coupon.app.api.endpoint.v1.coupon.response.IssuedCouponResponse
 import com.fcfs.coupon.app.core.domain.coupon.query.usecase.FindCouponUseCase
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.RestController
 
 interface GetCouponController {
 
@@ -15,6 +16,8 @@ interface GetCouponController {
     ): IssuedCouponResponse
 }
 
+// 테스트 만들어야 함
+@RestController
 internal class GetCouponControllerImpl(
     private val findCouponUseCase: FindCouponUseCase
 ) : GetCouponController {

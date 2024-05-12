@@ -3,6 +3,7 @@ package com.fcfs.coupon.app.core.domain.coupon.query.usecase
 import com.fcfs.coupon.app.core.domain.coupon.query.readmodel.IssuedCoupon
 import com.fcfs.coupon.app.core.domain.coupon.query.repository.CouponFinder
 import com.fcfs.coupon.app.core.domain.coupon.query.usecase.message.IssuedCouponFilter
+import org.springframework.stereotype.Service
 
 interface FindCouponUseCase {
 
@@ -13,6 +14,7 @@ interface FindCouponUseCase {
     fun findAllCouponHistory(filter: IssuedCouponFilter): IssuedCoupon
 }
 
+@Service
 internal class FindCouponUseCaseImpl(
     private val couponFinder: CouponFinder
 ) : FindCouponUseCase {

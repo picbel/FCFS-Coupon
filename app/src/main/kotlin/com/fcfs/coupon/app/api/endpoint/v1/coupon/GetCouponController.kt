@@ -24,7 +24,6 @@ internal class GetCouponControllerImpl(
     override fun findIssuedCoupon(filter: IssuedCouponFilterRequest): IssuedCouponResponse {
         return findCouponUseCase.findAllCouponHistory(filter.toMessage()).run {
             IssuedCouponResponse.from(this)
-
         }
     }
 

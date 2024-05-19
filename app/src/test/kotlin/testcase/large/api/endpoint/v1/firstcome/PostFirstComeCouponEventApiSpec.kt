@@ -127,7 +127,7 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
      *  - 현재 구조와 가장 잘 어울리는 방법이지만 일단 lock을 다룬다는 점에서 성능적인 이슈를 고려해야한다. 또한 lock객체 관리 포인트도 추가된다.
      *
      * 2번 낙관적lock을 이용한 중복호출 방지
-     *  - 유저에게 지급한 쿠폰의 도메인 모델인 FirstComeCouponSupplyHistory에 낙관락을 사용하면 같은 가능 할것으로 보인다
+     *  - 유저에게 지급한 쿠폰의 도메인 모델인 FirstComeCouponSupplyHistory 낙관락을 사용하면 같은 가능 할것으로 보인다
      *  - 하지만 해당 방법은 변경해야할 점이 많고 설령 실패가 낫다해도 이미 redis에 저장된 데이터를 롤백처리를 어떻게 해야할지에 대한 문제가있다
      *  - 또한 설령 진짜로 롤백을 했다해도 그것이 진정한 의미의 선착순인지는 고민을 해봐야한다
      *

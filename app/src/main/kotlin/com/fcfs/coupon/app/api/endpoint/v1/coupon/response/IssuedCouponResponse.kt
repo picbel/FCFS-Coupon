@@ -7,7 +7,7 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class IssuedCouponResponse(
-    val id: Long,
+    val couponId: Long,
     val name: String,
     val discountAmount: BigDecimal,
     val start: LocalDateTime,
@@ -20,7 +20,7 @@ data class IssuedCouponResponse(
     companion object {
         fun from(src: IssuedCoupon) = with(src) {
             IssuedCouponResponse(
-                id = couponId.value,
+                couponId = couponId.value,
                 name = name,
                 discountAmount = discountAmount,
                 start = start,

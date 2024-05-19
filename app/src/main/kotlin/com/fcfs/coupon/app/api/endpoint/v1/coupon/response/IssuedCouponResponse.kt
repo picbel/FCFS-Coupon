@@ -17,7 +17,6 @@ data class IssuedCouponResponse(
     override val content: List<IssuedCouponHistoryResponse>,
     override val nextCursor: LocalDateTime?,
     override val size: Int
-
 ) : SliceResponse<LocalDateTime, IssuedCouponHistoryResponse> {
     companion object {
         fun from(src: IssuedCoupon) = with(src) {

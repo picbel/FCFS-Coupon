@@ -6,6 +6,7 @@ import com.fcfs.coupon.app.FcfsCouponApplication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
@@ -19,6 +20,7 @@ import testutils.config.TestRedisConfig
         TestRedisConfig::class
     ],
 )
+@ActiveProfiles("large")
 @AutoConfigureMockMvc
 abstract class LargeTestSuite {
 
@@ -52,8 +54,12 @@ abstract class LargeTestSuite {
             .response.contentAsString
     }
 
-    protected fun MockHttpServletRequestBuilder.params(params: Map<String, String>): MockHttpServletRequestBuilder {
-        params.forEach { (key, value) -> this.param(key, value) }
+    protected fun MockHttpServletRequestBuilder.params(params: Map<String, Any?>): MockHttpServletRequestBuilder {
+        params.forEach { (key, value) ->
+            if (value != null) {
+                this.param(key, value.toString())
+            }
+        }
         return this
     }
 }

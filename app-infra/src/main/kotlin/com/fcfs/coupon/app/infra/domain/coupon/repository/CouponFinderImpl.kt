@@ -25,7 +25,7 @@ internal class CouponFinderImpl(
     private val suppliedCouponDao: SuppliedCouponJpaDao,
     private val couponDao: CouponJpaDao
 ) : CouponFinder {
-    // jdsl 적용하자
+
     @Transactional(readOnly = true)
     override fun findAllByCouponId(filter: IssuedCouponFilter): IssuedCoupon {
         val histories = suppliedCouponDao.findAll(Pageable.ofSize(filter.size + 1)) {
@@ -42,7 +42,6 @@ internal class CouponFinderImpl(
                     path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).desc()
                 )
         }.mapNotNull { it }
-
         val coupon = if (histories.isEmpty()) {
             couponDao.findByIdOrNull(filter.couponId.value)
         } else {

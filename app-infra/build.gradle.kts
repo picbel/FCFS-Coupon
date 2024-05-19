@@ -17,6 +17,7 @@ dependencies {
 
     testImplementation(project(":app-core", "testArtifacts"))
     testImplementation(project(":app"))
+    testImplementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0")
 }
 
 repositories {

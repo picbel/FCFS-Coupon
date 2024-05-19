@@ -85,7 +85,7 @@ internal class GetCouponApiSpec : LargeTestSuite() {
         val res : IssuedCouponResponse = mockMvc.run {
             perform(
                 MockMvcRequestBuilders
-                    .get(ApiPath.FIRSTCOME_EVENT_ID.replace("{id}", coupon.couponId.value.toString()))
+                    .get(ApiPath.COUPON_ISSUE_ID.replace("{id}", coupon.couponId.value.toString()))
                     .characterEncoding(UTF_8)
                     .contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
                     .params(filter.toParams())

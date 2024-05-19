@@ -9,9 +9,10 @@ data class IssuedCouponFilterRequest(
     val size: Int,
     val start: LocalDateTime,
     val end: LocalDateTime,
-    val couponId: CouponId
 ) {
-    fun toMessage() = IssuedCouponFilter(
+    fun toMessage(
+        couponId: CouponId
+    ) = IssuedCouponFilter(
         cursor,
         size,
         start,

@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import testcase.large.LargeTestSuite
 import testutils.concurrency.ConcurrencyTestUtils.parallelExecute
 import testutils.factory.CouponFactory
@@ -36,7 +35,7 @@ import kotlin.text.Charsets.UTF_8
 
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
-class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
+internal class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
 
     @Autowired
     private lateinit var eventRepo: FirstComeCouponEventRepository
@@ -158,27 +157,4 @@ class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
         )
     }
 
-    private inline fun <reified T> ResultActions.expectSuccess(): T {
-        return mapper.readValue(
-            this.andExpect(status().is2xxSuccessful)
-                .andReturn()
-                .response.contentAsString
-        )
-
-    }
-
-    private fun ResultActions.expectSuccess2xx() {
-        return mapper.readValue(
-            this.andExpect(status().is2xxSuccessful)
-                .andReturn()
-                .response.contentAsString
-        )
-
-    }
-
-    private fun ResultActions.expectError4xx(): String {
-        return this.andExpect(status().is4xxClientError)
-            .andReturn()
-            .response.contentAsString
-    }
 }

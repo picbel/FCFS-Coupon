@@ -32,6 +32,7 @@ object FirstComeCouponSupplyHistoryFactory {
         excludedCouponDates: List<Long> = listOf(),
         userId: UserId,
         couponId: CouponId,
+        eventId : FirstComeCouponEventId = FirstComeCouponEventId.newId()
     ): List<FirstComeCouponSupplyHistory> {
         return (0 until createDates).reversed().mapNotNull { i ->
             if (excludedCouponDates.contains(createDates - i)) {
@@ -39,7 +40,7 @@ object FirstComeCouponSupplyHistoryFactory {
             } else {
                 val date = LocalDate.now().minusDays(i)
                 randomFirstComeCouponSupplyHistory(
-                    firstComeCouponEventId = FirstComeCouponEventId.newId(),
+                    firstComeCouponEventId = eventId,
                     userId = userId,
                     couponId = couponId,
                     continuousReset = (createDates - i) % 7 == 1L, // 8일마다 카운트를 reset합니다.

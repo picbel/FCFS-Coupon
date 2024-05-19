@@ -1,11 +1,15 @@
 package testcase.large
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.fcfs.coupon.app.FcfsCouponApplication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.ResultActions
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import testutils.config.TestRedisConfig
 
 @SpringBootTest(
@@ -24,4 +28,33 @@ abstract class LargeTestSuite {
     @Autowired
     protected lateinit var mockMvc: MockMvc
 
+    // 분리 필요
+    protected final inline fun <reified T> ResultActions.expectSuccess(): T {
+        return mapper.readValue(
+            this.andExpect(status().is2xxSuccessful)
+                .andReturn()
+                .response.contentAsString
+        )
+    }
+
+    protected fun ResultActions.expectSuccess2xx() {
+        return mapper.readValue(
+            this.andExpect(status().is2xxSuccessful)
+                .andReturn()
+                .response.contentAsString
+        )
+
+    }
+
+    protected fun ResultActions.expectError4xx(): String {
+        return this.andExpect(status().is4xxClientError)
+            .andReturn()
+            .response.contentAsString
+    }
+
+    protected fun MockHttpServletRequestBuilder.params(params: Map<String, String>): MockHttpServletRequestBuilder {
+        params.forEach { (key, value) -> this.param(key, value) }
+        return this
+    }
 }
+

@@ -1,11 +1,13 @@
 package com.fcfs.coupon.app.api.endpoint.v1.coupon.response
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fcfs.coupon.app.api.common.response.SliceResponse
 import com.fcfs.coupon.app.core.domain.coupon.query.readmodel.IssuedCoupon
 import com.fcfs.coupon.app.core.domain.coupon.query.readmodel.IssuedCouponHistory
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
+@JsonSerialize
 data class IssuedCouponResponse(
     val couponId: Long,
     val name: String,
@@ -33,6 +35,7 @@ data class IssuedCouponResponse(
     }
 }
 
+@JsonSerialize
 data class IssuedCouponHistoryResponse(
     val userId: Long,
     val isUsed: Boolean,

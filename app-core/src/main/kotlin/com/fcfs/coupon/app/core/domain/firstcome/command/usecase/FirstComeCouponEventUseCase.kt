@@ -75,6 +75,11 @@ internal class FirstComeCouponEventUseCaseImpl(
              *
              * 혹은 이벤트 발행 형식으로 해서 해도 될것 같다
              * 현재 회사에서 사용하는 트랜잭션chain이라는 개념을 들고와도 좋을꺼 같다.
+             *
+             *
+             * 240928
+             * 실패나면 실패에 대한 역함수 호출하기
+             * (applyForFirstComeCouponEvent) 이것도 되돌려야 하지않을까?
              */
             fcHistoryRepo.save(supplyHistory)
             userRepo.save(eventUser)

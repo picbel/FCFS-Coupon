@@ -14,7 +14,6 @@ import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
-import com.fcfs.coupon.app.core.utils.transaction.TransactionChain
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -27,8 +26,7 @@ internal class FirstComeCouponEventUseCaseImpl(
     private val fcRepo: FirstComeCouponEventRepository,
     private val fcHistoryRepo: FirstComeCouponSupplyHistoryRepository,
     private val userRepo: UserRepository,
-    private val couponRepo: CouponRepository,
-    private val transactionChain: TransactionChain
+    private val couponRepo: CouponRepository
 ) : FirstComeCouponEventUseCase,
     ApplyForFirstComeCouponEventDomainService {
     override fun applyForFirstComeCouponEvent(
@@ -89,31 +87,14 @@ internal class FirstComeCouponEventUseCaseImpl(
         // 쿠폰 발급
         val (eventUser, supplyHistory) = supplyTodayFirstComeCoupon(fcEvent, history, user, coupon.couponId)
         /*
-         * 완벽한 트랙잭션을 보장할려면 아래 두 save를 한 트랜잭션으로 묶는게 좋아보인다
-         * 이건 추후에 리팩토링을 통해 개선할 예정
-         *
-         * 혹은 이벤트 발행 형식으로 해서 해도 될것 같다
-         * 현재 회사에서 사용하는 트랜잭션chain이라는 개념을 들고와도 좋을꺼 같다.
-         *
-         *
-         * 240928
-         * 실패나면 실패에 대한 역함수 호출하기
-         * or 별도의 repo쪽에 트랜잭션 처리기 같은거 만들어서
-         *
-         * tx.runInTx(()->{
-         *   fcHistoryRepo.save(supplyHistory)
-         *   userRepo.save(eventUser)
-         * }
-         * )
-         *
-         * 같은거 해볼까...?
-         *
-         * txChain을 구현하기로 결정 241001
-         */
-        transactionChain.execute {
-            fcHistoryRepo.save(supplyHistory)
-            userRepo.save(eventUser)
-        }
+           * 완벽한 트랙잭션을 보장할려면 아래 두 save를 한 트랜잭션으로 묶는게 좋아보인다
+           * 이건 추후에 리팩토링을 통해 개선할 예정
+           *
+           * saga pattern을 사용하여 이벤트를 발행하고 이벤트를 통해 처리하는 방법도 고려해볼만 하다.
+           */
+        fcHistoryRepo.save(supplyHistory)
+        userRepo.save(eventUser)
+
         // 연속 쿠폰 발급
         return ApplyFirstComeCouponEventResult(
             isIncludedInFirstCome = true,

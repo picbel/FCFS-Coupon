@@ -79,7 +79,8 @@ internal class FirstComeCouponEventUseCaseImpl(
              *
              * 240928
              * 실패나면 실패에 대한 역함수 호출하기
-             * 별도의 repo쪽에 트랜잭션 처리기 같은거 만들어서
+             * or 별도의 repo쪽에 트랜잭션 처리기 같은거 만들어서
+             *
              * tx.runInTx(()->{
              *   fcHistoryRepo.save(supplyHistory)
              *   userRepo.save(eventUser)

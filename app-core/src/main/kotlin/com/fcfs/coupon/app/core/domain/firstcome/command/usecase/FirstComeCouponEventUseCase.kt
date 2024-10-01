@@ -90,7 +90,7 @@ internal class FirstComeCouponEventUseCaseImpl(
            * 완벽한 트랙잭션을 보장할려면 아래 두 save를 한 트랜잭션으로 묶는게 좋아보인다
            * 이건 추후에 리팩토링을 통해 개선할 예정
            *
-           * saga pattern을 사용하여 이벤트를 발행하고 이벤트를 통해 처리하는 방법도 고려해볼만 하다.
+           * saga pattern의 Orchestration을 통해 해보자
            */
         fcHistoryRepo.save(supplyHistory)
         userRepo.save(eventUser)

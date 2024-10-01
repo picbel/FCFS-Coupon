@@ -17,7 +17,10 @@ import testutils.factory.FirstComeCouponEventFactory
 import testutils.factory.FirstComeCouponEventFactory.setUpFirstComeCouponEvent
 import testutils.factory.FirstComeCouponSupplyHistoryFactory.firstComeCouponSupplyHistoriesSetUp
 import testutils.factory.UserFactory.randomUser
-import testutils.fake.repository.*
+import testutils.fake.repository.FakeCouponRepository
+import testutils.fake.repository.FakeFirstComeCouponEventRepository
+import testutils.fake.repository.FakeFirstComeCouponSupplyHistoryRepository
+import testutils.fake.repository.FakeUserRepository
 
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
@@ -40,7 +43,7 @@ class FirstComeCouponEventUseCaseSpec {
         userRepo = FakeUserRepository()
         couponRepo = FakeCouponRepository()
         sut = FirstComeCouponEventUseCaseImpl(
-            fcRepo, fcHistoryRepo,userRepo, couponRepo, FakeTransactionChain()
+            fcRepo, fcHistoryRepo,userRepo, couponRepo
         )
     }
 

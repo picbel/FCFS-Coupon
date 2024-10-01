@@ -1,18 +1,16 @@
 package com.fcfs.coupon.app.core.utils.transaction
 
-
 /**
- * RDB부터 다른 연산까지 같이 묶기위한 트랜잭션 체인
- *
- * 하지만 현재 RDB만 지원하고 있다.
- *
- * RDB+MONGO+REDIS나 RDB+HTTP call 등 다양한 연산을 지원하고 싶으나
- * 현재는 저런 다양한 연산을 하나로 묶을 아이디어가 떠오르지않는다.
+ * Saga pattern의 Orchestration을 표현하는 인터페이스이다.
+ * 여러 트랜잭션을 묶어서 처리하기때문에 TransactionChain이라는 이름을 사용하였다.
  */
 interface TransactionChain {
 
-    fun execute(operation:() -> Unit)
 
-    fun <R> execute(operation:() -> R): R
 
+    companion object {
+        fun new(): TransactionChain {
+            TODO()
+        }
+    }
 }

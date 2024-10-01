@@ -3,7 +3,6 @@ package testutils.factory
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
-import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.github.javafaker.Faker
 import java.time.LocalDate
 
@@ -45,9 +44,7 @@ object FirstComeCouponEventFactory {
      */
     fun setUpFirstComeCouponEvent(
         createDates: Long,
-        userId: UserId,
         couponId: CouponId,
-        excludedCouponDates: List<Long> = listOf(),
         limitCount: Long = 100,
         specialLimitCount: Long = 10
     ): FirstComeCouponEvent {

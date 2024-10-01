@@ -103,8 +103,6 @@ class FirstComeCouponEventUseCaseSpec {
         val coupons = (1..3).map { couponRepo.save(randomCoupon(id = CouponId(it.toLong()))) }
         val event = setUpFirstComeCouponEvent(
             createDates = 3,
-            excludedCouponDates = listOf(3),
-            userId = user.userId,
             couponId = coupons.first { it.id?.value == 1L }.id!!,
             limitCount = 10,
             specialLimitCount = 1

@@ -3,6 +3,7 @@ package com.fcfs.coupon.app.core.domain.firstcome.command.usecase
 import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
 import com.fcfs.coupon.app.core.domain.firstcome.command.dto.ApplyFirstComeCouponEventResult
+import com.fcfs.coupon.app.core.domain.firstcome.command.dto.FirstComeCouponEventEntryResult
 import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
 import com.fcfs.coupon.app.core.domain.firstcome.command.repository.FirstComeCouponEventRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.service.ApplyForFirstComeCouponEventDomainService
@@ -43,64 +44,78 @@ internal class FirstComeCouponEventUseCaseImpl(
         if (history.isTodayApplied(userId = user.userId)) {
             throw CustomException(ErrorCode.FC_COUPON_ALREADY_APPLIED)
         }
-        return firstComeCouponEventProcess(fcEvent, history, user)
+        return internalFirstComeCouponEvent(fcEvent, history, user)
     }
 
-    private fun firstComeCouponEventProcess(
+    private fun internalFirstComeCouponEvent(
         fcEvent: FirstComeCouponEvent,
         history: List<FirstComeCouponSupplyHistory>,
         user: User
     ): ApplyFirstComeCouponEventResult {
         return fcRepo.applyForFirstComeCouponEvent(fcEvent.id).run {
-            //선착순 실패시 결과 early return
-            if (this.isNotIncludedInFirstCome) {
-                return ApplyFirstComeCouponEventResult(
-                    isIncludedInFirstCome = false,
-                    couponName = null,
-                    couponDiscountAmount = null,
-                    isConsecutiveCouponSupplied = false,
-                    order = null,
-                    couponId = null
-                )
-            }
-
-            val coupon = couponRepo.getById(
-                this.couponId ?: throw CustomException(ErrorCode.FC_COUPON_EVENT_NOT_FOUND)
-            )
-            // 쿠폰 발급
-            val (eventUser, supplyHistory) = supplyTodayFirstComeCoupon(fcEvent, history, user, coupon.couponId)
-            /*
-             * 완벽한 트랙잭션을 보장할려면 아래 두 save를 한 트랜잭션으로 묶는게 좋아보인다
-             * 이건 추후에 리팩토링을 통해 개선할 예정
-             *
-             * 혹은 이벤트 발행 형식으로 해서 해도 될것 같다
-             * 현재 회사에서 사용하는 트랜잭션chain이라는 개념을 들고와도 좋을꺼 같다.
-             *
-             *
-             * 240928
-             * 실패나면 실패에 대한 역함수 호출하기
-             * or 별도의 repo쪽에 트랜잭션 처리기 같은거 만들어서
-             *
-             * tx.runInTx(()->{
-             *   fcHistoryRepo.save(supplyHistory)
-             *   userRepo.save(eventUser)
-             * }
-             * )
-             * 같은거 해볼까...?
-             */
-            fcHistoryRepo.save(supplyHistory)
-            userRepo.save(eventUser)
-            // 연속 쿠폰 발급
-            ApplyFirstComeCouponEventResult(
-                isIncludedInFirstCome = true,
-                couponName = coupon.name,
-                couponDiscountAmount = coupon.discountAmount,
-                isConsecutiveCouponSupplied = supplyHistory.isSupplyContinuousCoupon,
-                order = order,
-                couponId = coupon.id
+            firstComeCouponEventProcess(
+                this,
+                fcEvent,
+                history,
+                user
             )
         }
 
+    }
+
+    private fun firstComeCouponEventProcess(
+        firstComeCouponEventEntryResult: FirstComeCouponEventEntryResult,
+        fcEvent: FirstComeCouponEvent,
+        history: List<FirstComeCouponSupplyHistory>,
+        user: User
+    ): ApplyFirstComeCouponEventResult {
+        //선착순 실패시 결과 early return
+        if (firstComeCouponEventEntryResult.isNotIncludedInFirstCome) {
+            return ApplyFirstComeCouponEventResult(
+                isIncludedInFirstCome = false,
+                couponName = null,
+                couponDiscountAmount = null,
+                isConsecutiveCouponSupplied = false,
+                order = null,
+                couponId = null
+            )
+        }
+
+        val coupon = couponRepo.getById(
+            firstComeCouponEventEntryResult.couponId ?: throw CustomException(ErrorCode.FC_COUPON_EVENT_NOT_FOUND)
+        )
+        // 쿠폰 발급
+        val (eventUser, supplyHistory) = supplyTodayFirstComeCoupon(fcEvent, history, user, coupon.couponId)
+        /*
+         * 완벽한 트랙잭션을 보장할려면 아래 두 save를 한 트랜잭션으로 묶는게 좋아보인다
+         * 이건 추후에 리팩토링을 통해 개선할 예정
+         *
+         * 혹은 이벤트 발행 형식으로 해서 해도 될것 같다
+         * 현재 회사에서 사용하는 트랜잭션chain이라는 개념을 들고와도 좋을꺼 같다.
+         *
+         *
+         * 240928
+         * 실패나면 실패에 대한 역함수 호출하기
+         * or 별도의 repo쪽에 트랜잭션 처리기 같은거 만들어서
+         *
+         * tx.runInTx(()->{
+         *   fcHistoryRepo.save(supplyHistory)
+         *   userRepo.save(eventUser)
+         * }
+         * )
+         * 같은거 해볼까...?
+         */
+        fcHistoryRepo.save(supplyHistory)
+        userRepo.save(eventUser)
+        // 연속 쿠폰 발급
+        return ApplyFirstComeCouponEventResult(
+            isIncludedInFirstCome = true,
+            couponName = coupon.name,
+            couponDiscountAmount = coupon.discountAmount,
+            isConsecutiveCouponSupplied = supplyHistory.isSupplyContinuousCoupon,
+            order = firstComeCouponEventEntryResult.order,
+            couponId = coupon.id
+        )
     }
 
     private fun validateCouponEvent(message: ApplyFirstComeCouponEventMessage) =

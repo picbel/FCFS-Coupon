@@ -14,6 +14,7 @@ import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
+import com.fcfs.coupon.app.core.utils.transaction.TransactionChain
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -26,7 +27,8 @@ internal class FirstComeCouponEventUseCaseImpl(
     private val fcRepo: FirstComeCouponEventRepository,
     private val fcHistoryRepo: FirstComeCouponSupplyHistoryRepository,
     private val userRepo: UserRepository,
-    private val couponRepo: CouponRepository
+    private val couponRepo: CouponRepository,
+    private val transactionChain: TransactionChain
 ) : FirstComeCouponEventUseCase,
     ApplyForFirstComeCouponEventDomainService {
     override fun applyForFirstComeCouponEvent(
@@ -103,10 +105,15 @@ internal class FirstComeCouponEventUseCaseImpl(
          *   userRepo.save(eventUser)
          * }
          * )
+         *
          * 같은거 해볼까...?
+         *
+         * txChain을 구현하기로 결정 241001
          */
-        fcHistoryRepo.save(supplyHistory)
-        userRepo.save(eventUser)
+        transactionChain.execute {
+            fcHistoryRepo.save(supplyHistory)
+            userRepo.save(eventUser)
+        }
         // 연속 쿠폰 발급
         return ApplyFirstComeCouponEventResult(
             isIncludedInFirstCome = true,

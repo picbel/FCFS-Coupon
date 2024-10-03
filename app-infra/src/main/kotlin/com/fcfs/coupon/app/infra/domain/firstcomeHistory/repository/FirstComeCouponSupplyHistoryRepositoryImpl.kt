@@ -29,6 +29,19 @@ internal class FirstComeCouponSupplyHistoryRepositoryImpl(
         return jpaDao.save(firstComeCouponSupplyHistory.toEntity()).toDomain()
     }
 
+    override fun remove(firstComeCouponSupplyHistory: FirstComeCouponSupplyHistory) {
+        jpaDao.findByIdOrNull(
+            FirstComeCouponEventHistoryId(
+                fcEventId = firstComeCouponSupplyHistory.firstComeCouponEventId.value,
+                userId = firstComeCouponSupplyHistory.userId.value,
+                couponId = firstComeCouponSupplyHistory.couponId.value,
+                supplyDateTime = firstComeCouponSupplyHistory.supplyDateTime
+            )
+        )?.let {
+            jpaDao.delete(it)
+        }
+    }
+
     override fun findByUserIdAndSupplyDateBetween(
         userId: UserId,
         start: LocalDate,

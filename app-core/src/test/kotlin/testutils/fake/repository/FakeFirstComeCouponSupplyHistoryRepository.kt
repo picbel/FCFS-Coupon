@@ -35,6 +35,16 @@ class FakeFirstComeCouponSupplyHistoryRepository(
         return firstComeCouponSupplyHistory
     }
 
+    override fun remove(firstComeCouponSupplyHistory: FirstComeCouponSupplyHistory) {
+        val id = FakeFirstComeCouponSupplyHistoryId(
+            firstComeCouponEventId = firstComeCouponSupplyHistory.firstComeCouponEventId,
+            userId = firstComeCouponSupplyHistory.userId,
+            couponId = firstComeCouponSupplyHistory.couponId,
+            supplyDateTime = firstComeCouponSupplyHistory.supplyDateTime
+        )
+        data.remove(id)
+    }
+
     override fun findByUserIdAndSupplyDateBetween(
         userId: UserId,
         start: LocalDate,

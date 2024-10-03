@@ -16,7 +16,12 @@ data class TransactionChainOutcome(
     /**
      * 트랜잭션 chain 실행 성공 여부
      */
-    val isSuccess: Boolean
+    val isSuccess: Boolean,
+
+    /**
+     * 트랜잭션 chain 실행 실패시 발생한 예외
+     */
+    val failure: Throwable? = null
 ) {
     /**
      * Id를 지정해서 가져온다면 타입까지 이미 알고있다 가정한다.

@@ -14,6 +14,7 @@ import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
+import com.fcfs.coupon.app.core.utils.transaction.TransactionChain
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
@@ -86,14 +87,15 @@ internal class FirstComeCouponEventUseCaseImpl(
         )
         // 쿠폰 발급
         val (eventUser, supplyHistory) = supplyTodayFirstComeCoupon(fcEvent, history, user, coupon.couponId)
-        /*
-           * 완벽한 트랙잭션을 보장할려면 아래 두 save를 한 트랜잭션으로 묶는게 좋아보인다
-           * 이건 추후에 리팩토링을 통해 개선할 예정
-           *
-           * saga pattern의 Orchestration을 통해 해보자
-           */
-        fcHistoryRepo.save(supplyHistory)
-        userRepo.save(eventUser)
+
+        TransactionChain.open()
+            .next(
+                operation = { fcHistoryRepo.save(supplyHistory) },
+                compensation = { fcHistoryRepo.remove(supplyHistory) }
+            ).next(
+                operation = { userRepo.save(eventUser) },
+                compensation = { userRepo.save(user) }
+            ).executeAndThrow()
 
         // 연속 쿠폰 발급
         return ApplyFirstComeCouponEventResult(

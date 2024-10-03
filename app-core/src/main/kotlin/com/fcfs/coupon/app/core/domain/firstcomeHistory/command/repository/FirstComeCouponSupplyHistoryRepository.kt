@@ -17,6 +17,8 @@ interface FirstComeCouponSupplyHistoryReadOnlyRepository {
 
 interface FirstComeCouponSupplyHistoryRepository : FirstComeCouponSupplyHistoryReadOnlyRepository {
     fun save(firstComeCouponSupplyHistory: FirstComeCouponSupplyHistory): FirstComeCouponSupplyHistory
+
+    fun remove(firstComeCouponSupplyHistory: FirstComeCouponSupplyHistory)
 }
 
 

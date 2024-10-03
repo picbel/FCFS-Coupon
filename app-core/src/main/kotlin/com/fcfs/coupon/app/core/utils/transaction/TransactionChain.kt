@@ -11,19 +11,10 @@ interface TransactionChain {
 
     /**
      *
+     *
      * @param operation 트랜잭션 처리할 로직
      * @param compensation 트랜잭션 실패시 실행될 보상 로직
      * @param txId 트랜잭션 ID
-     */
-    fun next(
-        operation: () -> Unit,
-        compensation: () -> Unit,
-        txId: TransactionChainId = TransactionChainId.new()
-    ): TransactionChain
-
-    /**
-     * @param operation 트랜잭션 처리할 로직
-     * @param compensation 트랜잭션 실패시 실행될 보상 로직
      */
     fun <T> next(
         operation: () -> T,
@@ -35,17 +26,7 @@ interface TransactionChain {
      * next와 동일한 함수
      * @param operation 트랜잭션 처리할 로직
      * @param compensation 트랜잭션 실패시 실행될 보상 로직
-     */
-    fun and(
-        operation: () -> Unit,
-        compensation: () -> Unit,
-        txId: TransactionChainId = TransactionChainId.new()
-    ): TransactionChain
-
-    /**
-     * next와 동일한 함수
-     * @param operation 트랜잭션 처리할 로직
-     * @param compensation 트랜잭션 실패시 실행될 보상 로직
+     * @param txId 트랜잭션 ID
      */
     fun <T> and(
         operation: () -> T,
@@ -56,12 +37,12 @@ interface TransactionChain {
     /**
      * 쌓인 트랜잭션을 실행합니다.
      */
-    fun execute() : TransactionChainOutcome
+    fun execute(): TransactionChainOutcome
 
     /**
      * 쌓인 트랜잭션을 실행하고 실패시 예외를 전파합니다.
      */
-    fun executeAndThrow() : TransactionChainOutcome
+    fun executeAndThrow(): TransactionChainOutcome
 
     companion object {
         fun open(): TransactionChain {
@@ -72,35 +53,65 @@ interface TransactionChain {
             operation: () -> Unit,
             compensation: () -> Unit,
             txId: TransactionChainId = TransactionChainId.new()
-        ): TransactionChain = TransactionChain.open().next(operation, compensation, txId)
+        ): TransactionChain = open().next(operation, compensation, txId)
     }
 }
 
 internal class TransactionChainImpl : TransactionChain {
 
-    override fun next(operation: () -> Unit, compensation: () -> Unit, txId: TransactionChainId): TransactionChain {
-        TODO("Not yet implemented")
-    }
+    private val actList: MutableList<TxChainAct> = mutableListOf()
 
     override fun <T> next(operation: () -> T, compensation: () -> Unit, txId: TransactionChainId): TransactionChain {
-        TODO("Not yet implemented")
-    }
-
-    override fun and(operation: () -> Unit, compensation: () -> Unit, txId: TransactionChainId): TransactionChain {
-        TODO("Not yet implemented")
+        actList.add(
+            TxChainAct(
+                txId = txId,
+                operation = operation,
+                compensation = compensation
+            )
+        )
+        return this
     }
 
     override fun <T> and(operation: () -> T, compensation: () -> Unit, txId: TransactionChainId): TransactionChain {
-        TODO("Not yet implemented")
+        return next(operation, compensation, txId)
     }
 
     override fun execute(): TransactionChainOutcome {
-        TODO("Not yet implemented")
+        return internalExecute(false)
     }
 
     override fun executeAndThrow(): TransactionChainOutcome {
-        TODO("Not yet implemented")
+        return internalExecute(true)
     }
 
+    private fun internalExecute(isThrows: Boolean) : TransactionChainOutcome{
+        val actItr = actList.listIterator()
+        val results = LinkedHashMap<TransactionChainId, Any?>()
+        while (actItr.hasNext()) {
+            val act = actItr.next()
+            try {
+                results[act.txId] = act.operation.invoke()
+            }catch (e: Throwable) {
+                act.compensation.invoke()
+                while (actItr.hasPrevious()) {
+                    val prevAct = actItr.previous()
+                    prevAct.compensation.invoke()
+                }
+                return if (isThrows) {
+                    throw e
+                } else {
+                    results[act.txId] = e
+                    TransactionChainOutcome(results, false, e)
+                }
+            }
+        }
+        return TransactionChainOutcome(results, true)
+    }
+
+    private data class TxChainAct(
+        val txId: TransactionChainId,
+        val operation: () -> Any?,
+        val compensation: () -> Unit
+    )
 }
 

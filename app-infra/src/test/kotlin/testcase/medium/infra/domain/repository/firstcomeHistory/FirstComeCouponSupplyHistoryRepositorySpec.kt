@@ -20,6 +20,7 @@ import testutils.factory.FirstComeCouponSupplyHistoryFactory.randomFirstComeCoup
 import testutils.factory.UserFactory
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Suppress("NonAsciiCharacters", "className") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
 class FirstComeCouponSupplyHistoryRepositorySpec: MediumTestSuite()  {
@@ -100,6 +101,35 @@ class FirstComeCouponSupplyHistoryRepositorySpec: MediumTestSuite()  {
             histories.size shouldBe 6
             histories.all { it.userId == user.userId } shouldBe true
             histories.all { it.supplyDateTime.toLocalDate() in now..now.plusDays(5) } shouldBe true
+        }
+
+    }
+
+    @Test
+    fun `이벤트 이력을 삭제합니다`() {
+        //given history를 저장합니다.
+        val now = LocalDateTime.now()
+        val history = randomFirstComeCouponSupplyHistory(
+            firstComeCouponEventId = event.id,
+            userId = user.id!!,
+            couponId = defaultCoupons.id!!,
+            supplyDateTime = now
+        )
+        sut.save(history)
+        flushAndClear()
+
+        //when
+        sut.remove(history)
+        flushAndClear()
+
+        //then now를 기준으로 +- 1를 기준으로 조회했을 때 조회되지 않아야 합니다.
+        val histories = sut.findByUserIdAndSupplyDateBetween(
+            userId = user.id!!,
+            start = now.minusDays(1).toLocalDate(),
+            end = now.plusDays(1).toLocalDate(),
+        )
+        assertSoftly {
+            histories.size shouldBe 0
         }
 
     }

@@ -15,7 +15,7 @@ internal class TransactionChainSpec {
 
         }
 
-        fun ``() {
+        fun `2번째 트랜잭션이 실패합니다 3번째 트랜잭션은 호출되지 않습니다`() {
 
         }
     }

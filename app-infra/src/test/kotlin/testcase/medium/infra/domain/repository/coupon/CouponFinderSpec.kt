@@ -44,6 +44,7 @@ class CouponFinderSpec : MediumTestSuite() {
 
     private val now : LocalDateTime = LocalDateTime.now()
 
+    // TODO 1 User id 기준으로 발급 이력을 조회하는 것으로 변경
     @BeforeEach
     fun setUp() {
         // 10일간 10명의 유저가 이벤트에 응모하였습니다 총 100개의 데이터가 생성됩니다

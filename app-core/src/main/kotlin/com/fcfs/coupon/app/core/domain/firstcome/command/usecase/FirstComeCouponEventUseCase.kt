@@ -61,7 +61,6 @@ internal class FirstComeCouponEventUseCaseImpl(
                 user
             )
         }
-
     }
 
     private fun firstComeCouponEventProcess(
@@ -109,9 +108,7 @@ internal class FirstComeCouponEventUseCaseImpl(
 
     private fun validateCouponEvent(message: ApplyFirstComeCouponEventMessage) =
         fcRepo.getById(message.firstComeCouponEventId).also {
-            if (it.isNotValid()) {
-                throw CustomException(ErrorCode.FC_COUPON_EVENT_EXPIRED)
-            }
+            require(it.isValid()) { throw CustomException(ErrorCode.FC_COUPON_EVENT_EXPIRED) }
         }
 
 }

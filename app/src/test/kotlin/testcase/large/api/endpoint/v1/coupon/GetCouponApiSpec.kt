@@ -106,9 +106,8 @@ internal class GetCouponApiSpec : LargeTestSuite() {
                     .params(filter.toParams())
             ).expectSuccess()
         }
-        couponFinder.findAllByCouponId(filter.toMessage(coupon.couponId)).run {
-            println(this)
-        }
+        couponFinder.findAllByCouponId(filter.toMessage(coupon.couponId))
+
         // then
         assertSoftly {
             res.content.size shouldBe 10

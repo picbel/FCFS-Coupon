@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 
-interface PostFirstComeCouponEventController {
+interface FirstComeCouponEventController {
     /**
      * 원래라면 로그인방식으로 토큰에서 가져오거나 해야하지만 구현의 간단함을 위해 header에서 받겠습니다.
      */
@@ -28,9 +28,9 @@ interface PostFirstComeCouponEventController {
 }
 
 @RestController
-class PostFirstComeCouponEventControllerImpl(
+class FirstComeCouponEventControllerImpl(
     private val useCase: FirstComeCouponEventUseCase
-) : PostFirstComeCouponEventController {
+) : FirstComeCouponEventController {
     override fun applyForFirstComeCouponEvent(id: String, userId: Long): EntryFirstComeCouponEventResponse {
        useCase.applyForFirstComeCouponEvent(
            ApplyFirstComeCouponEventMessage(

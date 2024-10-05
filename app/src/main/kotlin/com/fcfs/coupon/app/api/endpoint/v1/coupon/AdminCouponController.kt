@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 
-interface GetCouponController {
+interface AdminCouponController {
 
+    /**
+     * Admin에서 사용할만한 기능이라 별도로 빼야하지만 CQRS예제를 위해 기능을 같이 둡니다
+     */
     @GetMapping(ApiPath.COUPON_ISSUE_ID)
     fun findIssuedCoupon(
         @PathVariable id: Long,
@@ -19,11 +22,10 @@ interface GetCouponController {
     ): IssuedCouponResponse
 }
 
-// 테스트 만들어야 함
 @RestController
-internal class GetCouponControllerImpl(
+internal class AdminCouponControllerImpl(
     private val findCouponUseCase: FindCouponUseCase
-) : GetCouponController {
+) : AdminCouponController {
 
     override fun findIssuedCoupon(id: Long,filter: IssuedCouponFilterRequest): IssuedCouponResponse {
         return findCouponUseCase.findAllCouponHistory(filter.toMessage(

@@ -88,14 +88,13 @@ internal class FirstComeCouponEventUseCaseImpl(
         // 쿠폰 발급
         val (eventUser, supplyHistory) = supplyTodayFirstComeCoupon(fcEvent, history, user, coupon.couponId)
 
-        TransactionChain.open()
-            .next(
-                operation = { fcHistoryRepo.save(supplyHistory) },
-                compensation = { fcHistoryRepo.remove(supplyHistory) }
-            ).next(
-                operation = { userRepo.save(eventUser) },
-                compensation = { userRepo.save(user) }
-            ).executeWithThrow()
+        TransactionChain.open().next(
+            operation = { fcHistoryRepo.save(supplyHistory) },
+            compensation = { fcHistoryRepo.remove(supplyHistory) }
+        ).next(
+            operation = { userRepo.save(eventUser) },
+            compensation = { userRepo.save(user) }
+        ).executeWithThrow()
 
         // 연속 쿠폰 발급
         return ApplyFirstComeCouponEventResult(

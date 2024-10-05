@@ -29,4 +29,8 @@ class FakeCouponRepository(
     override fun getById(id: CouponId): Coupon {
         return findById(id) ?: throw Exception("FakeCouponRepository Coupon Not found")
     }
+
+    fun remove(id: CouponId) {
+        data.remove(id)
+    }
 }

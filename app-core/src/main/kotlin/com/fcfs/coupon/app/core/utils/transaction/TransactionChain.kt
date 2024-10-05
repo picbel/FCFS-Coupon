@@ -10,9 +10,7 @@ import com.fcfs.coupon.app.core.utils.transaction.model.TransactionChainOutcome
 interface TransactionChain {
 
     /**
-     *
-     *
-     * @param operation 트랜잭션 처리할 로직
+     * @param operation 로컬 트랜잭션이 적용된 로직
      * @param compensation 트랜잭션 실패시 실행될 보상 로직
      * @param txId 트랜잭션 ID
      */
@@ -24,7 +22,7 @@ interface TransactionChain {
 
     /**
      * next와 동일한 함수
-     * @param operation 트랜잭션 처리할 로직
+     * @param operation 로컬 트랜잭션이 적용된 로직
      * @param compensation 트랜잭션 실패시 실행될 보상 로직
      * @param txId 트랜잭션 ID
      */
@@ -42,7 +40,7 @@ interface TransactionChain {
     /**
      * 쌓인 트랜잭션을 실행하고 실패시 예외를 전파합니다.
      */
-    fun executeAndThrow(): TransactionChainOutcome
+    fun executeWithThrow(): TransactionChainOutcome
 
     companion object {
         fun open(): TransactionChain {
@@ -80,7 +78,7 @@ internal class TransactionChainImpl : TransactionChain {
         return internalExecute(false)
     }
 
-    override fun executeAndThrow(): TransactionChainOutcome {
+    override fun executeWithThrow(): TransactionChainOutcome {
         return internalExecute(true)
     }
 

@@ -56,4 +56,8 @@ internal class FakeFirstComeCouponEventRepository(
     override fun getById(id: FirstComeCouponEventId): FirstComeCouponEvent {
         return findById(id) ?: throw Exception("FakeFirstComeCouponEventRepository FirstComeCouponEvent Not found")
     }
+
+    fun remove(id: FirstComeCouponEventId) {
+        data.remove(id)
+    }
 }

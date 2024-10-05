@@ -33,4 +33,8 @@ class FakeUserRepository(
     override fun getById(id: UserId): User {
         return findById(id) ?: throw Exception("FakeUserRepository User Not found")
     }
+
+    fun remove(id: UserId) {
+        data.remove(id)
+    }
 }

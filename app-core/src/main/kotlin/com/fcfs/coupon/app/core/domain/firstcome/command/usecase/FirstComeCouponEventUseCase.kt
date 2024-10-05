@@ -95,7 +95,7 @@ internal class FirstComeCouponEventUseCaseImpl(
             ).next(
                 operation = { userRepo.save(eventUser) },
                 compensation = { userRepo.save(user) }
-            ).executeAndThrow()
+            ).executeWithThrow()
 
         // 연속 쿠폰 발급
         return ApplyFirstComeCouponEventResult(

@@ -25,6 +25,7 @@ interface FirstComeCouponEventController {
         userId: Long,
     ) : EntryFirstComeCouponEventResponse
 
+    // TODO: 진행중인 이벤트 조회 API 추가
 }
 
 @RestController

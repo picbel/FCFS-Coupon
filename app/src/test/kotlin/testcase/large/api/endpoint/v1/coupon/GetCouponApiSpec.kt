@@ -48,7 +48,6 @@ internal class GetCouponApiSpec : LargeTestSuite() {
 
     private lateinit var coupon: Coupon
 
-    // TODO 1 User id 기준으로 발급 이력을 조회하는 것으로 변경
     /**
      * 3명의 유저가 10일간 쿠폰을 발급받았습니다.
      */
@@ -88,9 +87,8 @@ internal class GetCouponApiSpec : LargeTestSuite() {
         }
     }
 
-    // TODO 1 User id 기준으로 발급 이력을 조회하는 것으로 변경
     @Test
-    fun `유저가 쿠폰 발급 이력을 조회합니다`() {
+    fun `쿠폰 발급 이력을 조회합니다`() {
         // given
         val filter = IssuedCouponFilterRequest(
             cursor = LocalDateTime.now(),

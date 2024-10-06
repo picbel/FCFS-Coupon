@@ -8,6 +8,5 @@ import com.fcfs.coupon.app.core.domain.coupon.query.usecase.message.IssuedCoupon
  */
 interface CouponFinder {
 
-    // TODO 1 User id 기준으로 발급 이력을 조회하는 것으로 변경
     fun findAllByCouponId(filter: IssuedCouponFilter): IssuedCoupon
 }

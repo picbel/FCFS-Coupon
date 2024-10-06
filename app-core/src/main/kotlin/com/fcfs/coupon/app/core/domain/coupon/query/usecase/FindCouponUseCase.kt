@@ -19,7 +19,6 @@ internal class FindCouponUseCaseImpl(
     private val couponFinder: CouponFinder
 ) : FindCouponUseCase {
 
-    // TODO 1 User id 기준으로 발급 이력을 조회하는 것으로 변경
     override fun findAllCouponHistory(filter: IssuedCouponFilter): IssuedCoupon {
         return couponFinder.findAllByCouponId(filter)
     }

@@ -18,7 +18,7 @@ spring:
       port: 9900
       timeout: 200
 server:
-  port: 9999
+  port: 9998
   servlet:
     encoding:
       charset: UTF-8

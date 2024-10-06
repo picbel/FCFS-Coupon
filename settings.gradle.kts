@@ -17,6 +17,7 @@ rootProject.name = "coupon"
 include(":app-core")
 include(":app-infra")
 include(":app")
+include(":app-admin")
 
 
 

@@ -1,12 +1,13 @@
 spring:
+  config:
+    activate:
+      on-profile: large
   jpa:
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-        show_sql: true
-        format_sql: true
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test?serverTimezone=KST
@@ -14,11 +15,11 @@ spring:
     password:
   data:
     redis:
-      host: localhost
-      port: 9900
       timeout: 200
+      port: 9900
+      host: localhost
 server:
-  port: 9999
+  port: 9998
   servlet:
     encoding:
       charset: UTF-8

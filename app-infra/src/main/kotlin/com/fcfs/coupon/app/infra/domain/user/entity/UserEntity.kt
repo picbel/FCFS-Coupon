@@ -28,7 +28,7 @@ internal class UserEntity(
     * 하지만 spring도 아닌 hibernate에 직접 의존하게 되어 hibernate의 변경에 취약해 진다는 단점이 생긴다.
     */
     @BatchSize(size = 50)
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     val suppliedCoupons: MutableSet<SuppliedCouponEntity>
 )
 

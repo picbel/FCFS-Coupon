@@ -100,7 +100,9 @@ internal class TransactionChainImpl : TransactionChain {
                     try {
                         val prevAct = actItr.previous()
                         prevAct.compensation.invoke()
-                    } catch (_: Throwable) { } // 보상 로직이 실패해도 무시한다.
+                    } catch (_: Throwable) {
+                        // 보상 로직이 실패해도 무시한다. log를 남기고 슬랙같은 업무툴에 알림을 보내야하지만 예제라서 생략
+                    }
                 }
                 return if (isThrows) {
                     throw e

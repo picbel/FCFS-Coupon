@@ -4,7 +4,7 @@ import com.fcfs.coupon.app.api.endpoint.v1.ApiPath
 import com.fcfs.coupon.app.api.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
 import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
-import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCase
+import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.ApplyFirstComeCouponEventUseCase
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -30,7 +30,7 @@ interface FirstComeCouponEventController {
 
 @RestController
 class FirstComeCouponEventControllerImpl(
-    private val useCase: FirstComeCouponEventUseCase
+    private val useCase: ApplyFirstComeCouponEventUseCase
 ) : FirstComeCouponEventController {
     override fun applyForFirstComeCouponEvent(id: String, userId: Long): EntryFirstComeCouponEventResponse {
        useCase.applyForFirstComeCouponEvent(

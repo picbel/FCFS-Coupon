@@ -18,17 +18,17 @@ import com.fcfs.coupon.app.core.utils.transaction.TransactionChain
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
-interface FirstComeCouponEventUseCase {
+interface ApplyFirstComeCouponEventUseCase {
     fun applyForFirstComeCouponEvent(message: ApplyFirstComeCouponEventMessage): ApplyFirstComeCouponEventResult
 }
 
 @Service
-internal class FirstComeCouponEventUseCaseImpl(
+internal class ApplyFirstComeCouponEventUseCaseImpl(
     private val fcRepo: FirstComeCouponEventRepository,
     private val fcHistoryRepo: FirstComeCouponSupplyHistoryRepository,
     private val userRepo: UserRepository,
     private val couponRepo: CouponRepository
-) : FirstComeCouponEventUseCase,
+) : ApplyFirstComeCouponEventUseCase,
     ApplyForFirstComeCouponEventDomainService {
     override fun applyForFirstComeCouponEvent(
         message: ApplyFirstComeCouponEventMessage

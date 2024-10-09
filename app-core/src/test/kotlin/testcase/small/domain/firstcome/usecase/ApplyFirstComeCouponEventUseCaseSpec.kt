@@ -3,8 +3,8 @@ package testcase.small.domain.firstcome.usecase
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
-import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCase
-import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.FirstComeCouponEventUseCaseImpl
+import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.ApplyFirstComeCouponEventUseCase
+import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.ApplyFirstComeCouponEventUseCaseImpl
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.repository.FirstComeCouponSupplyHistoryRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
@@ -24,12 +24,12 @@ import testutils.fake.repository.FakeUserRepository
 
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
-class FirstComeCouponEventUseCaseSpec {
+class ApplyFirstComeCouponEventUseCaseSpec {
     /*
      * usecase단을 테스트 할때 mocking을 해야하는지 혹은 fakeDao를 구현해야하는지 고민이 됩니다.
      * fakeDao의 경우 mocking보다 값을 셋팅하는 부분에 있어 편리함이 있어 fakeRepo를 구현하여 테스트를 진행하였습니다
      */
-    private lateinit var sut: FirstComeCouponEventUseCase
+    private lateinit var sut: ApplyFirstComeCouponEventUseCase
 
     private lateinit var fcRepo: FakeFirstComeCouponEventRepository
     private lateinit var fcHistoryRepo: FirstComeCouponSupplyHistoryRepository
@@ -42,7 +42,7 @@ class FirstComeCouponEventUseCaseSpec {
         fcHistoryRepo = FakeFirstComeCouponSupplyHistoryRepository()
         userRepo = FakeUserRepository()
         couponRepo = FakeCouponRepository()
-        sut = FirstComeCouponEventUseCaseImpl(
+        sut = ApplyFirstComeCouponEventUseCaseImpl(
             fcRepo, fcHistoryRepo,userRepo, couponRepo
         )
     }

@@ -5,13 +5,16 @@ import com.fcfs.coupon.app.core.utils.transaction.model.TransactionChainOutcome
 
 /**
  * Saga pattern의 Orchestration을 표현하는 인터페이스이다.
- * 여러 트랜잭션을 묶어서 처리하기때문에 TransactionChain이라는 이름을 사용하였다.
+ * 여러 트랜잭션을 묶어서 처리하기때문에 TransactionChain이라는 이름을 사용하였습니다.
+ *
+ * operation은 로컬 트랜잭션이 적용된 로직을 의미합니다.
+ * 따라서 operation이 실패할 경우 이전 operation의 보상 로직을 실행합니다.
  */
 interface TransactionChain {
 
     /**
      * @param operation 로컬 트랜잭션이 적용된 로직
-     * @param compensation 트랜잭션 실패시 실행될 보상 로직
+     * @param compensation 트랜잭션 chain이 실패시 실행될 보상 로직
      * @param txId 트랜잭션 ID
      */
     fun <T> next(
@@ -89,11 +92,15 @@ internal class TransactionChainImpl : TransactionChain {
             val act = actItr.next()
             try {
                 results[act.txId] = act.operation.invoke()
-            }catch (e: Throwable) {
-                act.compensation.invoke()
+            }catch (e: Throwable) {  // 로컬 트랜잭션이 적용되었을꺼란 가정하에 동작하기때문에 실패한 시점의 트랜잭션의 보상은 실행하지 않는다
+                if (actItr.hasPrevious()) {
+                    actItr.previous() // 현재 트랜잭션은 스킵한다.
+                }
                 while (actItr.hasPrevious()) {
-                    val prevAct = actItr.previous()
-                    prevAct.compensation.invoke()
+                    try {
+                        val prevAct = actItr.previous()
+                        prevAct.compensation.invoke()
+                    } catch (_: Throwable) { } // 보상 로직이 실패해도 무시한다.
                 }
                 return if (isThrows) {
                     throw e

@@ -184,7 +184,7 @@ internal class TransactionChainSpec {
                     compensation = { couponRepo.remove(coupon.id!!) }
                 ).next(
                     operation = { throw UnsupportedOperationException() },
-                    compensation = { fcRepo.remove(fcfsEvent.id) }
+                    compensation = { fcHistoryRepo.remove(newHistory) } // 실패한 트랜잭션의 보상트랜잭션은 호출되지 않습니다.
                 ).next(
                     operation = { fcHistoryRepo.save(fcfsEventHistory) },
                     compensation = { fcHistoryRepo.remove(newHistory) } // 4번째 트랜잭션은 호출되지 않습니다.

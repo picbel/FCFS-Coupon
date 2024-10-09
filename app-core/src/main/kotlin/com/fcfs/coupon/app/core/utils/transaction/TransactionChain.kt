@@ -47,7 +47,7 @@ interface TransactionChain {
 
     companion object {
         fun open(): TransactionChain {
-            return TransactionChainImpl()
+            return TransactionChainManager()
         }
 
         fun open(
@@ -58,7 +58,7 @@ interface TransactionChain {
     }
 }
 
-internal class TransactionChainImpl : TransactionChain {
+internal class TransactionChainManager : TransactionChain {
 
     private val actList: MutableList<TxChainAct> = mutableListOf()
 

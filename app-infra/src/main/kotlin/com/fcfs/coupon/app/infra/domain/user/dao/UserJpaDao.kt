@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-internal interface UserJpaDao : JpaRepository<UserEntity, Long>
+internal interface UserJpaDao : JpaRepository<UserEntity, Long>, KotlinJdslJpqlExecutor
 
 @Repository
 internal interface SuppliedCouponJpaDao : JpaRepository<SuppliedCouponEntity, Long>, KotlinJdslJpqlExecutor

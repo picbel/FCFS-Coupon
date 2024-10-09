@@ -29,18 +29,19 @@ internal class CouponFinderImpl(
     @Transactional(readOnly = true)
     override fun findAllByCouponId(filter: IssuedCouponFilter): IssuedCoupon {
         val histories = suppliedCouponDao.findAll(Pageable.ofSize(filter.size + 1)) {
-            select(entity(SuppliedCouponEntity::class))
-                .from(
-                    entity(SuppliedCouponEntity::class),
-                    fetchJoin(SuppliedCouponEntity::coupon)
-                ).whereAnd(
-                    path(CouponEntity::couponId).eq(filter.couponId.value),
-                    path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).greaterThanOrEqualTo(filter.start),
-                    path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).lessThanOrEqualTo(filter.end),
-                    filter.cursor?.let { path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).lessThanOrEqualTo(it) }
-                ).orderBy(
-                    path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).desc()
-                )
+            select(
+                entity(SuppliedCouponEntity::class)
+            ).from(
+                entity(SuppliedCouponEntity::class),
+                fetchJoin(SuppliedCouponEntity::coupon)
+            ).whereAnd(
+                path(CouponEntity::couponId).eq(filter.couponId.value),
+                path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).greaterThanOrEqualTo(filter.start),
+                path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).lessThanOrEqualTo(filter.end),
+                filter.cursor?.let { path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).lessThanOrEqualTo(it) }
+            ).orderBy(
+                path(SuppliedCouponEntity::id)(SuppliedCouponId::suppliedAt).desc()
+            )
         }.mapNotNull { it }
         val coupon = if (histories.isEmpty()) {
             couponDao.findByIdOrNull(filter.couponId.value)
@@ -48,21 +49,17 @@ internal class CouponFinderImpl(
             histories.first().coupon
         } ?: throw CustomException(ErrorCode.COUPON_NOT_FOUND)
 
-        val (content, nextCursor) = if (histories.size > filter.size) {
-            Pair(histories.take(filter.size), histories.last().id.suppliedAt)
-        } else {
-            Pair(histories, null)
-        }
         return IssuedCoupon(
             couponId = CouponId(filter.couponId.value),
             name = coupon.name,
             discountAmount = coupon.discountAmount,
             start = filter.start,
             end = filter.end,
-            content = content.take(filter.size).map { it.toIssuedCouponHistory() },
-            nextCursor = nextCursor,
+            content = histories.take(filter.size).map { it.toIssuedCouponHistory() },
+            nextCursor = histories.getOrNull(filter.size)?.id?.suppliedAt,
             size = filter.size
         )
+
     }
 
     private fun SuppliedCouponEntity.toIssuedCouponHistory(): IssuedCouponHistory {

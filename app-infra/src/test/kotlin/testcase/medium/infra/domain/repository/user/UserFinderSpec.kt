@@ -4,6 +4,7 @@ import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepositor
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.model.SuppliedCoupon
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
+import com.fcfs.coupon.app.core.domain.user.query.readmodel.CouponHistory
 import com.fcfs.coupon.app.core.domain.user.query.repository.UserFinder
 import com.fcfs.coupon.app.core.domain.user.query.usecase.message.FindSuppliedCouponFilter
 import io.kotest.assertions.assertSoftly
@@ -19,7 +20,7 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 
-@Suppress("NonAsciiCharacters", "ClassName") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
+@Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
 internal class UserFinderSpec : MediumTestSuite() {
 
     @Autowired
@@ -88,10 +89,10 @@ internal class UserFinderSpec : MediumTestSuite() {
 
 
     @Test
-    fun `유저가 최근 7일간의 쿠폰내역을 size 3으로 조회합니다`() {
+    fun `유저가 최근 7일간의 쿠폰내역을 size 5로 조회합니다`() {
         //given
         val filter = FindSuppliedCouponFilter(
-            size = 3,
+            size = 5,
             cursor = null,
             startSuppliedAt = LocalDateTime.now().minusDays(7),
             endSuppliedAt = LocalDateTime.now(),
@@ -101,7 +102,7 @@ internal class UserFinderSpec : MediumTestSuite() {
 
         //then
         assertSoftly {
-            result.content.size shouldBe 3
+            result.content.size shouldBe 5
             result.id shouldBe tester.userId
             result.content.all {
                 it.suppliedAt.isAfter(filter.startSuppliedAt) && it.suppliedAt.isBefore(filter.endSuppliedAt)
@@ -114,24 +115,31 @@ internal class UserFinderSpec : MediumTestSuite() {
     @Test
     fun `유저가 최근 7일간의 쿠폰내역을 size 3으로 next가 없을때까지 조회합니다`() {
         //given
-        val filter = FindSuppliedCouponFilter(
+        var filter = FindSuppliedCouponFilter(
             size = 3,
             cursor = null,
             startSuppliedAt = LocalDateTime.now().minusDays(7),
             endSuppliedAt = LocalDateTime.now(),
         )
-        //when
-        val result = sut.findSuppliedCouponHistory(tester.userId, filter)
-        val nextFilter = FindSuppliedCouponFilter(
-            size = 3,
-            cursor = result.nextCursor,
-            startSuppliedAt = LocalDateTime.now().minusDays(7),
-            endSuppliedAt = LocalDateTime.now(),
-        )
-        val nextResult = sut.findSuppliedCouponHistory(tester.userId, nextFilter)
 
+        //when
+        val content = mutableListOf<CouponHistory>()
+        var result = sut.findSuppliedCouponHistory(tester.userId, filter)
+        content.addAll(result.content)
+        filter = filter.copy(cursor = result.nextCursor)
+        while (result.hasNext) {
+            result = sut.findSuppliedCouponHistory(tester.userId, filter)
+            filter = filter.copy(cursor = result.nextCursor)
+            content.addAll(result.content)
+        }
 
         //then
+        assertSoftly {
+            content.size shouldBe 7
+            content.all {
+                it.suppliedAt.isAfter(filter.startSuppliedAt) && it.suppliedAt.isBefore(filter.endSuppliedAt)
+            } shouldBe true
+        }
 
     }
 }

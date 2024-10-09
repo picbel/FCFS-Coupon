@@ -13,13 +13,13 @@ data class UserCouponHistory(
     override val content: List<CouponHistory>,
     override val nextCursor: LocalDateTime?,
     override val size: Int
-)  : Slice<LocalDateTime, CouponHistory>
+) : Slice<LocalDateTime, CouponHistory>
 
 data class CouponHistory(
     val couponId: CouponId,
     val isUsed: Boolean,
     val name: String,
     val discountAmount: BigDecimal,
-    val suppliedAt : LocalDateTime,
-    val usedAt : LocalDateTime?
+    val suppliedAt: LocalDateTime,
+    val usedAt: LocalDateTime?
 )

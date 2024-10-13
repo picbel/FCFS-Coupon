@@ -49,7 +49,7 @@ internal class UserFinderSpec : MediumTestSuite() {
         // 10일간
         users.forEach {
             it.copy(
-                suppliedCoupons = (1..10).reversed().map { day ->
+                suppliedCoupons = (0..9).reversed().map { day ->
                     SuppliedCoupon(
                         couponId = coupon.couponId,
                         isUsed = false,

@@ -24,10 +24,10 @@ import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import testcase.large.LargeTestSuite
 import testutils.concurrency.ConcurrencyTestUtils.parallelExecute
+import testutils.dataset.RedisDataSetting
 import testutils.factory.CouponFactory
 import testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
 import testutils.factory.UserFactory
-import testutils.temp.RedisDataSetting
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*

@@ -2,14 +2,14 @@ package com.fcfs.coupon.app.api.endpoint.v1.firstcome
 
 import com.fcfs.coupon.app.api.endpoint.v1.ApiPath
 import com.fcfs.coupon.app.api.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
+import com.fcfs.coupon.app.api.endpoint.v1.firstcome.response.FirstComeCouponEventResponse
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEventId
 import com.fcfs.coupon.app.core.domain.firstcome.command.message.ApplyFirstComeCouponEventMessage
 import com.fcfs.coupon.app.core.domain.firstcome.command.usecase.ApplyFirstComeCouponEventUseCase
+import com.fcfs.coupon.app.core.domain.firstcome.query.usecase.QueryFirstComeCouponEventUseCase
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -23,24 +23,36 @@ interface FirstComeCouponEventController {
         id: String,
         @RequestHeader("user-id")
         userId: Long,
-    ) : EntryFirstComeCouponEventResponse
+    ): EntryFirstComeCouponEventResponse
 
-    // TODO: 진행중인 이벤트 조회 API 추가
+
+    @GetMapping(ApiPath.FIRSTCOME_EVENT)
+    fun findEventByDate(
+        @RequestParam("start")
+        start: LocalDateTime,
+        @RequestParam("end")
+        end: LocalDateTime
+    ): List<FirstComeCouponEventResponse>
 }
 
 @RestController
 class FirstComeCouponEventControllerImpl(
-    private val useCase: ApplyFirstComeCouponEventUseCase
+    private val useCase: ApplyFirstComeCouponEventUseCase,
+    private val queryUseCase: QueryFirstComeCouponEventUseCase
 ) : FirstComeCouponEventController {
     override fun applyForFirstComeCouponEvent(id: String, userId: Long): EntryFirstComeCouponEventResponse {
-       useCase.applyForFirstComeCouponEvent(
-           ApplyFirstComeCouponEventMessage(
-               userId = UserId(userId),
-               firstComeCouponEventId = FirstComeCouponEventId(UUID.fromString(id))
-           )
-       ).let {
-           return EntryFirstComeCouponEventResponse.from(it)
-       }
+        useCase.applyForFirstComeCouponEvent(
+            ApplyFirstComeCouponEventMessage(
+                userId = UserId(userId),
+                firstComeCouponEventId = FirstComeCouponEventId(UUID.fromString(id))
+            )
+        ).let {
+            return EntryFirstComeCouponEventResponse.from(it)
+        }
+    }
+
+    override fun findEventByDate(start: LocalDateTime, end: LocalDateTime): List<FirstComeCouponEventResponse> {
+        return queryUseCase.findFirstComeCouponEventByDate(start, end).map { FirstComeCouponEventResponse.from(it) }
     }
 
 }

@@ -35,7 +35,7 @@ import kotlin.text.Charsets.UTF_8
 
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
-internal class PostFirstComeCouponEventApiSpec : LargeTestSuite() {
+internal class FirstComeCouponEventApiSpec : LargeTestSuite() {
 
     @Autowired
     private lateinit var eventRepo: FirstComeCouponEventRepository

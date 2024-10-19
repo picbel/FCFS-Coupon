@@ -15,18 +15,47 @@ value class FirstComeCouponEventId(val value: UUID) {
  * root aggregate
  */
 data class FirstComeCouponEvent(
+    /**
+     * 이벤트 ID
+     */
     val id: FirstComeCouponEventId,
+    /**
+     * 이벤트 이름
+     */
     val name: String,
+    /**
+     * 이벤트 설명
+     */
     val description: String,
+    /**
+     * 선착순 마감 수량
+     */
     val limitCount: Long,
+    /**
+     * 특별 쿠폰 지급 수량
+     */
     val specialLimitCount: Long,
+    /**
+     * 기본 쿠폰
+     */
     val defaultCouponId: CouponId,
+    /**
+     * 특별 쿠폰
+     */
     val specialCouponId: CouponId,
+    /**
+     * 연속 선착순 달성시 지급 쿠폰
+     */
     val consecutiveCouponId: CouponId,
+    /**
+     * 이벤트 시작일
+     */
     val startDate: LocalDate,
+    /**
+     * 이벤트 종료일
+     */
     val endDate: LocalDate,
 ) {
-    // #end region
 
     fun isValid(): Boolean {
         val today = LocalDate.now()

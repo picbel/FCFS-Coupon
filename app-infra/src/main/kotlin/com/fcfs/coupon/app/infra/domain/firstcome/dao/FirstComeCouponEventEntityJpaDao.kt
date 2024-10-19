@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-internal interface FirstComeCouponEventEntityJpaDao : JpaRepository<FirstComeCouponEventEntity, UUID>
+internal interface FirstComeCouponEventEntityJpaDao : JpaRepository<FirstComeCouponEventEntity, UUID> {
+
+}

@@ -15,6 +15,11 @@ object RedisDataSetting {
         redisDao.saveAll(fcCoupons)
     }
 
+    /**
+     * TODO 241019
+     * 이 함수 app-core에 AdminFirstComeCouponEventUseCase에 구현후 해당 객체 호출되도록 변경
+     * 아직 시작전인 evnet만 수정가능하도록 구현하기
+     */
     private fun firstComeCouponSetUp(
         event: FirstComeCouponEvent,
     ): List<FirstComeCoupon> {

@@ -26,13 +26,8 @@ interface FirstComeCouponEventController {
     ): EntryFirstComeCouponEventResponse
 
 
-    @GetMapping(ApiPath.FIRSTCOME_EVENT)
-    fun findEventByDate(
-        @RequestParam("start")
-        start: LocalDateTime,
-        @RequestParam("end")
-        end: LocalDateTime
-    ): List<FirstComeCouponEventResponse>
+    @GetMapping(ApiPath.FIRSTCOME_EVENT_IN_PROGRESS)
+    fun findInProgressEvent(): List<FirstComeCouponEventResponse>
 }
 
 @RestController
@@ -51,8 +46,9 @@ class FirstComeCouponEventControllerImpl(
         }
     }
 
-    override fun findEventByDate(start: LocalDateTime, end: LocalDateTime): List<FirstComeCouponEventResponse> {
-        return queryUseCase.findFirstComeCouponEventByDate(start, end).map { FirstComeCouponEventResponse.from(it) }
+    override fun findInProgressEvent(): List<FirstComeCouponEventResponse> {
+        return queryUseCase.findInProgressFirstComeCouponEvent(LocalDateTime.now())
+            .map { FirstComeCouponEventResponse.from(it) }
     }
 
 }

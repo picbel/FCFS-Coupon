@@ -8,9 +8,8 @@ import java.time.LocalDateTime
 
 interface QueryFirstComeCouponEventUseCase {
 
-    fun findFirstComeCouponEventByDate(
-        start: LocalDateTime,
-        end: LocalDateTime
+    fun findInProgressFirstComeCouponEvent(
+        now : LocalDateTime
     ) : List<FirstComeCouponEventReadModel>
 
 }
@@ -20,11 +19,10 @@ internal class QueryFirstComeCouponEventUseCaseImpl(
     private val fcFinder : FirstComeCouponEventFinder
 ) : QueryFirstComeCouponEventUseCase {
 
-    override fun findFirstComeCouponEventByDate(
-        start: LocalDateTime,
-        end: LocalDateTime
+    override fun findInProgressFirstComeCouponEvent(
+        now: LocalDateTime
     ): List<FirstComeCouponEventReadModel> {
-        TODO()
+        return fcFinder.findInProgressFirstComeCouponEvent(now)
     }
 
 }

@@ -6,9 +6,8 @@ import java.time.LocalDateTime
 
 interface FirstComeCouponEventFinder {
 
-    fun findFirstComeCouponEventByDate(
-        start: LocalDateTime,
-        end: LocalDateTime
+    fun findInProgressFirstComeCouponEvent(
+        now : LocalDateTime
     ): List<FirstComeCouponEventReadModel>
 
 }

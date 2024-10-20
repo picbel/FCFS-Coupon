@@ -3,6 +3,7 @@ package testcase.large.api.endpoint.v1.firstcome
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fcfs.coupon.app.api.endpoint.v1.ApiPath
 import com.fcfs.coupon.app.api.endpoint.v1.firstcome.response.EntryFirstComeCouponEventResponse
+import com.fcfs.coupon.app.api.endpoint.v1.firstcome.response.FirstComeCouponEventResponse
 import com.fcfs.coupon.app.api.handler.ResponseHandler
 import com.fcfs.coupon.app.core.domain.coupon.command.repository.CouponRepository
 import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCouponEvent
@@ -85,6 +86,28 @@ internal class FirstComeCouponEventApiSpec : LargeTestSuite() {
 
         // redisSetting 추후 프로젝트확장으로
         RedisDataSetting.saveRedisFirstComeCouponInfo(event, redisDao)
+        // 새로운 이벤트 저장
+        eventRepo.save(randomFirstComeCouponEvent(
+            id = FirstComeCouponEventId.newId(),
+            defaultCouponId = couponRepo.save(CouponFactory.randomCoupon()).couponId,
+            specialCouponId = couponRepo.save(CouponFactory.randomCoupon()).couponId,
+            consecutiveCouponId = couponRepo.save(CouponFactory.randomCoupon()).couponId,
+            limitCount = 10,
+            specialLimitCount = 1,
+            startDate = LocalDate.now().minusDays(3),
+            endDate = LocalDate.now().plusDays(1)
+        ))
+    }
+
+    @Test
+    fun `진행중인 이벤트를 조회합니다`() {
+        // when
+        val response : List<FirstComeCouponEventResponse> = findInProgressEventApiCall().expectSuccess()
+        // then setup에서 진행중인 이벤트는 현재 2개만 저장하였습니다
+        assertSoftly {
+            response.size shouldBe 2
+            response.any { it.id == event.id.value } shouldBe true
+        }
     }
 
     @Test
@@ -153,6 +176,15 @@ internal class FirstComeCouponEventApiSpec : LargeTestSuite() {
                 .post(ApiPath.FIRSTCOME_EVENT_ID.replace("{id}", eventId.toString()))
                 .characterEncoding(UTF_8)
                 .header("user-id", userId)
+                .contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+        )
+    }
+
+    private fun findInProgressEventApiCall(): ResultActions {
+        return mockMvc.perform(
+            MockMvcRequestBuilders
+                .get(ApiPath.FIRSTCOME_EVENT_IN_PROGRESS)
+                .characterEncoding(UTF_8)
                 .contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
         )
     }

@@ -1,6 +1,7 @@
 dependencies {
     implementation(project(":app-core"))
     implementation(project(":app-infra"))
+    implementation(project(":app-api"))
 
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-web")

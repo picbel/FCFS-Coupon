@@ -16,6 +16,7 @@ pluginManagement {
 rootProject.name = "coupon"
 include(":app-core")
 include(":app-infra")
+include(":app-api")
 include(":app")
 include(":app-admin")
 

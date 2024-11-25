@@ -73,10 +73,12 @@ command와 query를 분리하여 CQRS 패턴을 적용하였습니다. \
 ![241124-test-run.png](readme_resource/241124-test-run.png)
 
 
-테스트 Coverage는 다음과 같습니다. (24-11-24 기준)
-![241124-test-coverage.png](readme_resource/241124-test-coverage.png) \
+테스트 Coverage는 다음과 같습니다. (24-11-24 기준) \
+![241124-test-coverage.png](readme_resource/241124-test-coverage.png)
+
 테스트 커버리지가 높다고 해서 반드시 좋은 테스트가 되는 것은 아니지만, \
 테스트 케이스의 스펙 정의를 꼼꼼하게 작성했는지 여부를 평가하는 지표로서 고려될 수 있다고 생각합니다.
+
 ---
 
 ### 출처

@@ -1,6 +1,6 @@
 package com.fcfs.coupon.app.core.domain.coupon.query.usecase.message
 
-import com.fcfs.coupon.app.core.commons.Sliceable
+import com.fcfs.coupon.app.core.common.Sliceable
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import java.time.LocalDateTime
 

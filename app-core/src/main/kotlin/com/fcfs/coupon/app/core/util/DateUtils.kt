@@ -1,4 +1,4 @@
-package com.fcfs.coupon.app.core.utils
+package com.fcfs.coupon.app.core.util
 
 import java.time.LocalDate
 import java.time.LocalDateTime

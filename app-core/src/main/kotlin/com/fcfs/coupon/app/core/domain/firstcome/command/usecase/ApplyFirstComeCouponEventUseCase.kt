@@ -14,7 +14,7 @@ import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import com.fcfs.coupon.app.core.exception.CustomException
 import com.fcfs.coupon.app.core.exception.ErrorCode
-import com.fcfs.coupon.app.core.utils.transaction.TransactionChain
+import com.fcfs.coupon.app.core.util.transaction.TransactionChain
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 

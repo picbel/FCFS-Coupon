@@ -6,8 +6,8 @@ import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCoup
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.User
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
-import com.fcfs.coupon.app.core.utils.transaction.TransactionChain
-import com.fcfs.coupon.app.core.utils.transaction.model.TransactionChainId
+import com.fcfs.coupon.app.core.util.transaction.TransactionChain
+import com.fcfs.coupon.app.core.util.transaction.model.TransactionChainId
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotContain

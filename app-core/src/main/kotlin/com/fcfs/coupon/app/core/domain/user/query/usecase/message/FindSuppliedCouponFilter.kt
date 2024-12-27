@@ -1,6 +1,6 @@
 package com.fcfs.coupon.app.core.domain.user.query.usecase.message
 
-import com.fcfs.coupon.app.core.commons.Sliceable
+import com.fcfs.coupon.app.core.common.Sliceable
 import java.time.LocalDateTime
 
 data class FindSuppliedCouponFilter(

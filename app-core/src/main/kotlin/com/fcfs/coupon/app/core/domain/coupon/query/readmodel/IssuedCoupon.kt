@@ -1,6 +1,6 @@
 package com.fcfs.coupon.app.core.domain.coupon.query.readmodel
 
-import com.fcfs.coupon.app.core.commons.Slice
+import com.fcfs.coupon.app.core.common.Slice
 import com.fcfs.coupon.app.core.domain.coupon.command.aggregate.CouponId
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
 import java.math.BigDecimal

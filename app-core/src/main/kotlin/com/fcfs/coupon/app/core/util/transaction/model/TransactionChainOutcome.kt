@@ -1,4 +1,4 @@
-package com.fcfs.coupon.app.core.utils.transaction.model
+package com.fcfs.coupon.app.core.util.transaction.model
 
 
 /**

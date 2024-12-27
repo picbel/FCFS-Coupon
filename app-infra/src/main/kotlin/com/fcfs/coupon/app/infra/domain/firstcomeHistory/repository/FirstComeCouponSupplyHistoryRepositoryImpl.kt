@@ -5,7 +5,7 @@ import com.fcfs.coupon.app.core.domain.firstcome.command.aggregate.FirstComeCoup
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.aggregate.FirstComeCouponSupplyHistory
 import com.fcfs.coupon.app.core.domain.firstcomeHistory.command.repository.FirstComeCouponSupplyHistoryRepository
 import com.fcfs.coupon.app.core.domain.user.command.aggregate.UserId
-import com.fcfs.coupon.app.core.utils.DateUtils.atEndOfDay
+import com.fcfs.coupon.app.core.util.DateUtils.atEndOfDay
 import com.fcfs.coupon.app.infra.domain.coupon.dao.CouponJpaDao
 import com.fcfs.coupon.app.infra.domain.firstcome.dao.FirstComeCouponEventEntityJpaDao
 import com.fcfs.coupon.app.infra.domain.firstcomeHistory.dao.FirstComeCouponSupplyHistoryEntityJpaDao

@@ -1,7 +1,7 @@
-package com.fcfs.coupon.app.core.utils.transaction
+package com.fcfs.coupon.app.core.util.transaction
 
-import com.fcfs.coupon.app.core.utils.transaction.model.TransactionChainId
-import com.fcfs.coupon.app.core.utils.transaction.model.TransactionChainOutcome
+import com.fcfs.coupon.app.core.util.transaction.model.TransactionChainId
+import com.fcfs.coupon.app.core.util.transaction.model.TransactionChainOutcome
 
 /**
  * Saga pattern의 Orchestration을 표현하는 인터페이스이다.

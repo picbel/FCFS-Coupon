@@ -9,7 +9,11 @@ plugins {
     kotlin("plugin.allopen")
 }
 
-java.sourceCompatibility = JavaVersion.VERSION_21
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 allprojects {
     group = "com.fcfs"
@@ -44,7 +48,6 @@ subprojects {
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs += "-Xjsr305=strict"
-            jvmTarget = "21"
         }
     }
 
@@ -59,6 +62,12 @@ subprojects {
 
 tasks.processTestResources {
     duplicatesStrategy = DuplicatesStrategy.WARN
+}
+
+tasks.withType<Test> {
+    outputs.upToDateWhen { false }
+    enabled = true
+    useJUnitPlatform()
 }
 
 

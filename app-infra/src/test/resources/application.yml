@@ -19,7 +19,6 @@ spring:
       port: 9900
       host: localhost
 server:
-  port: 9999
   servlet:
     encoding:
       charset: UTF-8

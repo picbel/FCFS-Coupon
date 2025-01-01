@@ -9,18 +9,17 @@ import com.fcfs.coupon.app.core.domain.user.command.aggregate.model.SuppliedCoup
 import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
+import io.restassured.RestAssured.given
+import io.restassured.response.Response
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.ResultActions
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import testcase.large.LargeTestSuite
 import testutils.factory.CouponFactory
 import testutils.factory.UserFactory
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import kotlin.text.Charsets.UTF_8
 
 internal class UserApiSpec : LargeTestSuite() {
 
@@ -83,15 +82,16 @@ internal class UserApiSpec : LargeTestSuite() {
         }
     }
 
-    private fun getFindSuppliedCouponHistory(userId: Long, req: FindSuppliedCouponFilterRequest): ResultActions {
-        return mockMvc.perform(
-            MockMvcRequestBuilders
-                .get(ApiPath.USER_COUPON_HISTORY)
-                .params(req.toParams())
-                .characterEncoding(UTF_8)
+
+    private fun getFindSuppliedCouponHistory(userId: Long, req: FindSuppliedCouponFilterRequest): Response {
+        return given()
                 .header("user-id", userId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-        )
+            .params(req.toParams())
+            .get(ApiPath.USER_COUPON_HISTORY)
+            .then()
+            .extract()
+            .response()
     }
 
     private fun FindSuppliedCouponFilterRequest.toParams(): Map<String, String?> =

@@ -29,6 +29,7 @@ data class TransactionChainOutcome(
      *
      * @throws ClassCastException 타입이 맞지 않을 경우
      */
+    @Suppress("UNCHECKED_CAST")
     operator fun <T> get(txId: TransactionChainId): T {
         return results[txId] as T
     }
@@ -38,6 +39,7 @@ data class TransactionChainOutcome(
      *
      * @throws ClassCastException 타입이 맞지 않을 경우
      */
+    @Suppress("UNCHECKED_CAST")
     fun <T> last(): T {
         return results.values.last() as T
     }

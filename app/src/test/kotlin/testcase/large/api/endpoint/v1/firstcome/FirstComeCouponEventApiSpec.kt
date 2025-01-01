@@ -17,12 +17,12 @@ import com.fcfs.coupon.app.core.exception.ErrorCode
 import com.fcfs.coupon.app.infra.domain.firstcome.dao.FirstComeCouponEventRedisDao
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
+import io.restassured.RestAssured.given
+import io.restassured.response.Response
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.ResultActions
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import testcase.large.LargeTestSuite
 import testutils.concurrency.ConcurrencyTestUtils.parallelExecute
 import testutils.dataset.RedisDataSetting
@@ -32,7 +32,6 @@ import testutils.factory.UserFactory
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
-import kotlin.text.Charsets.UTF_8
 
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
@@ -170,23 +169,23 @@ internal class FirstComeCouponEventApiSpec : LargeTestSuite() {
     }
 
 
-    private fun applyForFirstComeCouponEventApiCall(eventId: UUID, userId: Long): ResultActions {
-        return mockMvc.perform(
-            MockMvcRequestBuilders
-                .post(ApiPath.FIRSTCOME_EVENT_ID.replace("{id}", eventId.toString()))
-                .characterEncoding(UTF_8)
+    private fun applyForFirstComeCouponEventApiCall(eventId: UUID, userId: Long): Response {
+        return given()
                 .header("user-id", userId)
                 .contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-        )
+            .post(ApiPath.FIRSTCOME_EVENT_ID.replace("{id}", eventId.toString()))
+            .then()
+            .extract()
+            .response()
     }
 
-    private fun findInProgressEventApiCall(): ResultActions {
-        return mockMvc.perform(
-            MockMvcRequestBuilders
-                .get(ApiPath.FIRSTCOME_EVENT_IN_PROGRESS)
-                .characterEncoding(UTF_8)
+    private fun findInProgressEventApiCall(): Response {
+        return given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-        )
+            .get(ApiPath.FIRSTCOME_EVENT_IN_PROGRESS)
+            .then()
+            .extract()
+            .response()
     }
 
 }

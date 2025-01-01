@@ -14,17 +14,16 @@ import com.fcfs.coupon.app.core.domain.user.command.repository.UserRepository
 import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import io.restassured.RestAssured.given
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import testcase.large.LargeTestSuite
 import testutils.factory.CouponFactory.randomCoupon
 import testutils.factory.FirstComeCouponEventFactory.randomFirstComeCouponEvent
 import testutils.factory.UserFactory.randomUser
 import java.time.LocalDateTime
-import kotlin.text.Charsets.UTF_8
 
 @Suppress("NonAsciiCharacters") // 테스트 코드의 가독성을 위해 함수명과 클레스에 한글을 사용합니다.
 internal class GetCouponApiSpec : LargeTestSuite() {
@@ -97,15 +96,14 @@ internal class GetCouponApiSpec : LargeTestSuite() {
             end = LocalDateTime.now(),
         )
         // when
-        val res: IssuedCouponResponse = mockMvc.run {
-            perform(
-                MockMvcRequestBuilders
-                    .get(ApiPath.COUPON_ISSUE_ID.replace("{id}", coupon.couponId.value.toString()))
-                    .characterEncoding(UTF_8)
+        val res: IssuedCouponResponse = given()
                     .contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
                     .params(filter.toParams())
-            ).expectSuccess()
-        }
+            .get(ApiPath.COUPON_ISSUE_ID.replace("{id}", coupon.couponId.value.toString()))
+            .then()
+            .extract()
+            .response()
+            .expectSuccess()
         couponFinder.findAllByCouponId(filter.toMessage(coupon.couponId))
 
         // then

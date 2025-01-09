@@ -22,9 +22,9 @@ import java.time.LocalDate
  */
 @Repository
 internal class FirstComeCouponEventRepositoryImpl(
-    val jpaDao: FirstComeCouponEventEntityJpaDao,
-    val redisDao: FirstComeCouponEventRedisDao,
-    val couponDao: CouponJpaDao,
+    private val jpaDao: FirstComeCouponEventEntityJpaDao,
+    private val redisDao: FirstComeCouponEventRedisDao,
+    private val couponDao: CouponJpaDao,
 ) : FirstComeCouponEventRepository {
     @Transactional
     override fun save(firstComeCouponEvent: FirstComeCouponEvent): FirstComeCouponEvent {
